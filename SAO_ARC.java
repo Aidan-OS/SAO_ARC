@@ -90,7 +90,9 @@ public class SAO_ARC
 	    {
 		mob_type = (int) (Math.random () * (6) + 30); //Generates 30 - 36
 	    }
-	    
+
+	}//ELSE IF
+	
 	    mob_name = set_mob_name (mob_type);
 	    mob_stats = mob_stat_set (mob_type, level);
 	    
@@ -100,8 +102,6 @@ public class SAO_ARC
 	    c.println ("Strength: " + mob_stats [2]);
 	    c.println ("Evade: " + mob_stats [3]);
 	    c.println ("XP: " + mob_stats [4]);
-
-	}//ELSE IF
 
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
