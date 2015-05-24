@@ -5,7 +5,7 @@
 /*Welcome to the code of the SAO Arc project.
 This is a game developed in Java based on the
 popular anime and manga, Sword Art Online (SAO).
-It is a text based RPG with over 50 different
+It is a text based RPG with over 50 different                                                               MAKE A HEALTH BAR IN FIGHT THAT DEPLEATES BASED ON %
 standard mobs and 4 extremley rare mobs. Character
 stats are saved and when you die, you restart.
 
@@ -31,6 +31,7 @@ public class SAO_ARC
     {
 	c = new Console ();
 	
+	String player_name = "Leone Shamoth";
 	int xp = 0;
 	int xp_to_next_level = 100;
 	int level = 1;
@@ -93,15 +94,198 @@ public class SAO_ARC
 
 	}//ELSE IF
 	
-	    mob_name = set_mob_name (mob_type);
-	    mob_stats = mob_stat_set (mob_type, level);
+	mob_name = set_mob_name (mob_type);
+	mob_stats = mob_stat_set (mob_type, level);
 	    
-	    c.println ("Name: " + mob_name);
-	    c.println ("Health: " + mob_stats [0]);
-	    c.println ("Defence: " + mob_stats [1]);
-	    c.println ("Strength: " + mob_stats [2]);
-	    c.println ("Evade: " + mob_stats [3]);
-	    c.println ("XP: " + mob_stats [4]);
+	c.println ("Name: " + mob_name);
+	c.println ("Health: " + mob_stats [0] + "\t\t " + health);
+	c.println ("Defence: " + mob_stats [1] + "\t\t " + defence);
+	c.println ("Strength: " + mob_stats [2] + "\t\t " + strength);
+	c.println ("Evade: " + mob_stats [3] + "\t\t " + evasion);
+	c.println ("XP: " + mob_stats [4]);
+
+	c.getChar ();
+	c.clear ();
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+									     //BATTLE//   
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	int player_choice;
+	int mob_choice;
+	int player_fight_health = health;                           ////////////////////////////
+	int fight_strength = strength;                              //PERFORM MODIFICATIONS TO//
+	int fight_defence = defence;                                //      STATS HERE        // 
+	double fight_evasion = evasion;                             ////////////////////////////
+	int mob_health = (int) mob_stats [0];
+	
+	do
+	{
+	    c.print (mob_name + " Health: " + mob_health);
+	
+	    int space_problem = 71 - (player_name.length () + 5);  //PUTS THE NAME ON THE RIGHT SPOT ON THE LINE, THEN LEAVES SPACE FOR 5 NUMBERS OF HP
+	
+	    c.setCursor (18, space_problem);
+	    c.print (player_name + " Health: " + player_fight_health);
+	
+	    c.setCursor (20,1);
+	    c.println ("1: Slash   2: Stab");
+	    c.print ("3: Parry   4: Block\t");
+	    player_choice = c.readInt ();
+
+	    mob_choice = (int) (Math.random () * (4) ) + 1;
+	
+	    c.print ("The " + mob_name + " chose: ");
+	    if (mob_choice == 1)
+	    {
+		c.print ("Slash");
+	    }
+	
+	    else if (mob_choice == 2)
+	    {
+		c.print ("Stab");
+	    }
+	
+	    else if (mob_choice == 3)
+	    {
+		c.print ("Parry");
+	    }
+	
+	    else if (mob_choice == 4)
+	    {
+		c.print ("Block");
+	    }
+	
+	    c.setCursor (24, 1);
+	
+	    if ( (player_choice == 1 && mob_choice == 1) || (player_choice == 1 && mob_choice == 2) || (player_choice == 2 && mob_choice == 1) || (player_choice == 2 && mob_choice == 2) )
+	    {
+		//BOTH DEAL FULL DAMAGE
+		///////////////////////////////////////////////////////////////////////////////////
+		if (mob_stats [1] >= fight_strength)                     //                      //
+		{                                                        //                      //
+		    mob_health -= 1;                                     //                      //
+		}                                                        //                      //
+									 // PLAYER DAMAGE TO MOB //         //ARRAY POINTS --- 0 = HP --- 1 = DEFENCE --- 2 = STRENGTH --- 3 = EVADE --- 4 = XP
+		else                                                     //                      //
+		{                                                        //                      //
+		    mob_health -= fight_strength - mob_stats [1];        //                      //
+		}                                                        //                      //
+		///////////////////////////////////////////////////////////////////////////////////
+									 //                      //
+		if (fight_defence >= mob_stats [2])                      //                      //
+		{                                                        //                      //
+		    player_fight_health -= 1;                            //                      //
+		}                                                        // MOB DAMAGE TO PLAYER //
+									 //                      //
+		else                                                     //                      //
+		{                                                        //                      //
+		    player_fight_health -= mob_stats [2] - fight_defence;//                      //
+		}                                                        //                      //
+		///////////////////////////////////////////////////////////////////////////////////
+		c.print ("Both " + mob_name + " and you take swings and deal full damage.");
+	    }
+	
+	    else if ( (player_choice == 3 && mob_choice == 3) || (player_choice == 3 && mob_choice == 4) || (player_choice == 4 && mob_choice == 3) || (player_choice == 4 && mob_choice == 4) )
+	    {
+		c.print ("Both parties were prepared to counter, so no damage is dealt.");
+	    }
+	
+	    else if ( (player_choice == 3 && mob_choice == 2) || (player_choice == 4 && mob_choice == 1) )
+	    {
+		//PLAYER TAKES FULL MOB TAKES NONE
+		///////////////////////////////////////////////////////////////////////////////////
+									 //                      //
+		if (fight_defence >= mob_stats [2])                      //                      //
+		{                                                        //                      //
+		    player_fight_health -= 1;                            //                      //
+		}                                                        // MOB DAMAGE TO PLAYER //  
+									 //                      //
+		else                                                     //                      //
+		{                                                        //                      //
+		    player_fight_health -= mob_stats [2] - fight_defence;//                      //
+		}                                                        //                      //
+		///////////////////////////////////////////////////////////////////////////////////
+		c.print ("Since you performed the wrong counter, you take full damage.");
+	    }
+	
+	    else if ( (player_choice == 1 && mob_choice == 4) || (player_choice == 2 && mob_choice == 3) )
+	    {
+		//PLAYER DEALS FULL TAKES NONE
+		//////////////////////////////////////////////////////////////////////////////////
+		if (mob_stats [1] >= fight_strength)                    //                      //
+		{                                                       //                      //
+		    mob_health -= 1;                                    //                      //
+		}                                                       //                      //
+									// PLAYER DAMAGE TO MOB //         //ARRAY POINTS --- 0 = HP --- 1 = DEFENCE --- 2 = STRENGTH --- 3 = EVADE --- 4 = XP
+		else                                                    //                      //
+		{                                                       //                      //
+		    mob_health -= fight_strength - mob_stats [1];       //                      //
+		}                                                       //                      //
+		//////////////////////////////////////////////////////////////////////////////////
+		c.print ("Since " + mob_name + " performed the wrong counter, you deal full damage.");
+	    }
+	
+	    else if ( (player_choice == 1 && mob_choice == 3) || (player_choice == 2 && mob_choice == 4) )
+	    {
+		//PLAYER TAKES REDUCED DAMAGE AND DEALS NONE
+		////////////////////////////////////////////////////////////////////////////////////////////////////////
+											  //                          //
+		if (fight_defence >= (int) (mob_stats [2] / 2) )                          //                          //
+		{                                                                         //                          //
+		    player_fight_health -= 1;                                             //                          //
+		}                                                                         //   MOB DAMAGE TO PLAYER   //
+											  //         REDUCED          //
+		else                                                                      //                          //
+		{                                                                         //                          //
+		    player_fight_health -= ( (int) (mob_stats [2] / 2) ) - fight_defence; //                          //
+		}                                                                         //                          //
+		////////////////////////////////////////////////////////////////////////////////////////////////////////
+		c.print ("The " + mob_name + " properly countered your blow, so you take reduced damage.");
+	    }
+	
+	    else if ( (player_choice == 3 && mob_choice == 1) || (player_choice == 4 && mob_choice == 2) )
+	    {
+		//MOB TAKES REDUCED DAMAGE AND DEALS NONE
+		//////////////////////////////////////////////////////////////////////////////////////////////////
+										    //                          //
+		if (mob_stats [1] >= (int) (fight_strength / 2) )                   //                          //
+		{                                                                   //                          //
+		    mob_health -= 1;                                                //                          //
+		}                                                                   //   PLAYER DAMAGE TO MOB   //
+										    //         REDUCED          //
+		else                                                                //                          //
+		{                                                                   //                          //
+		    mob_health -= ( (int) (fight_strength / 2) ) - mob_stats [1];   //                          //
+		}                                                                   //                          //
+		//////////////////////////////////////////////////////////////////////////////////////////////////
+		c.print ("You properly anticipated the enemy's attack and countered it, dealing reduced damage.");
+	    }
+	    
+	    if ((player_fight_health > 0) && (mob_health > 0))
+	    {
+		c.setCursor (12, 35);
+		c.print ("Press any key to continue");
+		c.getChar ();
+	    }
+	    
+	    c.clear ();
+	    c.setCursor (1,1);
+	    
+	}while ( (player_fight_health > 0) && (mob_health > 0) );
+	
+	if (player_fight_health > 0 && mob_health <= 0)
+	{
+	    c.print ("You swing your sword, hitting the enemy hard enough that it is defeated!");/////////////////////////////////////////////////////////////////MAKE INTO NICE LETTERS
+	}
+	
+	else if (player_fight_health <= 0 && mob_health > 0)
+	{
+	    c.print ("You have been defeated by the mighty " + mob_name ".");
+	}
+	
+	else
+	{
+	    c.print ("You have barley survived the fight, almost dieing on the final swing. Be more careful next time.");
+	}
 
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
