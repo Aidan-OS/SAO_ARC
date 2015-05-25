@@ -31,8 +31,8 @@ public class SAO_ARC
     static int health;
     static double evasion = 30;
     static int level = 1;
-    static int xp;
-    static int xp_to_next_level;
+    static int xp = 0;
+    static int xp_to_next_level = 100;
     static String player_name = "Leone Shamoth";
     static double[] mob_stats = {1, 1, 1000, 100, 42};                                  //ARRAY POINTS --- 0 = HP --- 1 = DEFENCE --- 2 = STRENGTH --- 3 = EVADE --- 4 = XP
     static String mob_name = "Missingno";/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -108,6 +108,14 @@ public class SAO_ARC
 	c.clear ();
 	
 	fight ();
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//                                                            //EXP TO LEVEL UP//                                                                 //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/*if (level != 1)
+	    {
+		xp_to_next_level += 100 + (40 * (level - 1) );
+	    }*/
 
     } // main method
 
@@ -313,6 +321,7 @@ public class SAO_ARC
 	if (player_fight_health > 0 && mob_health <= 0)
 	{
 	    c.print ("You swing your sword, hitting the enemy hard enough that it is defeated!"); /////////////////////////////////////////////////////////////////MAKE INTO NICE LETTERS
+	    xp += mob_stats [4];
 	}
 
 	else if (player_fight_health <= 0 && mob_health > 0)
@@ -331,13 +340,7 @@ public class SAO_ARC
 	}
 
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//                                                            //EXP TO LEVEL UP//                                                                 //
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/*if (level != 1)
-	    {
-		xp_to_gain += 100 + (40 * (level - 1) );
-	    }*/
+	
     }
 
 
