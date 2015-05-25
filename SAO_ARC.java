@@ -25,8 +25,8 @@ import hsa.Console;
 
 public class SAO_ARC
 {
-    static Console c;           // The output console
-    static int strength;
+    static Console c;// The output console
+    static int strength; //ALL STATS UNDERNEATH BEFORE MAIN ARE CONSTANTLY USED, AND CHANGED, MADE STATIC SO THAT I DONT NEED TO CONSTANTLY PASS THEM
     static int defence;
     static int health;
     static double evasion = 30;
@@ -35,7 +35,7 @@ public class SAO_ARC
     static int xp_to_next_level;
     static String player_name = "Leone Shamoth";
     static double[] mob_stats = {1, 1, 1000, 100, 42};                                  //ARRAY POINTS --- 0 = HP --- 1 = DEFENCE --- 2 = STRENGTH --- 3 = EVADE --- 4 = XP
-    static String mob_name = "Missingno";
+    static String mob_name = "Missingno";/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static void main (String[] args)
     {
@@ -111,13 +111,7 @@ public class SAO_ARC
 
     } // main method
 
-
-    
-    
-    
-    
-    
-    
+ 
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                                                    //BATTLE//                                                                           //
@@ -140,19 +134,24 @@ public class SAO_ARC
 
 
 	do
-	{
-	    c.print (mob_name + " Health: " + mob_health);
+	{   
+	    do
+	    {
+		c.print (mob_name + " Health: " + mob_health);
 
-	    int space_problem = 71 - (player_name.length () + 5);  //PUTS THE NAME ON THE RIGHT SPOT ON THE LINE, THEN LEAVES SPACE FOR 5 NUMBERS OF HP
+		int space_problem = 71 - (player_name.length () + 5);  //PUTS THE NAME ON THE RIGHT SPOT ON THE LINE, THEN LEAVES SPACE FOR 5 NUMBERS OF HP
 
-	    c.setCursor (18, space_problem);
-	    c.print (player_name + " Health: " + player_fight_health);
+		c.setCursor (18, space_problem);
+		c.print (player_name + " Health: " + player_fight_health);
 
-	    c.setCursor (20, 1);
-	    c.println ("1: Slash   2: Stab");
-	    c.print ("3: Parry   4: Block\t"); //////////////////////////////////ADD FLEE AS AN OPTION ???MAKE YOU TAKE DAMAGE/2 IF YOU FLEE???
-	    player_choice = c.readInt ();
+		c.setCursor (20, 1);
+		c.println ("1: Slash   2: Stab");
+		c.print ("3: Parry   4: Block   5: Flee\t"); //////////////////////////////////ADD FLEE AS AN OPTION ???MAKE YOU TAKE DAMAGE/2 IF YOU FLEE???
+		player_choice = c.readInt ();
 
+		  
+	    }while (! (player_choice == 1) && (player_choice == 2) && (player_choice == 3) && (player_choice == 4) && (player_choice == 5) );
+	    
 	    mob_choice = (int) (Math.random () * (4)) + 1;
 
 	    c.print ("The " + mob_name + " chose: ");
@@ -214,18 +213,18 @@ public class SAO_ARC
 	    else if ((player_choice == 3 && mob_choice == 2) || (player_choice == 4 && mob_choice == 1))
 	    {
 		//PLAYER TAKES FULL MOB TAKES NONE
-		///////////////////////////////////////////////////////////////////////////////////
-		//                      //
-		if (fight_defence >= mob_stats [2])                      //                      //
-		{ //                      //
-		    player_fight_health -= 1;                            //                      //
-		} // MOB DAMAGE TO PLAYER //
-		//                      //
-		else                                                     //                      //
-		{ //                      //
+		////////////////////////////////////////////////////////////////////////////////////
+									  //                      //
+		if (fight_defence >= mob_stats [2])                       //                      //
+		{                                                         //                      //
+		    player_fight_health -= 1;                             //                      //
+		}                                                         // MOB DAMAGE TO PLAYER //
+									  //                      //
+		else                                                      //                      //
+		{                                                         //                      //
 		    player_fight_health -= mob_stats [2] - fight_defence; //                      //
-		} //                      //
-		///////////////////////////////////////////////////////////////////////////////////
+		}                                                         //                      //
+		////////////////////////////////////////////////////////////////////////////////////
 		c.print ("Since you performed the wrong counter, you take full damage.");
 	    }
 
@@ -234,14 +233,14 @@ public class SAO_ARC
 		//PLAYER DEALS FULL TAKES NONE
 		//////////////////////////////////////////////////////////////////////////////////
 		if (mob_stats [1] >= fight_strength)                    //                      //
-		{ //                      //
+		{                                                       //                      //
 		    mob_health -= 1;                                    //                      //
-		} //                      //
-		// PLAYER DAMAGE TO MOB //         //ARRAY POINTS --- 0 = HP --- 1 = DEFENCE --- 2 = STRENGTH --- 3 = EVADE --- 4 = XP
+		}                                                       //                      //
+									// PLAYER DAMAGE TO MOB //         //ARRAY POINTS --- 0 = HP --- 1 = DEFENCE --- 2 = STRENGTH --- 3 = EVADE --- 4 = XP
 		else                                                    //                      //
-		{ //                      //
+		{                                                       //                      //
 		    mob_health -= fight_strength - mob_stats [1];       //                      //
-		} //                      //
+		}                                                       //                      //
 		//////////////////////////////////////////////////////////////////////////////////
 		c.print ("Since " + mob_name + " performed the wrong counter, you deal full damage.");
 	    }
@@ -250,16 +249,16 @@ public class SAO_ARC
 	    {
 		//PLAYER TAKES REDUCED DAMAGE AND DEALS NONE
 		////////////////////////////////////////////////////////////////////////////////////////////////////////
-		//                          //
+											  //                          //
 		if (fight_defence >= (int) (mob_stats [2] / 2))                           //                          //
-		{ //                          //
+		{                                                                         //                          //
 		    player_fight_health -= 1;                                             //                          //
-		} //   MOB DAMAGE TO PLAYER   //
-		//         REDUCED          //
+		}                                                                         //   MOB DAMAGE TO PLAYER   //
+											  //         REDUCED          //
 		else                                                                      //                          //
-		{ //                          //
+		{                                                                         //                          //
 		    player_fight_health -= ((int) (mob_stats [2] / 2)) - fight_defence;   //                          //
-		} //                          //
+		}                                                                         //                          //
 		////////////////////////////////////////////////////////////////////////////////////////////////////////
 		c.print ("The " + mob_name + " properly countered your blow, so you take reduced damage.");
 	    }
@@ -268,18 +267,35 @@ public class SAO_ARC
 	    {
 		//MOB TAKES REDUCED DAMAGE AND DEALS NONE
 		//////////////////////////////////////////////////////////////////////////////////////////////////
-		//                          //
+										    //                          //
 		if (mob_stats [1] >= (int) (fight_strength / 2))                    //                          //
-		{ //                          //
+		{                                                                   //                          //
 		    mob_health -= 1;                                                //                          //
-		} //   PLAYER DAMAGE TO MOB   //
-		//         REDUCED          //
+		}                                                                   //   PLAYER DAMAGE TO MOB   //
+										    //         REDUCED          //
 		else                                                                //                          //
-		{ //                          //
+		{                                                                   //                          //
 		    mob_health -= ((int) (fight_strength / 2)) - mob_stats [1];     //                          //
-		} //                          //
+		}                                                                   //                          //
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		c.print ("You properly anticipated the enemy's attack and countered it, dealing reduced damage.");
+	    }
+	    
+	    else if (player_choice == 5);
+	    {
+		//PLAYER TAKES REDUCED DAMAGE AND DEALS NONE
+		////////////////////////////////////////////////////////////////////////////////////////////////////////
+											  //                          //
+		if (fight_defence >= (int) (mob_stats [2] / 2))                           //                          //
+		{                                                                         //                          //
+		    player_fight_health -= 1;                                             //                          //
+		}                                                                         //   MOB DAMAGE TO PLAYER   //
+											  //         REDUCED          //
+		else                                                                      //                          //
+		{                                                                         //                          //
+		    player_fight_health -= ((int) (mob_stats [2] / 2)) - fight_defence;   //                          //
+		}                                                                         //                          //
+		////////////////////////////////////////////////////////////////////////////////////////////////////////
 	    }
 
 	    if ((player_fight_health > 0) && (mob_health > 0))
@@ -292,8 +308,7 @@ public class SAO_ARC
 	    c.clear ();
 	    c.setCursor (1, 1);
 
-	}
-	while ((player_fight_health > 0) && (mob_health > 0));
+	}while ((player_fight_health > 0) && (mob_health > 0) && (player_choice != 5));
 
 	if (player_fight_health > 0 && mob_health <= 0)
 	{
@@ -303,6 +318,11 @@ public class SAO_ARC
 	else if (player_fight_health <= 0 && mob_health > 0)
 	{
 	    c.print ("You have been defeated by the mighty " + mob_name + ".");
+	}
+	
+	else if (player_choice == 5)
+	{
+	    c.print ("You run away!");
 	}
 
 	else
@@ -334,7 +354,7 @@ public class SAO_ARC
 		case 4:
 		    {
 			mob_stats [0] = (int) (Math.random () * (10) + 19); //Lower HP commons
-			if (level != 1)
+			if (level != 1)//These are to make sure you do not level up mob for level 1, continued throughtout method
 			{
 			    for (int i = 1 ; i <= level - 1 ; i++)
 			    {
@@ -1099,7 +1119,7 @@ public class SAO_ARC
 		    {
 			mob_stats [0] = 1;
 			mob_stats [1] = 1;
-			mob_stats [2] = 1;
+			mob_stats [2] = 1;//Used for if bugs come out, will not happen
 			mob_stats [3] = 100;
 			mob_stats [4] = 1000;
 		    }
@@ -1111,11 +1131,9 @@ public class SAO_ARC
 
 
 
-	public static String set_mob_name (int mob_number)
+	public static String set_mob_name (int mob_number)   //Uses if structures to determine the name based on a number generated in main
 	{
 	    /////////////////////////COMMONS////////////////////////////////////////
-	    //Common Mobs: Blazing Zealot - 1, Kobold Soldier - 2,
-	    //Centaur Archer - 3, Raging Tusker - 4, Stable Water Elemental - 5
 	    if (mob_number == 1)
 	    {
 		return ("Blazing Zealot");
@@ -1201,8 +1219,6 @@ public class SAO_ARC
 		return ("Vampiric Bat");
 	    }
 	    /////////////////////////UNCOMMONS//////////////////////////////////////////////
-	    //18 - Unstable Water Elemental, 19 - Voidborn Bladesman, 20 - Goblin Changling
-	    //21 - Orc Tribe Leader
 	    else if (mob_number == 18)
 	    {
 		return ("Unstable Water Elemental");
@@ -1325,7 +1341,6 @@ public class SAO_ARC
 	    }
 	    return ("Bad Egg");
 	}
-
-    } // SAO_ARC class
+} // SAO_ARC class
 
 
