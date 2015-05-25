@@ -25,29 +25,30 @@ import hsa.Console;
 
 public class SAO_ARC
 {
-    static Console c;           // The output console                  
+    static Console c;           // The output console
+    static int strength;
+    static int defence;
+    static int health;
+    static double evasion = 30;
+    static int level = 1;
+    static int xp;
+    static int xp_to_next_level;
+    static String player_name = "Leone Shamoth";  
 
     public static void main (String[] args)
     {
 	c = new Console ();
 	
-	String player_name = "Leone Shamoth";
-	int xp = 0;
-	int xp_to_next_level = 100;
-	int level = 1;
-	int strength;
-	int defence;
-	double evasion = 30;                               //Evade at 30%   THIS INCREMENTS BY 0.2 PER LEVEL
-	int health;
+	int mob_rarity;
+	int mob_type = 42;
+	double [] mob_stats = {1, 1, 1000, 100, 42};                                 //ARRAY POINTS --- 0 = HP --- 1 = DEFENCE --- 2 = STRENGTH --- 3 = EVADE --- 4 = XP
+	String mob_name = "Missingno";
 	    
 	strength = (int) (Math.random () * (5) + 10); //Strength between 10 and 15
 	defence = (int) (Math.random () * (2) + 5);    //Defence between 5 and 7
 	health = (int) (Math.random () * (10) + 25);   //Heath between 25 and 35
 	
-	int mob_rarity;
-	int mob_type = 42;
-	double [] mob_stats = {1, 1, 1000, 100, 1000000};                                 //ARRAY POINTS --- 0 = HP --- 1 = DEFENCE --- 2 = STRENGTH --- 3 = EVADE --- 4 = XP
-	String mob_name = "Missingno";
+	
 
 	mob_rarity = (int) (Math.random () * (99) + 1); //Generates a random mob rarity                   //17 Common, 12 uncommon, 7 rares, 4 Legendaries
 	
@@ -72,8 +73,7 @@ public class SAO_ARC
 	    {
 		mob_type = (int) (Math.random () * (3) + 37); //Generates 37 - 40
 	    }
-
-	}
+	}//if
 	
 	else if (level < 50)
 	{
@@ -109,6 +109,7 @@ public class SAO_ARC
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 									     //BATTLE//   
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	    
 	int player_choice;
 	int mob_choice;
 	int player_fight_health = health;                           ////////////////////////////
@@ -117,6 +118,12 @@ public class SAO_ARC
 	double fight_evasion = evasion;                             ////////////////////////////
 	int mob_health = (int) mob_stats [0];
 	
+	player_fight_health = health;
+	fight_strength = strength;
+	fight_defence = defence;  
+	fight_evasion = evasion;
+	mob_health = (int) mob_stats [0]; 
+	    
 	do
 	{
 	    c.print (mob_name + " Health: " + mob_health);
@@ -128,7 +135,7 @@ public class SAO_ARC
 	
 	    c.setCursor (20,1);
 	    c.println ("1: Slash   2: Stab");
-	    c.print ("3: Parry   4: Block\t");
+	    c.print ("3: Parry   4: Block\t");//////////////////////////////////ADD FLEE AS AN OPTION ???MAKE YOU TAKE DAMAGE/2 IF YOU FLEE???
 	    player_choice = c.readInt ();
 
 	    mob_choice = (int) (Math.random () * (4) ) + 1;
@@ -279,7 +286,7 @@ public class SAO_ARC
 	
 	else if (player_fight_health <= 0 && mob_health > 0)
 	{
-	    c.print ("You have been defeated by the mighty " + mob_name ".");
+	    c.print ("You have been defeated by the mighty " + mob_name + ".");
 	}
 	
 	else
