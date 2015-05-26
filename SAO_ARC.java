@@ -133,12 +133,9 @@ public class SAO_ARC
 	int fight_defence = defence;                                //      STATS HERE        //
 	double fight_evasion = evasion;                             ////////////////////////////
 	int mob_health = (int) mob_stats [0];
-
-	player_fight_health = health;
-	fight_strength = strength;
-	fight_defence = defence;
-	fight_evasion = evasion;
-	mob_health = (int) mob_stats [0];
+	int mob_evade_roll;
+	int player_evade_roll;
+	int flee_work;
 
 
 	do
@@ -154,38 +151,124 @@ public class SAO_ARC
 
 		c.setCursor (20, 1);
 		c.println ("1: Slash   2: Stab");
-		c.print ("3: Parry   4: Block   5: Flee\t"); //////////////////////////////////ADD FLEE AS AN OPTION ???MAKE YOU TAKE DAMAGE/2 IF YOU FLEE???
+		c.print ("3: Parry   4: Block   5: Flee\t");
 		player_choice = c.readInt ();
 
 		  
 	    }while (! (player_choice == 1) && (player_choice == 2) && (player_choice == 3) && (player_choice == 4) && (player_choice == 5) );
 	    
+	    if (player_choice == 5)
+	    {
+		flee_work = (int) (Math.random() * (99) ) + 1;
+		if ( (flee_work >= 1) && (flee_work <= 50) )
+		{
+		    //Player choice stays
+		}
+		
+		else
+		{
+		    player_choice = 10;
+		}
+	    
+	    }
+	    
 	    mob_choice = (int) (Math.random () * (4)) + 1;
-
-	    c.print ("The " + mob_name + " chose: ");
-	    if (mob_choice == 1)
+	    
+	    mob_evade_roll = (int) (Math.random() * (99) ) + 1;
+	    player_evade_roll = (int) (Math.random() * (99) ) + 1;
+	    
+	    if ( (player_choice != 5) && (player_choice != 10) )//Cant evade and flee, will cancel flee if evades
 	    {
-		c.print ("Slash");
+		if ( (mob_evade_roll >= 1) && (mob_evade_roll <= mob_stats [3]) )//Test for Mob Evade
+		{
+		    if ( (player_evade_roll >= 1) && (player_evade_roll <= fight_evasion) ) //Test For Player Evade
+		    {
+			player_choice = 7;
+		    }
+		    
+		    else
+		    {
+			mob_choice = 6;
+		    }
+		}
+		
+		else if ( (player_evade_roll >= 1) && (player_evade_roll <= fight_evasion) ) //Test For Player Evade
+		{
+		    player_choice = 6;
+		}
 	    }
-
-	    else if (mob_choice == 2)
+	    
+	    if ( (mob_choice != 6) && (player_choice != 6) && (player_choice != 7) && (player_choice != 5) ) //Makes sure no evasions or flee
 	    {
-		c.print ("Stab");
+		c.print ("The " + mob_name + " chose: ");
+		if (mob_choice == 1)
+		{
+		    c.print ("Slash");
+		}
+
+		else if (mob_choice == 2)
+		{
+		    c.print ("Stab");
+		}
+
+		else if (mob_choice == 3)
+		{
+		    c.print ("Parry");
+		}
+
+		else if (mob_choice == 4)
+		{
+		    c.print ("Block");
+		}
 	    }
-
-	    else if (mob_choice == 3)
+	    
+	    else if (player_choice != 5)
 	    {
-		c.print ("Parry");
-	    }
-
-	    else if (mob_choice == 4)
-	    {
-		c.print ("Block");
+		if (mob_choice != 6)//If the player evaded
+		{
+		    c.print ("You evaded the enemy attack and hit them for reduced damage.");
+		    //MOB TAKES REDUCED DAMAGE AND DEALS NONE
+		    //////////////////////////////////////////////////////////////////////////////////////////////////
+											//                          //
+		    if (mob_stats [1] >= (int) (fight_strength / 2))                    //                          //
+		    {                                                                   //                          //
+			mob_health -= 1;                                                //                          //
+		    }                                                                   //   PLAYER DAMAGE TO MOB   //
+											//         REDUCED          //
+		    else                                                                //                          //
+		    {                                                                   //                          //
+			mob_health -= ((int) (fight_strength / 2)) - mob_stats [1];     //                          //
+		    }                                                                   //                          //
+		    //////////////////////////////////////////////////////////////////////////////////////////////////
+		}
+		
+		else if (player_choice != 6) //If the mob evaded
+		{
+		    c.print ("The " + mob_name + " evaded your attack and dealt reduced damage.");
+		    //PLAYER TAKES REDUCED DAMAGE AND DEALS NONE
+		    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+											      //                          //
+		    if (fight_defence >= (int) (mob_stats [2] / 2))                           //                          //
+		    {                                                                         //                          //
+			player_fight_health -= 1;                                             //                          //
+		    }                                                                         //   MOB DAMAGE TO PLAYER   //
+											      //         REDUCED          //
+		    else                                                                      //                          //
+		    {                                                                         //                          //
+			player_fight_health -= ((int) (mob_stats [2] / 2)) - fight_defence;   //                          //
+		    }                                                                         //                          //
+		    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+		}
+		
+		else// Both evade
+		{
+		    c.print ("Both you and the mob evaded eachothers attacks so nothing happens.");
+		}
 	    }
 
 	    c.setCursor (24, 1);
 
-	    if ((player_choice == 1 && mob_choice == 1) || (player_choice == 1 && mob_choice == 2) || (player_choice == 2 && mob_choice == 1) || (player_choice == 2 && mob_choice == 2))
+	    if((player_choice == 1 && mob_choice == 1) || (player_choice == 1 && mob_choice == 2) || (player_choice == 2 && mob_choice == 1) || (player_choice == 2 && mob_choice == 2))
 	    {
 		//BOTH DEAL FULL DAMAGE
 		///////////////////////////////////////////////////////////////////////////////////
@@ -289,7 +372,7 @@ public class SAO_ARC
 		c.print ("You properly anticipated the enemy's attack and countered it, dealing reduced damage.");
 	    }
 	    
-	    else if (player_choice == 5);
+	    else if (player_choice == 5 || player_choice == 10)
 	    {
 		//PLAYER TAKES REDUCED DAMAGE AND DEALS NONE
 		////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -304,12 +387,21 @@ public class SAO_ARC
 		    player_fight_health -= ((int) (mob_stats [2] / 2)) - fight_defence;   //                          //
 		}                                                                         //                          //
 		////////////////////////////////////////////////////////////////////////////////////////////////////////
+		if (player_choice == 5)
+		{
+		    c.print ("You flee.");
+		}
+		
+		else if (player_choice == 10)
+		{
+		    c.print ("You fail to flee and you take reduced damage.");
+		}
 	    }
 
 	    if ((player_fight_health > 0) && (mob_health > 0))
 	    {
 		c.setCursor (12, 35);
-		c.print ("Press any key to continue");
+		c.print ("Press any key to continue.");
 		c.getChar ();
 	    }
 
@@ -326,12 +418,20 @@ public class SAO_ARC
 
 	else if (player_fight_health <= 0 && mob_health > 0)
 	{
-	    c.print ("You have been defeated by the mighty " + mob_name + ".");
+	    if (player_choice == 5 || player_choice == 10)
+	    {
+		c.print ("You died a coward, running away from your enemy!");
+	    }
+	    
+	    else
+	    {
+		c.print ("You have been defeated by the mighty " + mob_name + ".");
+	    }
 	}
 	
 	else if (player_choice == 5)
 	{
-	    c.print ("You run away!");
+	    c.print ("RUN AWAYYYY!");
 	}
 
 	else
@@ -345,8 +445,8 @@ public class SAO_ARC
 
 
 
-	public static double[] mob_stat_set (int mob_type, int level)      //SETS A MOB'S STATS                            ARRAY POINTS --- 0 = HP --- 1 = DEFENCE --- 2 = STRENGTH --- 3 = EVADE
-	{ //4 = XP
+	public static double[] mob_stat_set (int mob_type, int level)      //SETS A MOB'S STATS             ARRAY POINTS --- 0 = HP --- 1 = DEFENCE --- 2 = STRENGTH --- 3 = EVADE -- 4 = XP
+	{ 
 	    double[] mob_stats = new double [5];
 
 	    switch (mob_type)
