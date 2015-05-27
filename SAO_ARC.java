@@ -22,6 +22,8 @@ WRITE ABOUT THE ATTACKS.
 
 import java.awt.*;
 import hsa.Console;
+import java.io.*;
+import hsa.*;
 
 public class SAO_ARC
 {
@@ -37,7 +39,7 @@ public class SAO_ARC
     static double[] mob_stats = {1, 1, 1000, 100, 42};                                  //ARRAY POINTS --- 0 = HP --- 1 = DEFENCE --- 2 = STRENGTH --- 3 = EVADE --- 4 = XP
     static String mob_name = "Missingno";/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static void main (String[] args)
+    public static void main (String[] args) throws IOException
     {
 	c = new Console ();
 
@@ -118,12 +120,151 @@ public class SAO_ARC
 	    }*/
 
     } // main method
+    
+    public static void start_menu (String[] args) throws IOException
+    {
 
- 
+	char key_pressed;
+	int title_screen_selected = 0;
+	String player_name, password;
+
+	draw_selected_box (225, 100);
+	draw_box (225, 250);
+	
+	Font title_screen = new Font ("Bauhaus 93", Font.ITALIC, 40);
+	c.setFont (title_screen);
+	c.drawString ("New Game", 250, 162);
+	c.drawString ("Load Game", 250, 315);
+	
+	do
+	{
+	    key_pressed = c.getChar ();
+	    
+	    if (key_pressed == 'w')
+	    {
+		draw_box (225, 250);
+		draw_selected_box (225, 100);
+		title_screen_selected = 0;
+	    }
+	    
+	    else if (key_pressed == 's')
+	    {
+		draw_box (225, 100);
+		draw_selected_box (225, 250);
+		title_screen_selected = 1;
+	    }
+	    
+	    c.drawString ("New Game", 250, 162);
+	    c.drawString ("Load Game", 250, 315);
+	}while (key_pressed != '\n');
+	
+	c.clear ();
+	
+	if (title_screen_selected == 0)
+	{
+	    create_new_user ();
+	}
+	
+	else if (title_screen_selected == 1)
+	{
+	    load_user ();
+	}
+      
+    }
+    
+    public static void draw_box (int x, int y)
+    {
+	c.drawRect ( (x - 1), (y - 1), 251, 101);
+	c.setColor (Color.gray);
+	c.fillRect (x, y, 250, 100);
+	c.setColor (Color.black);
+    }
+    
+    public static void draw_selected_box (int x, int y)
+    {
+	c.drawRect ( (x - 1), (y - 1), 251, 101);
+	c.setColor (Color.lightGray);
+	c.fillRect (x, y, 250, 100);
+	c.setColor (Color.gray);
+	c.fillRect ( (x + 10), (y + 10), 230, 80);
+	c.setColor (Color.black);
+    }
+    
+    public static void load_user () throws IOException
+    {
+    
+    }
+    
+    public static void create_new_user () throws IOException
+    {
+	String name;
+	boolean name_taken = false;
+	String name_on_list = "Missingno";
+	String temp_pass_store;
+	
+	while (1 == 1)
+	{
+	    BufferedReader read_name_list = new BufferedReader (new FileReader ("name_list.txt")); //Opens the file in a way that can read Null
+	    PrintWriter input_name_list = new PrintWriter (new FileWriter ("name_list.txt", true) ); //Starts writing at the end
+	    
+	    c.print ("Please enter a username: ");  //Enters username
+	    name = c.readLine ();
+	
+	    name_on_list = read_name_list.readLine (); //takes the first name on the list
+
+	    while (name_on_list != null) //Checks if there is nothing let to read
+	    {
+		if (name_on_list.equals (name)) //Checks if the name in the file is the same as the one entered
+		{
+		    break;
+		}
+		
+		name_on_list = read_name_list.readLine ();//Gets new word on list
+	    }
+	
+	    if (name_on_list != null) //If the name is taken, the name on the list will not be null
+	    {
+		c.clear ();
+		c.println ("That username is taken.");
+		
+	    }
+	    
+	    else
+	    {
+		input_name_list.println (name);
+		read_name_list.close ();
+		input_name_list.close (); 
+		break;    
+	    }
+	    read_name_list.close ();
+	    input_name_list.close ();   
+	}
+	
+	c.print ("Username is not taken, please enter your password now: ");
+	PrintWriter input_save_data = new PrintWriter (new FileWriter (name + ".txt") );
+	temp_pass_store = c.readString ();
+	input_save_data.println (temp_pass_store);
+	temp_pass_store = "";
+	
+	strength = (int) (Math.random () * (5) + 10); //Strength between 10 and 15
+	defence = (int) (Math.random () * (2) + 5);    //Defence between 5 and 7
+	health = (int) (Math.random () * (10) + 25);   //Heath between 25 and 35
+	
+	input_save_data.println (strength);
+	input_save_data.println (defence);
+	input_save_data.println (health);
+	input_save_data.println (evasion);
+	input_save_data.println (level);
+	input_save_data.println (xp);
+	input_save_data.println (xp_to_next_level);
+	
+	input_save_data.close ();
+    }
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                                                    //BATTLE//                                                                           //
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     public static void fight ()
     {
 	int player_choice;
@@ -1444,6 +1585,7 @@ public class SAO_ARC
 	    }
 	    return ("Bad Egg");
 	}
+	
 } // SAO_ARC class
 
 
