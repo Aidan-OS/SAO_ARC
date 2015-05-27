@@ -204,8 +204,8 @@ public class SAO_ARC
 	
 	while (1 == 1)
 	{
-	    BufferedReader read_name_list = new BufferedReader (new FileReader ("name_list.txt")); //Opens the file in a way that can read Null
 	    PrintWriter input_name_list = new PrintWriter (new FileWriter ("name_list.txt", true) ); //Starts writing at the end
+	    BufferedReader read_name_list = new BufferedReader (new FileReader ("name_list.txt")); //Opens the file in a way that can read Null
 	    
 	    c.print ("Please enter a username: ");  //Enters username
 	    name = c.readLine ();
