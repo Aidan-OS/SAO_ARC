@@ -2,7 +2,8 @@
 *     Aidan Smith     *
 * The SAO Arc Project *
 **********************/
-/*Welcome to the code of the SAO Arc project.
+/*
+Welcome to the code of the SAO Arc project.
 This is a game developed in Java based on the
 popular anime and manga, Sword Art Online (SAO).
 It is a text based RPG with over 50 different                                                               MAKE A HEALTH BAR IN FIGHT THAT DEPLEATES BASED ON %
@@ -16,8 +17,14 @@ Defence: Detemines how much damage you are able to negate.
 Evasion: How easily you can dodge an attack.
 Health: Determines how much damage you can take. Restored at the end of every fight.
 
+When you are in battle, you have 5 options as your moves:
 
-WRITE ABOUT THE ATTACKS.
+Slash: Deals damage, countered by parry
+Stab: Deals damage, countered by block
+Parry: Counters slash, deals reduced damage to enemy if proper counter
+Block: Counters stab, deals reduced damage to enemy if proper counter
+Flee: Run away, has a 50% chance of faliure, you take half damage whenever you try to flee
+
 */
 
 import java.awt.*;
@@ -43,14 +50,28 @@ public class SAO_ARC
     {
 	c = new Console ();
 
-	int mob_rarity;
-	int mob_type = 42;
+	
 
 	strength = (int) (Math.random () * (5) + 10); //Strength between 10 and 15
 	defence = (int) (Math.random () * (2) + 5);    //Defence between 5 and 7
 	health = (int) (Math.random () * (10) + 25);   //Heath between 25 and 35
 
+	init_fight ();
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//                                                            //EXP TO LEVEL UP//                                                                 //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/*if (level != 1)
+	    {
+		xp_to_next_level += 100 + (40 * (level - 1) );
+	    }*/
 
+    } // main method
+    
+    public static void init_fight ()
+    {
+	int mob_rarity;
+	int mob_type = 42;
 
 	mob_rarity = (int) (Math.random () * (99) + 1); //Generates a random mob rarity                   //17 Common, 12 uncommon, 7 rares, 4 Legendaries
 
@@ -110,23 +131,17 @@ public class SAO_ARC
 	c.clear ();
 	
 	fight ();
-	
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//                                                            //EXP TO LEVEL UP//                                                                 //
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/*if (level != 1)
-	    {
-		xp_to_next_level += 100 + (40 * (level - 1) );
-	    }*/
-
-    } // main method
+    }
     
     public static void start_menu (String[] args) throws IOException
     {
 
 	char key_pressed;
 	int title_screen_selected = 0;
-	String player_name, password;
+	
+	Color light_blue = new Color (0, 191, 255);
+	c.setColor (light_blue);
+	c.fillRect (0, 0, 640, 500);
 
 	draw_selected_box (225, 100);
 	draw_box (225, 250);
@@ -174,6 +189,7 @@ public class SAO_ARC
     
     public static void draw_box (int x, int y)
     {
+	c.setColor (Color.black);
 	c.drawRect ( (x - 1), (y - 1), 251, 101);
 	c.setColor (Color.gray);
 	c.fillRect (x, y, 250, 100);
@@ -182,6 +198,7 @@ public class SAO_ARC
     
     public static void draw_selected_box (int x, int y)
     {
+	c.setColor (Color.black);
 	c.drawRect ( (x - 1), (y - 1), 251, 101);
 	c.setColor (Color.lightGray);
 	c.fillRect (x, y, 250, 100);
@@ -192,29 +209,121 @@ public class SAO_ARC
     
     public static void load_user () throws IOException
     {
-    
+	String name_on_list;
+	String saved_password;
+	String input_password;
+	
+	Color light_blue = new Color (0, 191, 255);
+	c.setColor (light_blue);
+	c.fillRect (0, 0, 640, 500);
+	c.setTextBackgroundColor (light_blue);
+	
+	c.setColor (Color.black);
+	Font title_screen = new Font ("Bauhaus 93", Font.ITALIC, 30);
+	c.setFont (title_screen);
+	
+	while (1 == 1)
+	{
+	    BufferedReader read_name_list = new BufferedReader (new FileReader ("name_list.txt")); //Opens the file in a way that can read Null
+	    name_on_list = read_name_list.readLine ();
+	    
+	    c.drawString ("Enter your player name", 135, 100);
+	    c.setCursor (8, 33);
+	    player_name = c.readLine ();
+	    
+	    while (name_on_list != null) //Checks if there is nothing let to read
+	    {
+		if (name_on_list.equals (player_name)) //Checks if the name in the file is the same as the one entered
+		{
+		    break;
+		}
+		
+		name_on_list = read_name_list.readLine ();//Gets new word on list
+	    }
+	    
+	    if (name_on_list == null)
+	    {
+		c.clear ();
+		c.setCursor (7,26);
+		c.setTextColor (Color.red);
+		c.println ("That username is not in use");
+		c.setTextColor (Color.black);
+	    }    
+	    
+	    else 
+	    {
+		read_name_list.close ();
+		break;
+	    }
+	}//INFINTE WHILE
+	
+	TextInputFile player_save_data = new TextInputFile (player_name + ".txt");
+	saved_password = player_save_data.readString ();
+	
+	while (1 == 1)
+	{
+	    c.drawString ("Enter your password", 150, 300);
+	    c.setCursor (17, 35);
+	    input_password = c.readString ();
+	    
+	    if (! (input_password.equals (saved_password) ) )
+	    {
+		c.setCursor (16, 21);
+		c.setTextColor (Color.red);
+		c.println ("That was not the correct password");
+		c.setTextColor (Color.black);
+		c.println ();
+	    }
+	    
+	    else 
+	    {
+		break;
+	    }
+	    
+	}//END INFINITE WHILE 2
+	
+	strength = player_save_data.readInt ();
+	defence = player_save_data.readInt ();
+	health = player_save_data.readInt ();
+	evasion = player_save_data.readDouble ();
+	level = player_save_data.readInt ();
+	xp = player_save_data.readInt ();
+	xp_to_next_level = player_save_data.readInt ();
+	
+	player_save_data.close ();
+	
     }
     
     public static void create_new_user () throws IOException
     {
-	String name;
 	boolean name_taken = false;
-	String name_on_list = "Missingno";
+	String name_on_list;
 	String temp_pass_store;
+	
+	Color light_blue = new Color (0, 191, 255);
+	c.setColor (light_blue);
+	c.fillRect (0, 0, 640, 500);
+	c.setTextBackgroundColor (light_blue);
+	
+	c.setColor (Color.black);
+	Font title_screen = new Font ("Bauhaus 93", Font.ITALIC, 30);
+	c.setFont (title_screen);
+	
+	PrintWriter input_name_list = new PrintWriter (new FileWriter ("name_list.txt", true) ); //Starts writing at the end
 	
 	while (1 == 1)
 	{
-	    PrintWriter input_name_list = new PrintWriter (new FileWriter ("name_list.txt", true) ); //Starts writing at the end
 	    BufferedReader read_name_list = new BufferedReader (new FileReader ("name_list.txt")); //Opens the file in a way that can read Null
 	    
-	    c.print ("Please enter a username: ");  //Enters username
-	    name = c.readLine ();
+	    c.drawString ("Please enter a character name", 100, 100);  //Enters username
+	    c.setCursor (8,37);
+	    player_name = c.readLine ();
 	
 	    name_on_list = read_name_list.readLine (); //takes the first name on the list
 
 	    while (name_on_list != null) //Checks if there is nothing let to read
 	    {
-		if (name_on_list.equals (name)) //Checks if the name in the file is the same as the one entered
+		if (name_on_list.equals (player_name)) //Checks if the name in the file is the same as the one entered
 		{
 		    break;
 		}
@@ -225,23 +334,26 @@ public class SAO_ARC
 	    if (name_on_list != null) //If the name is taken, the name on the list will not be null
 	    {
 		c.clear ();
-		c.println ("That username is taken.");
+		c.setCursor (7,28);
+		c.setTextColor (Color.red);
+		c.println ("That username is taken");
+		c.setTextColor (Color.black);
+
 		
 	    }
 	    
 	    else
 	    {
-		input_name_list.println (name);
+		input_name_list.println (player_name);
 		read_name_list.close ();
-		input_name_list.close (); 
 		break;    
 	    }
-	    read_name_list.close ();
-	    input_name_list.close ();   
+	    read_name_list.close ();   
 	}
 	
-	c.print ("Username is not taken, please enter your password now: ");
-	PrintWriter input_save_data = new PrintWriter (new FileWriter (name + ".txt") );
+	c.drawString ("Please enter your password", 120, 300);
+	PrintWriter input_save_data = new PrintWriter (new FileWriter (player_name + ".txt") );
+	c.setCursor (17, 35);
 	temp_pass_store = c.readString ();
 	input_save_data.println (temp_pass_store);
 	temp_pass_store = "";
@@ -259,6 +371,7 @@ public class SAO_ARC
 	input_save_data.println (xp_to_next_level);
 	
 	input_save_data.close ();
+	input_name_list.close ();
     }
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -598,7 +711,7 @@ public class SAO_ARC
 		case 4:
 		    {
 			mob_stats [0] = (int) (Math.random () * (10) + 19); //Lower HP commons
-			if (level != 1)//These are to make sure you do not level up mob for level 1, continued throughtout method
+			if (level != 1) //These are to make sure you do not level up mob for level 1, continued throughtout method
 			{
 			    for (int i = 1 ; i <= level - 1 ; i++)
 			    {
