@@ -1,7 +1,8 @@
-/**********************
-*     Aidan Smith     *
-* The SAO Arc Project *
-**********************/
+/************************
+*      Aidan Smith      *
+*  The SAO Arc Project  *
+*     
+*************************/
 /*
 Welcome to the code of the SAO Arc project.
 This is a game developed in Java based on the
