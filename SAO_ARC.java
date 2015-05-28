@@ -1,8 +1,8 @@
 /************************
 *      Aidan Smith      *
 *  The SAO Arc Project  *
-*     
-*************************/
+*     June 16th 2015    *
+************************/
 /*
 Welcome to the code of the SAO Arc project.
 This is a game developed in Java based on the
