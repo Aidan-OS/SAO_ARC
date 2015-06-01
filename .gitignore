@@ -1,2 +1,4 @@
 *.class
-TESTS/
+TESTS/SAO_Fonts_v3.200/TTF/SAOUITT-Bold.ttf
+TESTS/SAO_Fonts_v3.200/
+*.txt
