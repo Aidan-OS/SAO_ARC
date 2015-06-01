@@ -25,12 +25,20 @@ public class SecondaryMenuTest
 	draw_box_2 (370, 270);//4
 	draw_box_2 (370, 390);//5
 	
+	Font big_letters = new Font ("MingLiU",Font.PLAIN, 50);
+	c.setFont (big_letters);
+	c.drawString ("Sword Art Online ARC", 60, 100);
+	
 	c.setColor (Color.black);
 	Font title_screen = new Font ("Bauhaus 93", Font.ITALIC, 40);
 	c.setFont (title_screen);
 	
-	c.drawString ("Battle", 100, 215);
-	c.drawString ("Stats", 115, 335);
+	c.drawString ("Battle", 100, 215);//0
+	c.drawString ("Stats", 115, 335);//1
+	c.drawString ("Cheats", 95, 450);//2
+	c.drawString ("Inventory", 395, 215);//3
+	c.drawString ("Rules", 430, 335);//4
+	c.drawString ("Save", 440, 450);//5
 									 
 	do
 	{
@@ -44,7 +52,8 @@ public class SecondaryMenuTest
 			box_at = 2;
 			draw_selected_box_2 (50, 390);//2
 			draw_box_2 (50, 150);//0
-			c.drawString ("Battle", 100, 215);
+			c.drawString ("Battle", 100, 215);//0
+			c.drawString ("Cheats", 95, 450);//2
 			break;
 		       }
 		
@@ -52,7 +61,8 @@ public class SecondaryMenuTest
 			box_at = 0;
 			draw_selected_box_2 (50, 150);//0
 			draw_box_2 (50, 270);//1
-			c.drawString ("Battle", 100, 215);
+			c.drawString ("Battle", 100, 215);//0
+			c.drawString ("Stats", 115, 335);//1
 			break;
 		       }
 		
@@ -60,6 +70,8 @@ public class SecondaryMenuTest
 			box_at = 1;
 			draw_selected_box_2 (50, 270);//1
 			draw_box_2 (50, 390);//2
+			c.drawString ("Stats", 115, 335);//1
+			c.drawString ("Cheats", 95, 450);//2
 			break;
 		       }
 		       
@@ -67,6 +79,8 @@ public class SecondaryMenuTest
 			box_at = 5;
 			draw_selected_box_2 (370, 390);//5
 			draw_box_2 (370, 150);//3
+			c.drawString ("Inventory", 395, 215);//3
+			c.drawString ("Save", 440, 450);//5
 			break;
 		       }
 		       
@@ -74,6 +88,8 @@ public class SecondaryMenuTest
 			box_at = 3;
 			draw_selected_box_2 (370, 150);//3
 			draw_box_2 (370, 270);//4
+			c.drawString ("Inventory", 395, 215);//3
+			c.drawString ("Rules", 430, 335);//4
 			break;
 		       }
 		   
@@ -81,6 +97,8 @@ public class SecondaryMenuTest
 			box_at = 4;
 			draw_selected_box_2 (370, 270);//4
 			draw_box_2 (370, 390);//5
+			c.drawString ("Rules", 430, 335);//4
+			c.drawString ("Save", 440, 450);//5
 			break;
 		       }
 		}
@@ -94,7 +112,8 @@ public class SecondaryMenuTest
 			box_at = 1;
 			draw_selected_box_2 (50, 270);//1
 			draw_box_2 (50, 150);//0
-			c.drawString ("Battle", 100, 215);
+			c.drawString ("Battle", 100, 215);//0
+			c.drawString ("Stats", 115, 335);//1
 			break;
 		       }
 		
@@ -102,6 +121,8 @@ public class SecondaryMenuTest
 			box_at = 2;
 			draw_selected_box_2 (50, 390);//2
 			draw_box_2 (50, 270);//1
+			c.drawString ("Stats", 115, 335);//1
+			c.drawString ("Cheats", 95, 450);//2
 			break;
 		       }
 		
@@ -109,7 +130,8 @@ public class SecondaryMenuTest
 			box_at = 0;
 			draw_selected_box_2 (50, 150);//0
 			draw_box_2 (50, 390);//2
-			c.drawString ("Battle", 100, 215);
+			c.drawString ("Battle", 100, 215);//0
+			c.drawString ("Cheats", 95, 450);//2
 			break;
 		       }
 		       
@@ -117,6 +139,8 @@ public class SecondaryMenuTest
 			box_at = 4;
 			draw_selected_box_2 (370, 270);//4
 			draw_box_2 (370, 150);//3
+			c.drawString ("Inventory", 395, 215);//3
+			c.drawString ("Rules", 430, 335);//4
 			break;
 		       }
 		       
@@ -124,6 +148,8 @@ public class SecondaryMenuTest
 			box_at = 5;
 			draw_selected_box_2 (370, 390);//5
 			draw_box_2 (370, 270);//4
+			c.drawString ("Rules", 430, 335);//4
+			c.drawString ("Save", 440, 450);//5
 			break;
 		       }
 		   
@@ -131,6 +157,8 @@ public class SecondaryMenuTest
 			box_at = 3;
 			draw_selected_box_2 (370, 150);//3
 			draw_box_2 (370, 390);//5 
+			c.drawString ("Inventory", 395, 215);//3
+			c.drawString ("Save", 440, 450);//5
 			break;
 		       }
 		} 
@@ -145,7 +173,8 @@ public class SecondaryMenuTest
 			box_at = 3;
 			draw_selected_box_2 (370, 150);//3
 			draw_box_2 (50, 150);//0
-			c.drawString ("Battle", 100, 215);
+			c.drawString ("Battle", 100, 215);//0
+			c.drawString ("Inventory", 395, 215);//3
 			break;
 		       }
 		
@@ -153,6 +182,8 @@ public class SecondaryMenuTest
 			box_at = 4;
 			draw_selected_box_2 (370, 270);//4
 			draw_box_2 (50, 270);//1
+			c.drawString ("Stats", 115, 335);//1
+			c.drawString ("Rules", 430, 335);//4
 			break;
 		       }
 		
@@ -160,6 +191,8 @@ public class SecondaryMenuTest
 			box_at = 5;
 			draw_selected_box_2 (370, 390);//5
 			draw_box_2 (50, 390);//2
+			c.drawString ("Cheats", 95, 450);//2
+			c.drawString ("Save", 440, 450);//5
 			break;
 		       }
 		       
@@ -167,7 +200,8 @@ public class SecondaryMenuTest
 			box_at = 0;
 			draw_selected_box_2 (50, 150);//0
 			draw_box_2 (370, 150);//3
-			c.drawString ("Battle", 100, 215);
+			c.drawString ("Battle", 100, 215);//0
+			c.drawString ("Inventory", 395, 215);//3
 			break;
 		       }
 		       
@@ -175,6 +209,8 @@ public class SecondaryMenuTest
 			box_at = 1;
 			draw_selected_box_2 (50, 270);//1
 			draw_box_2 (370, 270);//4
+			c.drawString ("Stats", 115, 335);//1
+			c.drawString ("Rules", 430, 335);//4
 			break;
 		       }
 		   
@@ -182,6 +218,8 @@ public class SecondaryMenuTest
 			box_at = 2;
 			draw_selected_box_2 (50, 390);//2
 			draw_box_2 (370, 390);//5 
+			c.drawString ("Cheats", 95, 450);//2
+			c.drawString ("Save", 440, 450);//5
 			break;
 		       }
 		}
@@ -195,7 +233,8 @@ public class SecondaryMenuTest
 			box_at = 3;
 			draw_selected_box_2 (370, 150);//3
 			draw_box_2 (50, 150);//0
-			c.drawString ("Battle", 100, 215);
+			c.drawString ("Battle", 100, 215);//0
+			c.drawString ("Inventory", 395, 215);//3
 			break;
 		       }
 		
@@ -203,6 +242,8 @@ public class SecondaryMenuTest
 			box_at = 4;
 			draw_selected_box_2 (370, 270);//4
 			draw_box_2 (50, 270);//1
+			c.drawString ("Stats", 115, 335);//1
+			c.drawString ("Rules", 430, 335);//4
 			break;
 		       }
 		
@@ -210,6 +251,8 @@ public class SecondaryMenuTest
 			box_at = 5;
 			draw_selected_box_2 (370, 390);//5
 			draw_box_2 (50, 390);//2
+			c.drawString ("Cheats", 95, 450);//2
+			c.drawString ("Save", 440, 450);//5
 			break;
 		       }
 		       
@@ -217,7 +260,8 @@ public class SecondaryMenuTest
 			box_at = 0;
 			draw_selected_box_2 (50, 150);//0
 			draw_box_2 (370, 150);//3
-			c.drawString ("Battle", 100, 215);
+			c.drawString ("Battle", 100, 215);//0
+			c.drawString ("Inventory", 395, 215);//3
 			break;
 		       }
 		       
@@ -225,6 +269,8 @@ public class SecondaryMenuTest
 			box_at = 1;
 			draw_selected_box_2 (50, 270);//1
 			draw_box_2 (370, 270);//4
+			c.drawString ("Stats", 115, 335);//1
+			c.drawString ("Rules", 430, 335);//4
 			break;
 		       }
 		   
@@ -232,13 +278,15 @@ public class SecondaryMenuTest
 			box_at = 2;
 			draw_selected_box_2 (50, 390);//2
 			draw_box_2 (370, 390);//5 
+			c.drawString ("Cheats", 95, 450);//2
+			c.drawString ("Save", 440, 450);//5
 			break;
 		       }
 		}
 	    }
 	    
 	}while (char_pressed != '\n');
-	
+	c.clear ();
 	
     } // main method
     

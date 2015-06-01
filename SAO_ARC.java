@@ -68,71 +68,7 @@ public class SAO_ARC
 	    }*/
 
     } // main method
-    
-    public static void init_fight ()
-    {
-	int mob_rarity;
-	int mob_type = 42;
 
-	mob_rarity = (int) (Math.random () * (99) + 1); //Generates a random mob rarity                   //17 Common, 12 uncommon, 7 rares, 4 Legendaries
-
-	if (level >= 50)
-	{
-	    if ((mob_rarity >= 1) && (mob_rarity <= 50))   //50% Chance, generates common
-	    {
-		mob_type = (int) (Math.random () * (16) + 1); //Generates 1 - 17
-	    }
-
-	    else if ((mob_rarity >= 51) && (mob_rarity <= 80))   //30% chance of uncommon
-	    {
-		mob_type = (int) (Math.random () * (11) + 18); //Generates 18 - 29
-	    }
-
-	    else if ((mob_rarity >= 81) && (mob_rarity <= 95))   //15% chance of rare
-	    {
-		mob_type = (int) (Math.random () * (6) + 30); //Generates 30 - 36
-	    }
-
-	    else if ((mob_rarity >= 96) && (mob_rarity <= 100))  //LEGENARY GENERATED 5%
-	    {
-		mob_type = (int) (Math.random () * (3) + 37); //Generates 37 - 40
-	    }
-	} //if
-
-	else if (level < 50)
-	{
-	    if ((mob_rarity >= 1) && (mob_rarity <= 53))   //53% Chance, generates common
-	    {
-		mob_type = (int) (Math.random () * (16) + 1); //Generates 1 - 17 ;
-	    }
-
-	    else if ((mob_rarity >= 54) && (mob_rarity <= 85))   //32% chance of uncommon
-	    {
-		mob_type = (int) (Math.random () * (11) + 18); //Generates 18 - 29
-	    }
-
-	    else if ((mob_rarity >= 86) && (mob_rarity <= 100))   //15% chance of rare
-	    {
-		mob_type = (int) (Math.random () * (6) + 30); //Generates 30 - 36
-	    }
-
-	} //ELSE IF
-
-	mob_name = set_mob_name (mob_type);
-	mob_stats = mob_stat_set (mob_type, level);
-
-	c.println ("Name: " + mob_name);
-	c.println ("Health: " + mob_stats [0] + "\t\t " + health);
-	c.println ("Defence: " + mob_stats [1] + "\t\t " + defence);
-	c.println ("Strength: " + mob_stats [2] + "\t\t " + strength);
-	c.println ("Evade: " + mob_stats [3] + "\t\t " + evasion);
-	c.println ("XP: " + mob_stats [4]);
-
-	c.getChar ();
-	c.clear ();
-	
-	fight ();
-    }
     
     public static void start_menu (String[] args) throws IOException
     {
@@ -144,6 +80,10 @@ public class SAO_ARC
 	c.setColor (light_blue);
 	c.fillRect (0, 0, 640, 500);
 
+	Font big_letters = new Font ("MingLiU",Font.PLAIN, 50);
+	c.setFont (big_letters);
+	c.drawString ("Sword Art Online ARC", 60, 100);
+	
 	draw_selected_box (225, 100);
 	draw_box (225, 250);
 	
@@ -373,6 +313,388 @@ public class SAO_ARC
 	
 	input_save_data.close ();
 	input_name_list.close ();
+    }
+    
+	public static int secondary_menu (String[] args) //////////////////////////////////////////////SECONDARY MENU
+    {
+	
+	int box_at = 0;
+	char char_pressed;                                               //    00000   33333
+									 //    11111   44444
+									 //    22222   55555
+	Color light_blue = new Color (0, 191, 255);
+	c.setColor (light_blue);                  //Generates and sets Background Color
+	c.fillRect (0, 0, 640, 500);
+									 
+	draw_selected_box_2 (50, 150);  //0
+	draw_box_2 (50, 270);//1
+	draw_box_2 (50, 390);//2
+	draw_box_2 (370, 150);//3
+	draw_box_2 (370, 270);//4
+	draw_box_2 (370, 390);//5
+	
+	Font big_letters = new Font ("MingLiU",Font.PLAIN, 50);
+	c.setFont (big_letters);
+	c.drawString ("Sword Art Online ARC", 60, 100);
+	
+	c.setColor (Color.black);
+	Font title_screen = new Font ("Bauhaus 93", Font.ITALIC, 40);
+	c.setFont (title_screen);
+	
+	c.drawString ("Battle", 100, 215);//0
+	c.drawString ("Stats", 115, 335);//1
+	c.drawString ("Cheats", 95, 450);//2
+	c.drawString ("Inventory", 395, 215);//3
+	c.drawString ("Rules", 430, 335);//4
+	c.drawString ("Save", 440, 450);//5
+									 
+	do
+	{
+	    char_pressed = c.getChar ();
+	    
+	    if (char_pressed == 'w')
+	    {
+		switch (box_at)
+		{
+		case 0:{
+			box_at = 2;
+			draw_selected_box_2 (50, 390);//2
+			draw_box_2 (50, 150);//0
+			c.drawString ("Battle", 100, 215);//0
+			c.drawString ("Cheats", 95, 450);//2
+			break;
+		       }
+		
+		case 1:{
+			box_at = 0;
+			draw_selected_box_2 (50, 150);//0
+			draw_box_2 (50, 270);//1
+			c.drawString ("Battle", 100, 215);//0
+			c.drawString ("Stats", 115, 335);//1
+			break;
+		       }
+		
+		case 2:{
+			box_at = 1;
+			draw_selected_box_2 (50, 270);//1
+			draw_box_2 (50, 390);//2
+			c.drawString ("Stats", 115, 335);//1
+			c.drawString ("Cheats", 95, 450);//2
+			break;
+		       }
+		       
+		case 3:{
+			box_at = 5;
+			draw_selected_box_2 (370, 390);//5
+			draw_box_2 (370, 150);//3
+			c.drawString ("Inventory", 395, 215);//3
+			c.drawString ("Save", 440, 450);//5
+			break;
+		       }
+		       
+		case 4:{
+			box_at = 3;
+			draw_selected_box_2 (370, 150);//3
+			draw_box_2 (370, 270);//4
+			c.drawString ("Inventory", 395, 215);//3
+			c.drawString ("Rules", 430, 335);//4
+			break;
+		       }
+		   
+		case 5:{
+			box_at = 4;
+			draw_selected_box_2 (370, 270);//4
+			draw_box_2 (370, 390);//5
+			c.drawString ("Rules", 430, 335);//4
+			c.drawString ("Save", 440, 450);//5
+			break;
+		       }
+		}
+	    }          
+	    
+	    else if (char_pressed == 's')
+	    {
+		switch (box_at)
+		{
+		case 0:{
+			box_at = 1;
+			draw_selected_box_2 (50, 270);//1
+			draw_box_2 (50, 150);//0
+			c.drawString ("Battle", 100, 215);//0
+			c.drawString ("Stats", 115, 335);//1
+			break;
+		       }
+		
+		case 1:{
+			box_at = 2;
+			draw_selected_box_2 (50, 390);//2
+			draw_box_2 (50, 270);//1
+			c.drawString ("Stats", 115, 335);//1
+			c.drawString ("Cheats", 95, 450);//2
+			break;
+		       }
+		
+		case 2:{
+			box_at = 0;
+			draw_selected_box_2 (50, 150);//0
+			draw_box_2 (50, 390);//2
+			c.drawString ("Battle", 100, 215);//0
+			c.drawString ("Cheats", 95, 450);//2
+			break;
+		       }
+		       
+		case 3:{
+			box_at = 4;
+			draw_selected_box_2 (370, 270);//4
+			draw_box_2 (370, 150);//3
+			c.drawString ("Inventory", 395, 215);//3
+			c.drawString ("Rules", 430, 335);//4
+			break;
+		       }
+		       
+		case 4:{
+			box_at = 5;
+			draw_selected_box_2 (370, 390);//5
+			draw_box_2 (370, 270);//4
+			c.drawString ("Rules", 430, 335);//4
+			c.drawString ("Save", 440, 450);//5
+			break;
+		       }
+		   
+		case 5:{
+			box_at = 3;
+			draw_selected_box_2 (370, 150);//3
+			draw_box_2 (370, 390);//5 
+			c.drawString ("Inventory", 395, 215);//3
+			c.drawString ("Save", 440, 450);//5
+			break;
+		       }
+		} 
+
+	    }
+	    
+	    else if (char_pressed == 'a')
+	    {
+		switch (box_at)
+		{
+		case 0:{
+			box_at = 3;
+			draw_selected_box_2 (370, 150);//3
+			draw_box_2 (50, 150);//0
+			c.drawString ("Battle", 100, 215);//0
+			c.drawString ("Inventory", 395, 215);//3
+			break;
+		       }
+		
+		case 1:{
+			box_at = 4;
+			draw_selected_box_2 (370, 270);//4
+			draw_box_2 (50, 270);//1
+			c.drawString ("Stats", 115, 335);//1
+			c.drawString ("Rules", 430, 335);//4
+			break;
+		       }
+		
+		case 2:{
+			box_at = 5;
+			draw_selected_box_2 (370, 390);//5
+			draw_box_2 (50, 390);//2
+			c.drawString ("Cheats", 95, 450);//2
+			c.drawString ("Save", 440, 450);//5
+			break;
+		       }
+		       
+		case 3:{
+			box_at = 0;
+			draw_selected_box_2 (50, 150);//0
+			draw_box_2 (370, 150);//3
+			c.drawString ("Battle", 100, 215);//0
+			c.drawString ("Inventory", 395, 215);//3
+			break;
+		       }
+		       
+		case 4:{
+			box_at = 1;
+			draw_selected_box_2 (50, 270);//1
+			draw_box_2 (370, 270);//4
+			c.drawString ("Stats", 115, 335);//1
+			c.drawString ("Rules", 430, 335);//4
+			break;
+		       }
+		   
+		case 5:{
+			box_at = 2;
+			draw_selected_box_2 (50, 390);//2
+			draw_box_2 (370, 390);//5 
+			c.drawString ("Cheats", 95, 450);//2
+			c.drawString ("Save", 440, 450);//5
+			break;
+		       }
+		}
+	    }
+	    
+	    else if (char_pressed == 'd')
+	    {
+		switch (box_at)
+		{
+		case 0:{
+			box_at = 3;
+			draw_selected_box_2 (370, 150);//3
+			draw_box_2 (50, 150);//0
+			c.drawString ("Battle", 100, 215);//0
+			c.drawString ("Inventory", 395, 215);//3
+			break;
+		       }
+		
+		case 1:{
+			box_at = 4;
+			draw_selected_box_2 (370, 270);//4
+			draw_box_2 (50, 270);//1
+			c.drawString ("Stats", 115, 335);//1
+			c.drawString ("Rules", 430, 335);//4
+			break;
+		       }
+		
+		case 2:{
+			box_at = 5;
+			draw_selected_box_2 (370, 390);//5
+			draw_box_2 (50, 390);//2
+			c.drawString ("Cheats", 95, 450);//2
+			c.drawString ("Save", 440, 450);//5
+			break;
+		       }
+		       
+		case 3:{
+			box_at = 0;
+			draw_selected_box_2 (50, 150);//0
+			draw_box_2 (370, 150);//3
+			c.drawString ("Battle", 100, 215);//0
+			c.drawString ("Inventory", 395, 215);//3
+			break;
+		       }
+		       
+		case 4:{
+			box_at = 1;
+			draw_selected_box_2 (50, 270);//1
+			draw_box_2 (370, 270);//4
+			c.drawString ("Stats", 115, 335);//1
+			c.drawString ("Rules", 430, 335);//4
+			break;
+		       }
+		   
+		case 5:{
+			box_at = 2;
+			draw_selected_box_2 (50, 390);//2
+			draw_box_2 (370, 390);//5 
+			c.drawString ("Cheats", 95, 450);//2
+			c.drawString ("Save", 440, 450);//5
+			break;
+		       }
+		}
+	    }
+	    
+	}while (char_pressed != '\n');
+	
+	c.clear ();
+	return (box_at);
+	
+    } // main method
+    
+    public static void draw_box_2 (int x, int y) //////////////DRAWS SMALL BASIC BOX
+    {
+	c.setColor (Color.black);
+	c.drawRect ( (x - 1), (y - 1), 221, 101);
+	c.setColor (Color.gray);
+	c.fillRect (x, y, 220, 100);
+	c.setColor (Color.black);
+    }
+    
+    public static void draw_selected_box_2 (int x, int y)//////////DRAWS SMALL SELECTED BOX
+    {
+	c.setColor (Color.black);
+	c.drawRect ( (x - 1), (y - 1), 221, 101);
+	c.setColor (Color.lightGray);
+	c.fillRect (x, y, 220, 100);
+	c.setColor (Color.gray);
+	c.fillRect ( (x + 10), (y + 10), 200, 80);
+	c.setColor (Color.black);
+    }
+    
+    public static void delay (int x)        ////////////////////////////DELAY
+    {
+	try
+	{
+	    Thread.currentThread ().sleep (x);
+	}
+	
+	catch (Exception e)
+	{
+	}
+    }
+    
+    public static void init_fight ()
+    {
+	int mob_rarity;
+	int mob_type = 42;
+
+	mob_rarity = (int) (Math.random () * (99) + 1); //Generates a random mob rarity                   //17 Common, 12 uncommon, 7 rares, 4 Legendaries
+
+	if (level >= 50)
+	{
+	    if ((mob_rarity >= 1) && (mob_rarity <= 50))   //50% Chance, generates common
+	    {
+		mob_type = (int) (Math.random () * (16) + 1); //Generates 1 - 17
+	    }
+
+	    else if ((mob_rarity >= 51) && (mob_rarity <= 80))   //30% chance of uncommon
+	    {
+		mob_type = (int) (Math.random () * (11) + 18); //Generates 18 - 29
+	    }
+
+	    else if ((mob_rarity >= 81) && (mob_rarity <= 95))   //15% chance of rare
+	    {
+		mob_type = (int) (Math.random () * (6) + 30); //Generates 30 - 36
+	    }
+
+	    else if ((mob_rarity >= 96) && (mob_rarity <= 100))  //LEGENARY GENERATED 5%
+	    {
+		mob_type = (int) (Math.random () * (3) + 37); //Generates 37 - 40
+	    }
+	} //if
+
+	else if (level < 50)
+	{
+	    if ((mob_rarity >= 1) && (mob_rarity <= 53))   //53% Chance, generates common
+	    {
+		mob_type = (int) (Math.random () * (16) + 1); //Generates 1 - 17 ;
+	    }
+
+	    else if ((mob_rarity >= 54) && (mob_rarity <= 85))   //32% chance of uncommon
+	    {
+		mob_type = (int) (Math.random () * (11) + 18); //Generates 18 - 29
+	    }
+
+	    else if ((mob_rarity >= 86) && (mob_rarity <= 100))   //15% chance of rare
+	    {
+		mob_type = (int) (Math.random () * (6) + 30); //Generates 30 - 36
+	    }
+
+	} //ELSE IF
+
+	mob_name = set_mob_name (mob_type);
+	mob_stats = mob_stat_set (mob_type, level);
+
+	c.println ("Name: " + mob_name);
+	c.println ("Health: " + mob_stats [0] + "\t\t " + health);
+	c.println ("Defence: " + mob_stats [1] + "\t\t " + defence);
+	c.println ("Strength: " + mob_stats [2] + "\t\t " + strength);
+	c.println ("Evade: " + mob_stats [3] + "\t\t " + evasion);
+	c.println ("XP: " + mob_stats [4]);
+
+	c.getChar ();
+	c.clear ();
+	
+	fight ();
     }
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

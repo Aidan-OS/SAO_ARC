@@ -27,6 +27,10 @@ public class MainMenuTest
 	c.setColor (light_blue);
 	c.fillRect (0, 0, 640, 500);
 
+	Font big_letters = new Font ("MingLiU",Font.PLAIN, 50);
+	c.setFont (big_letters);
+	c.drawString ("Sword Art Online ARC", 60, 100);
+	
 	draw_selected_box (225, 100);
 	draw_box (225, 250);
 	
