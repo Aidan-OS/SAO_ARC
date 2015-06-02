@@ -43,20 +43,34 @@ public class SAO_ARC
     static int level = 1;
     static int xp = 0;
     static int xp_to_next_level = 100;
-    static String player_name = "Leone Shamoth";
+    static String player_name = "";
     static double[] mob_stats = {1, 1, 1000, 100, 42};                                  //ARRAY POINTS --- 0 = HP --- 1 = DEFENCE --- 2 = STRENGTH --- 3 = EVADE --- 4 = XP
     static String mob_name = "Missingno";/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     static boolean exit = false;
+    static String password;
+    static boolean death = false;
     
     public static void main (String[] args) throws IOException
     {
 	c = new Console ();
 	
 	int box_at;
-	boolean saved = false;
+	boolean saved = true;
+	int new_player;
+	int exit_selected = 0;
+	char key_pressed;
 	Font small_letters = new Font ("MingLiU",Font.PLAIN, 25);
+	Font title_screen = new Font ("Bauhaus 93", Font.ITALIC, 40);
+	Font large_letters = new Font ("MingLiU",Font.PLAIN, 50);
+	Font largest_letters = new Font ("MingLiU",Font.BOLD, 100);
+	Font death_font = new Font ("MingLiU",Font.BOLD, 75);
 	
-	start_menu ();
+	new_player = start_menu ();
+	
+	if (new_player == 0)
+	{
+	    rules ();
+	}
 	
 	while (exit == false)
 	{
@@ -64,6 +78,7 @@ public class SAO_ARC
 	    switch (box_at)
 	    {
 		case 0:{//c.drawString ("Battle", 100, 215);//0
+			saved = false;
 			init_fight ();
 			break;
 		       }
@@ -74,12 +89,12 @@ public class SAO_ARC
 		       } 
 		    
 		case 2:{//c.drawString ("Cheats", 95, 450);//2
-			//cheat_page;
+			//saved = cheat_page ();///////////////////////////////////////CHEATS PAGE RETURNS A TRUE OR FALSE TO TEST IF CHANGES WERE MADE
 			break;
 		       }  
 		   
 		case 3:{//c.drawString ("Inventory", 395, 215);//3
-			//inventory;
+			//saved = inventory_check;///////////////////////////////////////SAME FOR INVERNTORY
 			break;
 		       }
 		
@@ -89,19 +104,88 @@ public class SAO_ARC
 		       }
 		   
 		case 5:{//c.drawString ("Save", 440, 450);//5
-			//save_game;
+			save_game ();
+			saved = true;
+			c.setFont (largest_letters);
+			c.setColor (Color.red);
+			c.drawString ("Saved!", 150, 250);
+			c.setColor (Color.black);
+			delay (500);
 			break;
 		       }
 	    }//Switch
 	    c.clear ();
 	    
-	    if (saved == false)
+	    
+	    if (exit == true)
 	    {
-		c.setFont (small_letters);
-		c.drawString ("Are you sure you want to quit without saving?", 35, 100);
+		if (saved == false)
+		{
+		    c.setFont (small_letters);
+		    c.drawString ("Are you sure you want to quit without saving?", 35, 80);
+		    draw_selected_box (175, 100);
+		    draw_box (175, 250);
+    
+		    c.setFont (title_screen);
+		    c.drawString ("Yes", 265, 162);
+		    c.drawString ("No", 275, 315);
+	
+		    do
+		    {
+			key_pressed = c.getChar ();
+	    
+			if (key_pressed == 'w')
+			{
+			    draw_box (175, 250);
+			    draw_selected_box (175, 100);
+			    exit_selected = 0;
+			}
+	    
+			else if (key_pressed == 's')
+			{
+			    draw_box (175, 100);
+			    draw_selected_box (175, 250);
+			    exit_selected = 1;
+			}
+	    
+			c.drawString ("Yes", 265, 162);
+			c.drawString ("No", 275, 315);
+		    }while (key_pressed != '\n');
+	       
+		    if (exit_selected == 0)
+		    {
+			break;
+		    }
+		
+		    else
+		    {
+			exit = false;
+			continue;
+		    }
+		}
+	    }
+	    
+	    if (death == true)
+	    {
+		break;
 	    }
 	}
 	
+	if (death == false)
+	{
+	    c.clear ();
+	    c.setColor (Color.black);
+	    c.setFont (large_letters);
+	    c.drawString ("THANKS FOR PLAYING!", 100, 250);
+	}
+	
+	else
+	{
+	    c.clear ();
+	    c.setColor (Color.red);
+	    c.setFont (death_font);
+	    c.drawString ("YOU HAVE DIED", 50, 250);
+	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                                                            //EXP TO LEVEL UP//                                                                 //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -113,7 +197,7 @@ public class SAO_ARC
     } // main method
 
     
-    public static void start_menu () throws IOException
+    public static int start_menu () throws IOException
     {
 
 	char key_pressed;
@@ -123,17 +207,18 @@ public class SAO_ARC
 	c.setColor (light_blue);
 	c.fillRect (0, 0, 640, 500);
 
+	c.setColor (Color.black);
 	Font big_letters = new Font ("MingLiU",Font.PLAIN, 50);
 	c.setFont (big_letters);
-	c.drawString ("Sword Art Online ARC", 60, 100);
+	c.drawString ("Sword Art Online ARC", 60, 80);
 	
-	draw_selected_box (225, 100);
-	draw_box (225, 250);
+	draw_selected_box (175, 100);
+	draw_box (175, 250);
 	
 	Font title_screen = new Font ("Bauhaus 93", Font.ITALIC, 40);
 	c.setFont (title_screen);
-	c.drawString ("New Game", 250, 162);
-	c.drawString ("Load Game", 250, 315);
+	c.drawString ("New Game", 200, 162);
+	c.drawString ("Load Game", 200, 315);
 	
 	do
 	{
@@ -141,20 +226,20 @@ public class SAO_ARC
 	    
 	    if (key_pressed == 'w')
 	    {
-		draw_box (225, 250);
-		draw_selected_box (225, 100);
+		draw_box (175, 250);
+		draw_selected_box (175, 100);
 		title_screen_selected = 0;
 	    }
 	    
 	    else if (key_pressed == 's')
 	    {
-		draw_box (225, 100);
-		draw_selected_box (225, 250);
+		draw_box (175, 100);
+		draw_selected_box (175, 250);
 		title_screen_selected = 1;
 	    }
 	    
-	    c.drawString ("New Game", 250, 162);
-	    c.drawString ("Load Game", 250, 315);
+	    c.drawString ("New Game", 200, 162);
+	    c.drawString ("Load Game", 200, 315);
 	}while (key_pressed != '\n');
 	
 	c.clear ();
@@ -168,7 +253,7 @@ public class SAO_ARC
 	{
 	    load_user ();
 	}
-      
+      return (title_screen_selected);
     }
     
     public static void draw_box (int x, int y)
@@ -194,7 +279,6 @@ public class SAO_ARC
     public static void load_user () throws IOException
     {
 	String name_on_list;
-	String saved_password;
 	String input_password;
 	
 	Color light_blue = new Color (0, 191, 255);
@@ -242,7 +326,7 @@ public class SAO_ARC
 	}//INFINTE WHILE
 	
 	TextInputFile player_save_data = new TextInputFile (player_name + ".txt");
-	saved_password = player_save_data.readString ();
+	password = player_save_data.readString ();
 	
 	while (1 == 1)
 	{
@@ -250,7 +334,7 @@ public class SAO_ARC
 	    c.setCursor (17, 35);
 	    input_password = c.readString ();
 	    
-	    if (! (input_password.equals (saved_password) ) )
+	    if (! (input_password.equals (password) ) )
 	    {
 		c.setCursor (16, 21);
 		c.setTextColor (Color.red);
@@ -282,7 +366,7 @@ public class SAO_ARC
     {
 	boolean name_taken = false;
 	String name_on_list;
-	String temp_pass_store;
+	boolean illegal_name = false;
 	
 	Color light_blue = new Color (0, 191, 255);
 	c.setColor (light_blue);
@@ -314,6 +398,14 @@ public class SAO_ARC
 		
 		name_on_list = read_name_list.readLine ();//Gets new word on list
 	    }
+	    
+	    for (int i = 0; i < player_name.length (); i++)
+	    {
+		if ( (int) player_name.charAt (i) == 57 || (int) player_name.charAt (i) == 134 || player_name.charAt (i) == ':' || player_name.charAt (i) == '*' || player_name.charAt (i) == '?' || (int) player_name.charAt (i) == 34 || player_name.charAt (i) == '<' || player_name.charAt (i) == '>' || player_name.charAt (i) == '|')
+		{
+		    illegal_name = true;
+		} 
+	    }
 	
 	    if (name_on_list != null) //If the name is taken, the name on the list will not be null
 	    {
@@ -326,6 +418,16 @@ public class SAO_ARC
 		
 	    }
 	    
+	    else if (illegal_name == true)
+	    {
+		c.clear ();
+		c.setCursor (7,20);
+		c.setTextColor (Color.red);
+		c.println ("That username contains illegal characters");
+		c.setTextColor (Color.black);
+		illegal_name = false;
+	    }
+	    
 	    else
 	    {
 		input_name_list.println (player_name);
@@ -335,12 +437,14 @@ public class SAO_ARC
 	    read_name_list.close ();   
 	}
 	
+	c.setCursor (7, 1);
+	c.println ();
+	
 	c.drawString ("Please enter your password", 120, 300);
 	PrintWriter input_save_data = new PrintWriter (new FileWriter (player_name + ".txt") );
 	c.setCursor (17, 35);
-	temp_pass_store = c.readString ();
-	input_save_data.println (temp_pass_store);
-	temp_pass_store = "";
+	password = c.readString ();
+	input_save_data.println (password);
 	
 	strength = (int) (Math.random () * (5) + 10); //Strength between 10 and 15
 	defence = (int) (Math.random () * (2) + 5);    //Defence between 5 and 7
@@ -681,7 +785,7 @@ public class SAO_ARC
 	
 	Font rules = new Font ("MingLiU",Font.PLAIN, 18);
 	c.setFont (rules);
-	c.drawString ("Back for another rule briefing " + player_name + "?", 1, 20);
+	c.drawString ("Here is your rule breifing " + player_name + ".", 1, 20);
 	c.drawString ("The rules are pretty simple. In battle, you have 5 moves.", 1, 40);
 	c.drawString ("They are: Slash, Stab, Parry, Block, and Flee.", 1, 60);
 	c.drawString ("The amount of damage dealt depends on the attacker's strength, and", 1, 80);
@@ -698,9 +802,25 @@ public class SAO_ARC
 	c.drawString ("and use it for your own. The better your weapons, the stronger you are.", 1, 300);
 	
 	c.drawString ("Good luck in the field " + player_name + "!", 1, 340);
-	c.drawString ("Press any key to return.", 1, 380);
+	c.drawString ("Press any key to continue.", 1, 380);
 	c.getChar ();
 	c.clear ();
+    }
+    
+    public static void save_game () throws IOException
+    {
+	PrintWriter input_save_data = new PrintWriter (new FileWriter (player_name + ".txt") );    
+    
+	input_save_data.println (password);
+	input_save_data.println (strength);
+	input_save_data.println (defence);
+	input_save_data.println (health);
+	input_save_data.println (evasion);
+	input_save_data.println (level);
+	input_save_data.println (xp);
+	input_save_data.println (xp_to_next_level);
+	
+	input_save_data.close ();
     }
     
     public static void delay (int x)        ////////////////////////////DELAY
@@ -715,7 +835,7 @@ public class SAO_ARC
 	}
     }
     
-    public static void init_fight ()
+    public static void init_fight () throws IOException
     {
 	int mob_rarity;
 	int mob_type = 42;
@@ -784,7 +904,7 @@ public class SAO_ARC
     //                                                                    //BATTLE//                                                                           //
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    public static void fight ()
+    public static void fight () throws IOException
     {
 	int player_choice;
 	int mob_choice;
@@ -1072,37 +1192,58 @@ public class SAO_ARC
 
 	if (player_fight_health > 0 && mob_health <= 0)
 	{
-	    c.print ("You swing your sword, hitting the enemy hard enough that it is defeated!"); /////////////////////////////////////////////////////////////////MAKE INTO NICE LETTERS
+	    c.println ("You swing your sword, hitting the enemy hard enough that it is defeated!"); /////////////////////////////////////////////////////////////////MAKE INTO NICE LETTERS
 	    xp += mob_stats [4];
+	    c.println ("You have gained " + mob_stats [4] + " XP.");
+	    c.print ("Press any key to loot the mob.");
+	    c.getChar ();
 	}
 
 	else if (player_fight_health <= 0 && mob_health > 0)
 	{
 	    if (player_choice == 5 || player_choice == 10)
 	    {
-		c.print ("You died a coward, running away from your enemy!");
+		c.println ("You died a coward, running away from your enemy!");
 	    }
 	    
 	    else
 	    {
-		c.print ("You have been defeated by the mighty " + mob_name + ".");
+		c.println ("You have been defeated by the mighty " + mob_name + ".");
 	    }
+	    
+	    PrintWriter input_save_data = new PrintWriter (new FileWriter (player_name + ".txt") );    
+    
+	    input_save_data.println ("");
+	    input_save_data.println ("");
+	    input_save_data.println ("");
+	    input_save_data.println ("");
+	    input_save_data.println ("");
+	    input_save_data.println ("");
+	    input_save_data.println ("");
+	    input_save_data.println ("");
+	
+	    input_save_data.close ();
+	    
+	    c.print ("Press any key to exit the game.");
+	    c.getChar ();
+	    death = true;
 	}
 	
 	else if (player_choice == 5)
 	{
-	    c.print ("RUN AWAYYYY!");
+	    c.println ("RUN AWAYYYY!");
+	    c.print ("Press any key to continue");
 	}
 
 	else
 	{
-	    c.print ("You have barley survived the fight, almost dieing on the final swing. Be more careful next time.");
+	    c.println ("You have barley survived the fight, almost dieing on the final swing. Be more careful   next time.");
+	    xp += mob_stats [4];
+	    c.println ("You have gained " + mob_stats [4] + " XP.");
+	    c.print ("Press any key to loot the mob.");
+	    c.getChar ();
 	}
-	
-	c.print ("Press any key to loot the mob.");
-	c.getChar ();
-
-	
+  
     }
 
 
