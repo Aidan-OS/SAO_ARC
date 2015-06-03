@@ -51,7 +51,7 @@ public class SAO_ARC
     static boolean death = false;
     static boolean proper_login = false;
     static boolean godfree_fight = false;
-    static boolean finish_game = false;
+    static boolean finished_game = false;
 
     public static void main (String[] args) throws IOException
     {
@@ -1045,7 +1045,7 @@ public class SAO_ARC
 	int mob_evade_roll;
 	int player_evade_roll;
 	int flee_work;
-	boolean killer = false
+	boolean killer = false;
 
 
 	do
@@ -1394,7 +1394,11 @@ public class SAO_ARC
 		    level += 1;//ADDS LEVEL
 		    xp = 0 + (xp - xp_to_next_level);
 		    xp_to_next_level += 100 + (40 * (level - 1) );//GENERATES NEW AMOUNT OF XP NEEDED
-		    c.print ("You have leveled up to level " + level + "!");
+		    strength += ( (int) (Math.random() * (5) ) + 5) * level;
+		    defence += ( (int) (Math.random() * (4) ) + 4) * level;
+		    health += ( (int) (Math.random() * (2) ) + 8) * level;
+		    evasion += 0.2;
+		    c.println ("You have leveled up to level " + level + "!");
 		}
 	    }
 	    
@@ -1420,7 +1424,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [0] += ((int) (Math.random () * (2) + 5)) * i;
+			    mob_stats [0] += ((int) (Math.random () * (2) + 5)) * (i + 1);
 			}
 		    }
 
@@ -1429,7 +1433,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [1] += ((int) (Math.random () * (4) + 2)) * i;
+			    mob_stats [1] += ((int) (Math.random () * (4) + 2)) * (i + 1);
 			}
 		    }
 
@@ -1438,7 +1442,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [2] += ((int) (Math.random () * (4) + 3)) * i;
+			    mob_stats [2] += ((int) (Math.random () * (4) + 3)) * (i + 1);
 			}
 		    }
 
@@ -1464,7 +1468,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [0] += ((int) (Math.random () * (2) + 6)) * i;
+			    mob_stats [0] += ((int) (Math.random () * (2) + 6)) * (i + 1);
 			}
 		    }
 
@@ -1473,7 +1477,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [1] += ((int) (Math.random () * (4) + 1)) * i;
+			    mob_stats [1] += ((int) (Math.random () * (4) + 1)) * (i + 1);
 			}
 		    }
 
@@ -1482,7 +1486,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [2] += ((int) (Math.random () * (4) + 3)) * i;
+			    mob_stats [2] += ((int) (Math.random () * (4) + 3)) * (i + 1);
 			}
 		    }
 
@@ -1508,7 +1512,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [0] += ((int) (Math.random () * (2) + 6)) * i;
+			    mob_stats [0] += ((int) (Math.random () * (2) + 6)) * (i + 1);
 			}
 		    }
 
@@ -1517,7 +1521,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [1] += ((int) (Math.random () * (4) + 2)) * i;
+			    mob_stats [1] += ((int) (Math.random () * (4) + 2)) * (i + 1);
 			}
 		    }
 
@@ -1526,7 +1530,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [2] += ((int) (Math.random () * (4) + 2)) * i;
+			    mob_stats [2] += ((int) (Math.random () * (4) + 2)) * (i + 1);
 			}
 		    }
 
@@ -1552,7 +1556,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [0] += ((int) (Math.random () * (2) + 6)) * i;
+			    mob_stats [0] += ((int) (Math.random () * (2) + 6)) * (i + 1);
 			}
 		    }
 
@@ -1561,7 +1565,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [1] += ((int) (Math.random () * (4) + 2)) * i;
+			    mob_stats [1] += ((int) (Math.random () * (4) + 2)) * (i + 1);
 			}
 		    }
 
@@ -1570,7 +1574,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [2] += ((int) (Math.random () * (4) + 3)) * i;
+			    mob_stats [2] += ((int) (Math.random () * (4) + 3)) * (i + 1);
 			}
 		    }
 
@@ -1593,7 +1597,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [0] += ((int) (Math.random () * (2) + 6)) * i;
+			    mob_stats [0] += ((int) (Math.random () * (2) + 6)) * (i + 1);
 			}
 		    }
 
@@ -1602,7 +1606,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [1] += ((int) (Math.random () * (4) + 2)) * i;
+			    mob_stats [1] += ((int) (Math.random () * (4) + 2)) * (i + 1);
 			}
 		    }
 
@@ -1611,7 +1615,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [2] += ((int) (Math.random () * (4) + 3)) * i;
+			    mob_stats [2] += ((int) (Math.random () * (4) + 3)) * (i + 1);
 			}
 		    }
 
@@ -1637,7 +1641,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [0] += ((int) (Math.random () * (2) + 6)) * i;
+			    mob_stats [0] += ((int) (Math.random () * (2) + 6)) * (i + 1);
 			}
 		    }
 
@@ -1646,7 +1650,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [1] += ((int) (Math.random () * (4) + 3)) * i;
+			    mob_stats [1] += ((int) (Math.random () * (4) + 3)) * (i + 1);
 			}
 		    }
 
@@ -1655,7 +1659,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [2] += ((int) (Math.random () * (4) + 4)) * i;
+			    mob_stats [2] += ((int) (Math.random () * (4) + 4)) * (i + 1);
 			}
 		    }
 
@@ -1681,7 +1685,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [0] += ((int) (Math.random () * (2) + 7)) * i;
+			    mob_stats [0] += ((int) (Math.random () * (2) + 7)) * (i + 1);
 			}
 		    }
 
@@ -1690,7 +1694,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [1] += ((int) (Math.random () * (4) + 2)) * i;
+			    mob_stats [1] += ((int) (Math.random () * (4) + 2)) * (i + 1);
 			}
 		    }
 
@@ -1699,7 +1703,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [2] += ((int) (Math.random () * (4) + 4)) * i;
+			    mob_stats [2] += ((int) (Math.random () * (4) + 4)) * (i + 1);
 			}
 		    }
 
@@ -1724,7 +1728,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [0] += ((int) (Math.random () * (2) + 7)) * i;
+			    mob_stats [0] += ((int) (Math.random () * (2) + 7)) * (i + 1);
 			}
 		    }
 
@@ -1733,7 +1737,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [1] += ((int) (Math.random () * (4) + 3)) * i;
+			    mob_stats [1] += ((int) (Math.random () * (4) + 3)) * (i + 1);
 			}
 		    }
 
@@ -1742,7 +1746,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [2] += ((int) (Math.random () * (4) + 3)) * i;
+			    mob_stats [2] += ((int) (Math.random () * (4) + 3)) * (i + 1);
 			}
 		    }
 
@@ -1767,7 +1771,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [0] += ((int) (Math.random () * (2) + 7)) * i;
+			    mob_stats [0] += ((int) (Math.random () * (2) + 7)) * (i + 1);
 			}
 		    }
 
@@ -1776,7 +1780,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [1] += ((int) (Math.random () * (4) + 3)) * i;
+			    mob_stats [1] += ((int) (Math.random () * (4) + 3)) * (i + 1);
 			}
 		    }
 
@@ -1785,7 +1789,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [2] += ((int) (Math.random () * (4) + 4)) * i;
+			    mob_stats [2] += ((int) (Math.random () * (4) + 4)) * (i + 1);
 			}
 		    }
 
@@ -1810,7 +1814,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [0] += ((int) (Math.random () * (2) + 7)) * i;
+			    mob_stats [0] += ((int) (Math.random () * (2) + 7)) * (i + 1);
 			}
 		    }
 
@@ -1819,7 +1823,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [1] += ((int) (Math.random () * (4) + 2)) * i;
+			    mob_stats [1] += ((int) (Math.random () * (4) + 2)) * (i + 1);
 			}
 		    }
 
@@ -1828,7 +1832,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [2] += ((int) (Math.random () * (5) + 5)) * i;
+			    mob_stats [2] += ((int) (Math.random () * (5) + 5)) * (i + 1);
 			}
 		    }
 
@@ -1852,7 +1856,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [0] += ((int) (Math.random () * (4) + 2)) * i;
+			    mob_stats [0] += ((int) (Math.random () * (4) + 2)) * (i + 1);
 			}
 		    }
 
@@ -1861,7 +1865,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [1] += ((int) (Math.random () * (4) + 3)) * i;
+			    mob_stats [1] += ((int) (Math.random () * (4) + 3)) * (i + 1);
 			}
 		    }
 
@@ -1870,7 +1874,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [2] += ((int) (Math.random () * (5) + 5)) * i;
+			    mob_stats [2] += ((int) (Math.random () * (5) + 5)) * (i + 1);
 			}
 		    }
 
@@ -1893,7 +1897,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [0] += ((int) (Math.random () * (4) + 2)) * i;
+			    mob_stats [0] += ((int) (Math.random () * (4) + 2)) * (i + 1);
 			}
 		    }
 
@@ -1902,7 +1906,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [1] += ((int) (Math.random () * (4) + 2)) * i;
+			    mob_stats [1] += ((int) (Math.random () * (4) + 2)) * (i + 1);
 			}
 		    }
 
@@ -1911,7 +1915,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [2] += ((int) (Math.random () * (4) + 4)) * i;
+			    mob_stats [2] += ((int) (Math.random () * (4) + 4)) * (i + 1);
 			}
 		    }
 
@@ -1934,7 +1938,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [0] += ((int) (Math.random () * (4) + 2)) * i;
+			    mob_stats [0] += ((int) (Math.random () * (4) + 2)) * (i + 1);
 			}
 		    }
 
@@ -1943,7 +1947,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [1] += ((int) (Math.random () * (4) + 2)) * i;
+			    mob_stats [1] += ((int) (Math.random () * (4) + 2)) * (i + 1);
 			}
 		    }
 
@@ -1952,7 +1956,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [2] += ((int) (Math.random () * (5) + 5)) * i;
+			    mob_stats [2] += ((int) (Math.random () * (5) + 5)) * (i + 1);
 			}
 		    }
 
@@ -1976,7 +1980,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [0] += ((int) (Math.random () * (2) + 8)) * i;
+			    mob_stats [0] += ((int) (Math.random () * (2) + 8)) * (i + 1);
 			}
 		    }
 
@@ -1985,7 +1989,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [1] += ((int) (Math.random () * (4) + 2)) * i;
+			    mob_stats [1] += ((int) (Math.random () * (4) + 2)) * (i + 1);
 			}
 		    }
 
@@ -1994,7 +1998,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [2] += ((int) (Math.random () * (5) + 5)) * i;
+			    mob_stats [2] += ((int) (Math.random () * (5) + 5)) * (i + 1);
 			}
 		    }
 
@@ -2018,7 +2022,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [0] += ((int) (Math.random () * (2) + 9)) * i;
+			    mob_stats [0] += ((int) (Math.random () * (2) + 9)) * (i + 1);
 			}
 		    }
 
@@ -2027,7 +2031,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [1] += ((int) (Math.random () * (4) + 5)) * i;
+			    mob_stats [1] += ((int) (Math.random () * (4) + 5)) * (i + 1);
 			}
 		    }
 
@@ -2036,7 +2040,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [2] += ((int) (Math.random () * (5) + 6)) * i;
+			    mob_stats [2] += ((int) (Math.random () * (5) + 6)) * (i + 1);
 			}
 		    }
 
@@ -2059,7 +2063,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [0] += ((int) (Math.random () * (2) + 9)) * i;
+			    mob_stats [0] += ((int) (Math.random () * (2) + 9)) * (i + 1);
 			}
 		    }
 
@@ -2068,7 +2072,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [1] += ((int) (Math.random () * (4) + 5)) * i;
+			    mob_stats [1] += ((int) (Math.random () * (4) + 5)) * (i + 1);
 			}
 		    }
 
@@ -2077,7 +2081,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [2] += ((int) (Math.random () * (5) + 5)) * i;
+			    mob_stats [2] += ((int) (Math.random () * (5) + 5)) * (i + 1);
 			}
 		    }
 
@@ -2100,7 +2104,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [0] += ((int) (Math.random () * (2) + 9)) * i;
+			    mob_stats [0] += ((int) (Math.random () * (2) + 9)) * (i + 1);
 			}
 		    }
 
@@ -2109,7 +2113,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [1] += ((int) (Math.random () * (4) + 2)) * i;
+			    mob_stats [1] += ((int) (Math.random () * (4) + 2)) * (i + 1);
 			}
 		    }
 
@@ -2118,7 +2122,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [2] += ((int) (Math.random () * (5) + 6)) * i;
+			    mob_stats [2] += ((int) (Math.random () * (5) + 6)) * (i + 1);
 			}
 		    }
 
@@ -2142,7 +2146,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [0] += ((int) (Math.random () * (2) + 8)) * i;
+			    mob_stats [0] += ((int) (Math.random () * (2) + 8)) * (i + 1);
 			}
 		    }
 
@@ -2151,7 +2155,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [1] += ((int) (Math.random () * (4) + 5)) * i;
+			    mob_stats [1] += ((int) (Math.random () * (4) + 5)) * (i + 1);
 			}
 		    }
 
@@ -2160,7 +2164,7 @@ public class SAO_ARC
 		    {
 			for (int i = 1 ; i <= level - 1 ; i++)
 			{
-			    mob_stats [2] += ((int) (Math.random () * (5) + 6)) * i;
+			    mob_stats [2] += ((int) (Math.random () * (5) + 6)) * (i + 1);
 			}
 		    }
 
