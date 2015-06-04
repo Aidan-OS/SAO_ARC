@@ -92,13 +92,13 @@ public class SAO_ARC
 
 		case 1:
 		    { //c.drawString ("Stats", 115, 335);//1
-			//look_at_stats;
+			look_at_stats ();
 			break;
 		    }
 
 		case 2:
 		    { //c.drawString ("Cheats", 95, 450);//2
-			//saved = cheat_page ();///////////////////////////////////////CHEATS PAGE RETURNS A TRUE OR FALSE TO TEST IF CHANGES WERE MADE
+			saved = cheat_page ();///////////////////////////////////////CHEATS PAGE RETURNS A TRUE OR FALSE TO TEST IF CHANGES WERE MADE
 			break;
 		    }
 
@@ -928,7 +928,69 @@ public class SAO_ARC
 	c.clear ();
     }
 
+    public static void look_at_stats ()
+    {
+	c.clear ();    
+    
+	Font stats = new Font ("MingLiU", Font.PLAIN, 18);
+	c.setFont (stats);
+	
+	c.drawString ("" + player_name, 200, 20);
+	c.drawString ("Level: " + level, 1, 40);
+	c.drawString ("Health: " + health, 1, 60);
+	c.drawString ("Defence: " + defence, 1, 80);
+	c.drawString ("Strength: " + strength, 1, 100);
+	c.drawString ("Evade Rate: " + evasion + "%", 1, 120);
+	c.drawString ("XP: " + xp, 1, 140);
+	c.drawString ("XP to next level: " + (xp_to_next_level - xp), 1, 160);
+	
+	c.drawString ("Press any key to go back.", 150, 200);
+	c.getChar ();
 
+    }
+    
+    public static boolean cheat_page ()
+    {
+	String code;
+	boolean save = false;
+	
+	c.clear ();    
+    
+	Font stats = new Font ("MingLiU", Font.PLAIN, 18);
+	c.setFont (stats);
+	
+	c.drawString ("Enter your cheat code", 150, 20);
+	c.setCursor (5, 37);
+	code = c.readString ();
+	
+	if (code.equals ("CheaterLevel=") )
+	{
+	    int level_cheater;
+	    int temp_level = level;
+	    
+	    do
+	    {
+		c.clear ();
+		c.drawString ("Enter the level that you want to make yourself", 100, 20);
+		c.setCursor (5, 37);
+		level_cheater = c.readInt ();
+	    }while (level_cheater > 99);
+	    
+	    for (int i = 0; i < (level_cheater - temp_level); i++)
+	    {
+		level += 1;//ADDS LEVEL
+		xp_to_next_level += 100 + (40 * (level - 1) );//GENERATES NEW AMOUNT OF XP NEEDED
+		strength += ( (int) (Math.random() * (5) ) + 5) * level;
+		defence += ( (int) (Math.random() * (4) ) + 4) * level;
+		health += ( (int) (Math.random() * (2) ) + 8) * level;
+		evasion += 0.2;
+	    }//FOR
+	    save = true;
+	}//IF
+	
+	return (save);
+    }
+    
     public static void save_game () throws IOException
     {
 	PrintWriter input_save_data = new PrintWriter (new FileWriter (player_name + ".txt"));
@@ -1023,6 +1085,8 @@ public class SAO_ARC
 	c.println ("XP: " + mob_stats [4]);
 
 	c.getChar ();
+	
+	c.setTextBackgroundColor (Color.white);
 	c.clear ();
 
 	fight ();
@@ -1050,6 +1114,8 @@ public class SAO_ARC
 
 	do
 	{
+	
+	    ////////////////////////////////////////////THIS IS WHERE HEALTHBARS GO
 	    do
 	    {
 		c.print (mob_name + " Health: " + mob_health);
@@ -1057,7 +1123,7 @@ public class SAO_ARC
 		int space_problem = 71 - (player_name.length () + 5);  //PUTS THE NAME ON THE RIGHT SPOT ON THE LINE, THEN LEAVES SPACE FOR 5 NUMBERS OF HP
 
 		c.setCursor (18, space_problem);
-		c.print (player_name + " Health: " + player_fight_health);
+		c.print (player_name + " Health: " + player_fight_health);//////////////MAKE INTO BOXED MOVEMENT, IN A METHOD
 
 		c.setCursor (20, 1);
 		c.println ("1: Slash   2: Stab");
@@ -1065,8 +1131,7 @@ public class SAO_ARC
 		player_choice = c.readInt ();
 
 
-	    }
-	    while (!(player_choice == 1) && (player_choice == 2) && (player_choice == 3) && (player_choice == 4) && (player_choice == 5));
+	    }while (!(player_choice == 1) && (player_choice == 2) && (player_choice == 3) && (player_choice == 4) && (player_choice == 5));
 
 	    if (player_choice == 5)
 	    {
@@ -1315,16 +1380,23 @@ public class SAO_ARC
 		c.print ("Press any key to continue.");
 		c.getChar ();
 	    }
-
 	    c.clear ();
 	    c.setCursor (1, 1);
 
 	}
 	while ((player_fight_health > 0) && (mob_health > 0) && (player_choice != 5));
+	
+	Color light_blue = new Color (0, 191, 255);
+	c.setTextBackgroundColor (light_blue);
+	c.clear ();
+	
+	Font largest_letters = new Font ("MingLiU", Font.BOLD, 20);
+	c.setFont (largest_letters);
 
 	if (player_fight_health > 0 && mob_health <= 0)
 	{
-	    c.println ("You swing your sword, hitting the enemy hard enough that it is defeated!"); /////////////////////////////////////////////////////////////////MAKE INTO NICE LETTERS
+	    c.drawString ("You swing your sword, hitting the enemy hard", 100, 100); 
+	    c.drawString ("enough so that it is killed!", 180, 122);
 	    killer = true;
 	}
 
@@ -1332,12 +1404,12 @@ public class SAO_ARC
 	{
 	    if (player_choice == 5 || player_choice == 10)
 	    {
-		c.println ("You died a coward, running away from your enemy!");
+		c.drawString ("You died a coward, running away from your enemy!", 70, 100);
 	    }
 
 	    else
 	    {
-		c.println ("You have been defeated by the mighty " + mob_name + ".");
+		c.drawString ("You have been defeated by the mighty " + mob_name + ".", 30, 100);
 	    }
 
 	    PrintWriter input_save_data = new PrintWriter (new FileWriter (player_name + ".txt"));
@@ -1353,20 +1425,21 @@ public class SAO_ARC
 
 	    input_save_data.close ();
 
-	    c.print ("Press any key to exit the game.");
+	    c.drawString ("Press any key to exit.", 200, 122);
 	    c.getChar ();
 	    death = true;
 	}
 
 	else if (player_choice == 5)//IF YOU FLEE
 	{
-	    c.println ("RUN AWAYYYY!");
-	    c.print ("Press any key to continue");
+	    c.drawString ("You get away safely", 230, 100);
+	    c.drawString ("Press any key to return", 200, 122);
 	}
 
 	else//SURVIVE WITH 1 HP
 	{
-	    c.println ("You have barley survived the fight, almost dieing on the final swing. Be more careful   next time.");
+	    c.drawString ("You have barley survived the fight, almost dieing on", 40, 100);
+	    c.drawString ("the final swing. Be more careful next time.", 90, 122);
 	    killer = true;
 	}
 	
@@ -1375,19 +1448,20 @@ public class SAO_ARC
 	{   
 	    if ( (level == 99) && (xp_to_next_level <= (xp + mob_stats [4]) ) ) //if your next fight is godfree
 	    {
-		c.print ("The next mob you fight will be the final boss, GODFREE");
+		c.drawString ("The next mob you fight will be the final boss, Godfree.", 20, 144);
 		godfree_fight = true;
 	    }
 	    
-	    else if (godfree_fight == true)
+	    else if (godfree_fight == true) ///////////GAME IS FINISHED, GODFREE HAS BEEN DEFEATED
 	    {
+		c.drawString ("Press any key to finish", 200, 144);
 		finished_game = true;
 	    }
 	    
 	    else
 	    {   
 		xp += mob_stats [4];
-		c.println ("You have gained " + mob_stats [4] + " XP.");
+		c.drawString ("You have gained " + mob_stats [4] + " XP.", 200, 144);
 		
 		if (xp >= xp_to_next_level)
 		{   
@@ -1398,11 +1472,11 @@ public class SAO_ARC
 		    defence += ( (int) (Math.random() * (4) ) + 4) * level;
 		    health += ( (int) (Math.random() * (2) ) + 8) * level;
 		    evasion += 0.2;
-		    c.println ("You have leveled up to level " + level + "!");
+		    c.drawString ("You have leveled up to level " + level + "!", 150, 166);
 		}
 	    }
 	    
-	    c.print ("Press any key to loot the mob.");
+	    c.drawString ("Press any key to loot the mob.", 170, 210);
 	    c.getChar ();
 	}
     }
@@ -2393,17 +2467,17 @@ public class SAO_ARC
 
 	else if (mob_number == 38)
 	{
-	    return ("The Crystal Dragon");
+	    return ("Crystal Dragon");
 	}
 
 	else if (mob_number == 39)           //Main bosses from ANIME (Godfree for level 100)
 	{
-	    return ("The Skull Reaper");
+	    return ("Skull Reaper");
 	}
 
 	else if (mob_number == 40)
 	{
-	    return ("Nicholas, The Renegade");
+	    return ("Renegade, Nicholas");
 	}
 	return ("Bad Egg");
     }
