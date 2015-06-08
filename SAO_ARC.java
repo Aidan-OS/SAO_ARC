@@ -99,6 +99,11 @@ public class SAO_ARC
 		case 2:
 		    { //c.drawString ("Cheats", 95, 450);//2
 			saved = cheat_page ();///////////////////////////////////////CHEATS PAGE RETURNS A TRUE OR FALSE TO TEST IF CHANGES WERE MADE
+			c.setFont (largest_letters);
+			c.setColor (Color.red);
+			c.drawString ("Not a Code", 50, 250);
+			c.setColor (Color.black);
+			delay (500);
 			break;
 		    }
 
@@ -404,6 +409,7 @@ public class SAO_ARC
 	    level = player_save_data.readInt ();
 	    xp = player_save_data.readInt ();
 	    xp_to_next_level = player_save_data.readInt ();
+	    godfree_fight = player_save_data.readBoolean ();
 
 	    player_save_data.close ();
 	    proper_login = true;
@@ -549,6 +555,7 @@ public class SAO_ARC
 	input_save_data.println (level);
 	input_save_data.println (xp);
 	input_save_data.println (xp_to_next_level);
+	input_save_data.println (godfree_fight);
 
 	input_save_data.close ();
 	input_name_list.close ();
@@ -976,7 +983,7 @@ public class SAO_ARC
 		level_cheater = c.readInt ();
 	    }while (level_cheater > 99);
 	    
-	    for (int i = 0; i < (level_cheater - temp_level); i++)
+	    for (int i = 1; i < (level_cheater - temp_level + 1); i++)
 	    {
 		level += 1;//ADDS LEVEL
 		xp_to_next_level += 100 + (40 * (level - 1) );//GENERATES NEW AMOUNT OF XP NEEDED
@@ -987,6 +994,22 @@ public class SAO_ARC
 	    }//FOR
 	    save = true;
 	}//IF
+	
+	else if (code.equals ("CheaterFinalBattle") )
+	{
+	    int temp_level = level;
+	    
+	    for (int i = 1; i < 100; i++)
+	    {
+		level += 1;//ADDS LEVEL
+		xp_to_next_level += 100 + (40 * (level - 1) );//GENERATES NEW AMOUNT OF XP NEEDED
+		strength += ( (int) (Math.random() * (5) ) + 5) * level;
+		defence += ( (int) (Math.random() * (4) ) + 4) * level;
+		health += ( (int) (Math.random() * (2) ) + 8) * level;
+		evasion += 0.2;
+	    }//FOR 
+	    godfree_fight = true;
+	}
 	
 	return (save);
     }
@@ -1003,6 +1026,7 @@ public class SAO_ARC
 	input_save_data.println (level);
 	input_save_data.println (xp);
 	input_save_data.println (xp_to_next_level);
+	input_save_data.println (godfree_fight);
 
 	input_save_data.close ();
     }
@@ -1025,8 +1049,10 @@ public class SAO_ARC
     {
 	int mob_rarity;
 	int mob_type = 42;
+	int mobs_weapon = 1;
 
 	mob_rarity = (int) (Math.random () * (99) + 1); //Generates a random mob rarity                   //17 Common, 12 uncommon, 7 rares, 4 Legendaries
+	
 	if (godfree_fight == true)
 	{
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////IF YOU FIGHT GODREE
@@ -1037,21 +1063,26 @@ public class SAO_ARC
 	    if ((mob_rarity >= 1) && (mob_rarity <= 50))   //50% Chance, generates common
 	    {
 		mob_type = (int) (Math.random () * (16) + 1); //Generates 1 - 17
+		mobs_weapon = (int) (Math.random () * 7) + 1); //Generates 1 - 7
+		
 	    }
 
 	    else if ((mob_rarity >= 51) && (mob_rarity <= 80))   //30% chance of uncommon
 	    {
 		mob_type = (int) (Math.random () * (11) + 18); //Generates 18 - 29
+		mobs_weapon = (int) (Math.random () * 5) + 8; //Generates 8 - 12
 	    }
 
 	    else if ((mob_rarity >= 81) && (mob_rarity <= 95))   //15% chance of rare
 	    {
 		mob_type = (int) (Math.random () * (6) + 30); //Generates 30 - 36
+		mobs_weapon = (int) (Math.random () * 3) + 13; //Generates 13 - 15
 	    }
 
 	    else if ((mob_rarity >= 96) && (mob_rarity <= 100))  //LEGENARY GENERATED 5%
 	    {
 		mob_type = (int) (Math.random () * (3) + 37); //Generates 37 - 40
+		mobs_weapon = (int) (Math.random () * 2) + 16;
 	    }
 	} //if
 
@@ -1059,17 +1090,20 @@ public class SAO_ARC
 	{
 	    if ((mob_rarity >= 1) && (mob_rarity <= 53))   //53% Chance, generates common
 	    {
-		mob_type = (int) (Math.random () * (16) + 1); //Generates 1 - 17 ;
+		mob_type = (int) (Math.random () * (16) + 1); //Generates 1 - 17
+		mobs_weapon = (int) (Math.random () * 7) + 1); //Generates 1 - 7
 	    }
 
 	    else if ((mob_rarity >= 54) && (mob_rarity <= 85))   //32% chance of uncommon
 	    {
 		mob_type = (int) (Math.random () * (11) + 18); //Generates 18 - 29
+		mobs_weapon = (int) (Math.random () * 5) + 8; //Generates 8 - 12
 	    }
 
 	    else if ((mob_rarity >= 86) && (mob_rarity <= 100))   //15% chance of rare
 	    {
 		mob_type = (int) (Math.random () * (6) + 30); //Generates 30 - 36
+		mobs_weapon = (int) (Math.random () * 3) + 13; //Generates 13 - 15
 	    }
 
 	} //ELSE IF
@@ -1479,6 +1513,130 @@ public class SAO_ARC
 	    c.drawString ("Press any key to loot the mob.", 170, 210);
 	    c.getChar ();
 	}
+    }
+    
+    public static String gen_weapon_name (int number)
+    {
+	String name = "Excalibur";
+	
+	switch (number)
+	{
+	    case 1:{
+	    name = "Standard Rapier";
+	    }
+	    case 2:{
+	    name = "Standard Shortsword";
+	    }
+	    case 3:{
+	    name = "Standard Claymore";
+	    }
+	    case 4:{
+	    name = "Standard Longsword";
+	    }
+	    case 5:{
+	    name = "Standard One-Handed Sword";
+	    }
+	    case 6:{
+	    name = "Basic Kunai";
+	    }
+	    case 7:{
+	    name = "Standard Samurai Sword";
+	    }
+	    case 8:{
+	    name = "Greater Rapier";
+	    }
+	    case 9:{
+	    name = "Greater One-Handed Sword";
+	    }
+	    case 10:{
+	    name = "Greater Samurai Sword";
+	    }
+	    case 11:{
+	    name = "Greater Claymore";
+	    }
+	    case 12:{
+	    name = "Greater Longsword";
+	    }
+	    case 13:{
+	    name = "Excellent Claymore of the Blood Oath";
+	    }
+	    case 14:{
+	    name = "Samurai Sword of the Moonlight Cats";
+	    }
+	    case 15:{
+	    name = "Lambent Light";
+	    }
+	    case 16:{
+	    name = "Elucidator";
+	    }
+	    case 17:{
+	    name = "Dark Repulser";
+	    }
+	}
+	
+	return (name);
+    }
+    
+    public static int add_weapon (int number)
+    {
+	int addition = 0;
+	
+	switch (number)
+	{
+	    case 1:{
+	    addition = 1 * level;
+	    }
+	    case 2:{
+	    addition = 1 * level;
+	    }
+	    case 3:{
+	    addition = 1 * level;
+	    }
+	    case 4:{
+	    addition = 2 * level;
+	    }
+	    case 5:{
+	    addition = 2 * level;
+	    }
+	    case 6:{
+	    addition = 2 * level;
+	    }
+	    case 7:{
+	    addition = 3 * level;
+	    }
+	    case 8:{
+	    addition = 2 * level;
+	    }
+	    case 9:{
+	    addition = 2 * level;
+	    }
+	    case 10:{
+	    addition = 3 * level;
+	    }
+	    case 11:{
+	    addition = 3 * level;
+	    }
+	    case 12:{
+	    addition = 4 * level;
+	    }
+	    case 13:{
+	    addition = 5 * level;
+	    }
+	    case 14:{
+	    addition = 6 * level;
+	    }
+	    case 15:{
+	    addition = 7 * level;
+	    }
+	    case 16:{
+	    addition = 9 * level;
+	    }
+	    case 17:{
+	    addition = 10 * level;
+	    }
+	}
+	
+	return (addition);
     }
 
 
@@ -2266,6 +2424,7 @@ public class SAO_ARC
 
 
 	}
+
 	return (mob_stats);
     }
 
