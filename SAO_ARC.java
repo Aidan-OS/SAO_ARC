@@ -52,6 +52,7 @@ public class SAO_ARC
     static boolean proper_login = false;
     static boolean godfree_fight = false;
     static boolean finished_game = false;
+    static int [] character_gear = {2, 19, 0, 0, 0, 0, 0, 0, 0, 0};
 
     public static void main (String[] args) throws IOException
     {
@@ -99,11 +100,6 @@ public class SAO_ARC
 		case 2:
 		    { //c.drawString ("Cheats", 95, 450);//2
 			saved = cheat_page ();///////////////////////////////////////CHEATS PAGE RETURNS A TRUE OR FALSE TO TEST IF CHANGES WERE MADE
-			c.setFont (largest_letters);
-			c.setColor (Color.red);
-			c.drawString ("Not a Code", 50, 250);
-			c.setColor (Color.black);
-			delay (500);
 			break;
 		    }
 
@@ -410,6 +406,11 @@ public class SAO_ARC
 	    xp = player_save_data.readInt ();
 	    xp_to_next_level = player_save_data.readInt ();
 	    godfree_fight = player_save_data.readBoolean ();
+	    
+	    for (int i = 0; i < character_gear.length; i++)
+	    {
+		character_gear [i] = player_save_data.readInt ();
+	    }
 
 	    player_save_data.close ();
 	    proper_login = true;
@@ -556,6 +557,11 @@ public class SAO_ARC
 	input_save_data.println (xp);
 	input_save_data.println (xp_to_next_level);
 	input_save_data.println (godfree_fight);
+	
+	for (int i = 0; i < character_gear.length; i++)
+	    {
+		input_save_data.println (character_gear [i]);
+	    }
 
 	input_save_data.close ();
 	input_name_list.close ();
@@ -965,6 +971,7 @@ public class SAO_ARC
     
 	Font stats = new Font ("MingLiU", Font.PLAIN, 18);
 	c.setFont (stats);
+	Font largest_letters = new Font ("MingLiU", Font.BOLD, 100);
 	
 	c.drawString ("Enter your cheat code", 150, 20);
 	c.setCursor (5, 37);
@@ -992,7 +999,13 @@ public class SAO_ARC
 		health += ( (int) (Math.random() * (2) ) + 8) * level;
 		evasion += 0.2;
 	    }//FOR
-	    save = true;
+	    save = false;
+	    
+	    c.setFont (largest_letters);
+	    c.setColor (Color.red);
+	    c.drawString ("CHEATED", 50, 250);
+	    c.setColor (Color.black);
+	    delay (500);
 	}//IF
 	
 	else if (code.equals ("CheaterFinalBattle") )
@@ -1009,6 +1022,23 @@ public class SAO_ARC
 		evasion += 0.2;
 	    }//FOR 
 	    godfree_fight = true;
+	    save = false;
+	    
+	    c.setFont (largest_letters);
+	    c.setColor (Color.red);
+	    c.drawString ("CHEATED", 50, 250);
+	    c.setColor (Color.black);
+	    delay (500);
+	}
+	
+	else
+	{
+	    c.setFont (largest_letters);
+	    c.setColor (Color.red);
+	    c.drawString ("Not a Code", 50, 250);
+	    c.setColor (Color.black);
+	    delay (500);
+	    save = true;
 	}
 	
 	return (save);
@@ -1027,6 +1057,11 @@ public class SAO_ARC
 	input_save_data.println (xp);
 	input_save_data.println (xp_to_next_level);
 	input_save_data.println (godfree_fight);
+	
+	for (int i = 0; i < character_gear.length; i++)
+	    {
+		input_save_data.println (character_gear [i]);
+	    }
 
 	input_save_data.close ();
     }
@@ -1049,7 +1084,8 @@ public class SAO_ARC
     {
 	int mob_rarity;
 	int mob_type = 42;
-	int mobs_weapon = 1;
+	int mobs_weapon = 0;
+	int mobs_armour = 0;
 
 	mob_rarity = (int) (Math.random () * (99) + 1); //Generates a random mob rarity                   //17 Common, 12 uncommon, 7 rares, 4 Legendaries
 	
@@ -1063,7 +1099,8 @@ public class SAO_ARC
 	    if ((mob_rarity >= 1) && (mob_rarity <= 50))   //50% Chance, generates common
 	    {
 		mob_type = (int) (Math.random () * (16) + 1); //Generates 1 - 17
-		mobs_weapon = (int) (Math.random () * 7) + 1); //Generates 1 - 7
+		mobs_weapon = (int) (Math.random () * 7) + 1; //Generates 1 - 7
+		mobs_armour = (int) (Math.random () * 5) + 18; //Generates 18 - 22
 		
 	    }
 
@@ -1071,18 +1108,21 @@ public class SAO_ARC
 	    {
 		mob_type = (int) (Math.random () * (11) + 18); //Generates 18 - 29
 		mobs_weapon = (int) (Math.random () * 5) + 8; //Generates 8 - 12
+		mobs_armour = (int) (Math.random () * 4) + 23; //Generates 23 - 26
 	    }
 
 	    else if ((mob_rarity >= 81) && (mob_rarity <= 95))   //15% chance of rare
 	    {
 		mob_type = (int) (Math.random () * (6) + 30); //Generates 30 - 36
 		mobs_weapon = (int) (Math.random () * 3) + 13; //Generates 13 - 15
+		mobs_armour = (int) (Math.random () * 1) + 27; //Generates 27 - 28            
 	    }
 
 	    else if ((mob_rarity >= 96) && (mob_rarity <= 100))  //LEGENARY GENERATED 5%
 	    {
 		mob_type = (int) (Math.random () * (3) + 37); //Generates 37 - 40
 		mobs_weapon = (int) (Math.random () * 2) + 16;
+		mobs_armour = 29;// Gives 29
 	    }
 	} //if
 
@@ -1091,25 +1131,31 @@ public class SAO_ARC
 	    if ((mob_rarity >= 1) && (mob_rarity <= 53))   //53% Chance, generates common
 	    {
 		mob_type = (int) (Math.random () * (16) + 1); //Generates 1 - 17
-		mobs_weapon = (int) (Math.random () * 7) + 1); //Generates 1 - 7
+		mobs_weapon = (int) (Math.random () * 7) + 1; //Generates 1 - 7
+		mobs_armour = (int) (Math.random () * 5) + 18; //Generates 18 - 22
 	    }
 
 	    else if ((mob_rarity >= 54) && (mob_rarity <= 85))   //32% chance of uncommon
 	    {
 		mob_type = (int) (Math.random () * (11) + 18); //Generates 18 - 29
 		mobs_weapon = (int) (Math.random () * 5) + 8; //Generates 8 - 12
+		mobs_armour = (int) (Math.random () * 4) + 23; //Generates 23 - 26
 	    }
 
 	    else if ((mob_rarity >= 86) && (mob_rarity <= 100))   //15% chance of rare
 	    {
 		mob_type = (int) (Math.random () * (6) + 30); //Generates 30 - 36
 		mobs_weapon = (int) (Math.random () * 3) + 13; //Generates 13 - 15
+		mobs_armour = (int) (Math.random () * 1) + 27; //Generates 27 - 28 
 	    }
 
 	} //ELSE IF
 
 	mob_name = set_mob_name (mob_type);
 	mob_stats = mob_stat_set (mob_type, level);
+	
+	mob_stats [1] += mobs_armour;
+	mob_stats [2] += mobs_weapon;
 
 	c.println ("Name: " + mob_name);
 	c.println ("Health: " + mob_stats [0] + "\t\t " + health);
@@ -1117,6 +1163,8 @@ public class SAO_ARC
 	c.println ("Strength: " + mob_stats [2] + "\t\t " + strength);
 	c.println ("Evade: " + mob_stats [3] + "\t\t " + evasion);
 	c.println ("XP: " + mob_stats [4]);
+	c.println (add_weapon (character_gear [0]) );
+	c.println (add_weapon (character_gear [1]) );
 
 	c.getChar ();
 	
@@ -1136,8 +1184,8 @@ public class SAO_ARC
 	int player_choice;
 	int mob_choice;
 	int player_fight_health = health;                           ////////////////////////////
-	int fight_strength = strength;                              //PERFORM MODIFICATIONS TO//
-	int fight_defence = defence;                                //      STATS HERE        //
+	int fight_strength = strength + (add_weapon (character_gear [0]) );                              //PERFORM MODIFICATIONS TO//
+	int fight_defence = defence + (add_weapon (character_gear [1]) );                                //      STATS HERE        //
 	double fight_evasion = evasion;                             ////////////////////////////
 	int mob_health = (int) mob_stats [0];
 	int mob_evade_roll;
@@ -1522,55 +1570,120 @@ public class SAO_ARC
 	switch (number)
 	{
 	    case 1:{
-	    name = "Standard Rapier";
+		name = "Standard Rapier";
+		break;
 	    }
 	    case 2:{
-	    name = "Standard Shortsword";
+		name = "Standard Shortsword";
+		break;
 	    }
 	    case 3:{
-	    name = "Standard Claymore";
+		name = "Standard Claymore";
+		break;
 	    }
 	    case 4:{
-	    name = "Standard Longsword";
+		name = "Standard Longsword";
+		break;
 	    }
 	    case 5:{
-	    name = "Standard One-Handed Sword";
+		name = "Standard One-Handed Sword";
+		break;
 	    }
 	    case 6:{
-	    name = "Basic Kunai";
+		name = "Basic Kunai";
+		break;
 	    }
 	    case 7:{
-	    name = "Standard Samurai Sword";
+		name = "Standard Samurai Sword";
+		break;
 	    }
 	    case 8:{
-	    name = "Greater Rapier";
+		name = "Greater Rapier";
+		break;
 	    }
 	    case 9:{
-	    name = "Greater One-Handed Sword";
+		name = "Greater One-Handed Sword";
+		break;
 	    }
 	    case 10:{
-	    name = "Greater Samurai Sword";
+		name = "Greater Samurai Sword";
+		break;
 	    }
 	    case 11:{
-	    name = "Greater Claymore";
+		name = "Greater Claymore";
+		break;
 	    }
 	    case 12:{
-	    name = "Greater Longsword";
+		name = "Greater Longsword";
+		break;
 	    }
 	    case 13:{
-	    name = "Excellent Claymore of the Blood Oath";
+		name = "Excellent Claymore of the Blood Oath";
+		break;
 	    }
 	    case 14:{
-	    name = "Samurai Sword of the Moonlight Cats";
+		name = "Samurai Sword of the Moonlight Cats";
+		break;
 	    }
 	    case 15:{
-	    name = "Lambent Light";
+		name = "Lambent Light";
+		break;
 	    }
 	    case 16:{
-	    name = "Elucidator";
+		name = "Elucidator";
+		break;
 	    }
 	    case 17:{
-	    name = "Dark Repulser";
+		name = "Dark Repulser";
+		break;
+	    }
+	    case 18:{
+		name = "Broken Chainmail";
+		break;
+	    }
+	    case 19:{
+		name = "Villagers Clothes";
+		break;
+	    }
+	    case 20:{
+		name = "Tatterd Leather Armour";
+		break;
+	    }
+	    case 21:{
+		name = "Standard Chainmail";
+		break;
+	    }
+	    case 22:{
+		name = "Standard Leather Armour";
+		break;
+	    }
+	    case 23:{
+		name = "Reinforced Villagers Clothes";
+		break;
+	    }
+	    case 24:{
+		name = "Strengthened Leather Armour";
+		break;
+	    }
+	    case 25:{
+		name = "Strengthened Chainmail";
+		break;
+	    }
+	    case 26:{
+		name = "Standrad Plate Mail";
+		break;
+	    }
+	    case 27:{
+		name = "Taloned Plate Mail of the Moonlight Cats";
+		break;
+	    }
+	    case 28:{
+		name = "Heavy Armour of the Blood Oath";
+		break;
+	    }
+	    case 29:{
+		name = "The Blackwyrm Coat";
+		break;
 	    }
 	}
 	
@@ -1584,55 +1697,120 @@ public class SAO_ARC
 	switch (number)
 	{
 	    case 1:{
-	    addition = 1 * level;
+		addition = 2 * level;
+		break;
 	    }
 	    case 2:{
-	    addition = 1 * level;
+		addition = 2 * level;
+		break;
 	    }
 	    case 3:{
-	    addition = 1 * level;
+		addition = 2 * level;
+		break;
 	    }
 	    case 4:{
-	    addition = 2 * level;
+		addition = 3 * level;
+		break;
 	    }
 	    case 5:{
-	    addition = 2 * level;
+		addition = 3 * level;
+		break;
 	    }
 	    case 6:{
-	    addition = 2 * level;
+		addition = 3 * level;
+		break;
 	    }
 	    case 7:{
-	    addition = 3 * level;
+		addition = 4 * level;
+		break;
 	    }
 	    case 8:{
-	    addition = 2 * level;
+		addition = 3 * level;
+		break;
 	    }
 	    case 9:{
-	    addition = 2 * level;
+		addition = 3 * level;
+		break;
 	    }
 	    case 10:{
-	    addition = 3 * level;
+		addition = 4 * level;
+		break;
 	    }
 	    case 11:{
-	    addition = 3 * level;
+		addition = 4 * level;
+		break;
 	    }
 	    case 12:{
-	    addition = 4 * level;
+		addition = 5 * level;
+		break;
 	    }
 	    case 13:{
-	    addition = 5 * level;
+		addition = 6 * level;
+		break;
 	    }
 	    case 14:{
-	    addition = 6 * level;
+		addition = 7 * level;
+		break;
 	    }
 	    case 15:{
-	    addition = 7 * level;
+		addition = 8 * level;
+		break;
 	    }
 	    case 16:{
-	    addition = 9 * level;
+		addition = 10 * level;
+		break;
 	    }
 	    case 17:{
-	    addition = 10 * level;
+		addition = 11 * level;
+		break;
+	    }
+	    case 18:{
+		addition = 1 * level;
+		break;
+	    }
+	    case 19:{
+		addition = 1 * level;
+		break;
+	    }
+	    case 20:{
+		addition = 1 * level;
+		break;
+	    }
+	    case 21:{
+		addition = 2 * level;
+		break;
+	    }
+	    case 22:{
+		addition = 2 * level;
+		break;
+	    }
+	    case 23:{
+		addition = 2 * level;
+		break;
+	    }
+	    case 24:{
+		addition = 3 * level;
+		break;
+	    }
+	    case 25:{
+		addition = 3 * level;
+		break;
+	    }
+	    case 26:{
+		addition = 3 * level;
+		break;
+	    }
+	    case 27:{
+		addition = 4 * level;
+		break;
+	    }
+	    case 28:{
+		addition = 5 * level;
+		break;
+	    }
+	    case 29:{
+		addition = 7 * level;
+		break;
 	    }
 	}
 	
