@@ -1086,6 +1086,12 @@ public class SAO_ARC
 	int mob_type = 42;
 	int mobs_weapon = 0;
 	int mobs_armour = 0;
+	boolean winner = false;
+	
+	Color light_blue = new Color (0, 191, 255);
+	
+	Font largest_letters = new Font ("MingLiU", Font.BOLD, 20);
+	c.setFont (largest_letters);
 
 	mob_rarity = (int) (Math.random () * (99) + 1); //Generates a random mob rarity                   //17 Common, 12 uncommon, 7 rares, 4 Legendaries
 	
@@ -1171,22 +1177,187 @@ public class SAO_ARC
 	c.setTextBackgroundColor (Color.white);
 	c.clear ();
 
-	fight ();
-    }
+	winner = fight ();// Returns if player won the fight and gets a drop
+	
+	c.setTextBackgroundColor (light_blue);
+	c.clear ();
+	
+	char item_select_location;
+	int location = 0;
+	
+	c.setColor (Color.black);
+	Font title_screen = new Font ("Bauhaus 93", Font.ITALIC, 40);
+	
+	if (winner == true)//If battle is won
+	{
+	    if ( ( (int) (Math.random () * 100) + 1) <= 30)// 30% chance of a drop
+	    {
+		if ( ( (int) (Math.random () * 100) + 1) <= 70)// 70% chance of a weapon
+		{
+		    c.drawString ("You got a drop! It is:", 200, 130);
+		    c.drawString ("" + (gen_weapon_name (mobs_weapon)), 230, 150);
+		    c.drawString ("Do you want to keep this?", 190, 170);
+		    
+		    draw_selected_box_2 (230, 220);
+		    draw_box_2 (230, 350);
+		    
+		    c.setFont (title_screen);
+		    c.drawString ("Yes", 305, 285);
+		    c.drawString ("No", 310, 415);
+		    
+		    do
+		    {
+			item_select_location = c.getChar ();
+			
+			if (location == 0)
+			{
+			    if (item_select_location == 'w' || item_select_location == 's')
+			    {
+				draw_box_2 (230, 220);
+				draw_selected_box_2 (230, 350);
+				location = 1;
+				
+			    }
+			}
+			
+			else if (location == 1)
+			{
+			    if (item_select_location == 'w' || item_select_location == 's')
+			    {
+				draw_selected_box_2 (230, 220);
+				draw_box_2 (230, 350);
+				location = 0;
+			    }
+			}
+			c.drawString ("Yes", 305, 285);
+			c.drawString ("No", 310, 415);
+			
+		    }while (item_select_location != '\n');
+		    
+		    if (location == 0)////if yes
+		    {
+			c.clear ();
+			if (character_gear [9] == 0)
+			{
+			    int i;
+			    for (i = 0; i < character_gear.length; i++) //Finds the first open spot thats open because there is nothing in spot 9
+			    {
+				if (character_gear [i] == 0)
+				{
+				    break;
+				}//if
+			    }//for
+			    
+			    character_gear [i] = mobs_weapon;
+			
+			    c.drawString ("Item added to inventory!", 100, 100);
+			    delay (5000);
+			}//if not full
+			
+			else//////////////////IF INVENTORY IS FULL
+			{
+			
+			}
+		    }//yes
+
+		}
+		
+		else// 30% chance of an armour
+		{
+		    c.drawString ("You got a drop! It is:", 200, 130);
+		    c.drawString ("" + (gen_weapon_name (mobs_armour)), 230, 150);
+		    c.drawString ("Do you want to keep this?", 190, 170);
+		    
+		    draw_selected_box_2 (230, 220);
+		    draw_box_2 (230, 350);
+		    
+		    c.setFont (title_screen);
+		    c.drawString ("Yes", 305, 285);
+		    c.drawString ("No", 310, 415);
+		    
+		    do
+		    {
+			item_select_location = c.getChar ();
+			
+			if (location == 0)
+			{
+			    if (item_select_location == 'w' || item_select_location == 's')
+			    {
+				draw_box_2 (230, 220);
+				draw_selected_box_2 (230, 350);
+				location = 1;
+				
+			    }
+			}
+			
+			else if (location == 1)
+			{
+			    if (item_select_location == 'w' || item_select_location == 's')
+			    {
+				draw_selected_box_2 (230, 220);
+				draw_box_2 (230, 350);
+				location = 0;
+			    }
+			}
+			c.drawString ("Yes", 305, 285);
+			c.drawString ("No", 310, 415);
+			
+		    }while (item_select_location != '\n');
+		    
+		    if (location == 0)
+		    {
+			c.clear ();
+			if (character_gear [9] == 0)
+			{
+			    int i;
+			    for (i = 0; i < character_gear.length; i++) //Finds the first open spot thats open because there is nothing in spot 9
+			    {
+				if (character_gear [i] == 0)
+				{
+				    break;
+				}//if
+			    }//for
+			    
+			    character_gear [i] = mobs_armour;
+			
+			    c.drawString ("Item added to inventory!", 100, 100);
+			    delay (5000);
+			}//if not full 
+			
+			else//////////////////IF INVENTORY IS FULL
+			{
+			
+			}
+		    }//yes
+		    
+		}//armour
+		
+		
+		
+	    }//Get Drop IF
+	    
+	    else//There is no drop
+	    {
+		c.drawString ("Sorry, there was no drop", 200, 230);
+		c.drawString ("Press any key to continue", 195, 250);
+		c.getChar ();
+	    }// No Drop Else
+	}//Battle winner
+    }//method
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                                                    //BATTLE//                                                                           //
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static void fight () throws IOException
+    public static boolean fight () throws IOException
     {
 	int player_choice;
 	int mob_choice;
-	int player_fight_health = health;                           ////////////////////////////
+	int player_fight_health = health;                                                                ////////////////////////////
 	int fight_strength = strength + (add_weapon (character_gear [0]) );                              //PERFORM MODIFICATIONS TO//
 	int fight_defence = defence + (add_weapon (character_gear [1]) );                                //      STATS HERE        //
-	double fight_evasion = evasion;                             ////////////////////////////
+	double fight_evasion = evasion;                                                                  ////////////////////////////
 	int mob_health = (int) mob_stats [0];
 	int mob_evade_roll;
 	int player_evade_roll;
@@ -1561,6 +1732,7 @@ public class SAO_ARC
 	    c.drawString ("Press any key to loot the mob.", 170, 210);
 	    c.getChar ();
 	}
+	return (killer);
     }
     
     public static String gen_weapon_name (int number)
