@@ -11,27 +11,32 @@ public class TESTERINO
     {
 	c = new Console (); 
 
-	Font largest_letters = new Font ("MingLiU", Font.BOLD, 20);
-	c.setFont (largest_letters);
-	
-	c.drawString ("Your inventory is full.", 195, 30);
-	c.drawString ("Please choose a item to delete.", 150, 50);
-	
-	Font small_letters = new Font ("MingLiU", Font.PLAIN, 15);
-	c.setFont (small_letters);
-	c.drawString ("Press '=' to cancel", 510, 15);
-	
 	Font inventory_letters = new Font ("MingLiU", Font.PLAIN, 20);
-	c.setFont (inventory_letters);
+	Font selected_inventory = new Font ("MingLiU", Font.BOLD, 20);
+	Font largest_letters = new Font ("MingLiU", Font.BOLD, 100);
+	c.setFont (largest_letters);
 
+	c.setColor (Color.red);
+	c.drawString ("You can't", 100, 150);
+	c.drawString ("Delete this!", 0, 250);
+	c.setColor (Color.black);
+	delay (3000);
+		    
+	c.clear ();
+
+	c.setFont (inventory_letters);
 	
 	int y = 100;
 	
 	for (int i = 0; i < 10; i++)
 	{
-	    c.drawString ("" + gen_weapon_name (character_gear [i]), 150, y );
+	    c.drawString ("" + gen_weapon_name (character_gear [i]), 180, y );
 	    y += 40;
 	}
+	
+	c.setFont (selected_inventory);
+	c.drawString ("Selected Weapon:", 0, 100);
+	c.drawString ("Selected Armour:", 0, 140);
 	
 	int deletion_selected = 0;
 	char key_pressed_delete;
@@ -39,9 +44,9 @@ public class TESTERINO
 	
 	do
 	{
-	    draw_selection_box_no_fill (145, (p + (40 * deletion_selected) ) );
+	    draw_selection_box_no_fill (175, (p + (40 * deletion_selected) ) );
 	    key_pressed_delete = c.getChar ();
-	    clear_selection_box (145, (p + (40 * deletion_selected) ) );
+	    clear_selection_box (175, (p + (40 * deletion_selected) ) );
 	    
 	    if (key_pressed_delete == 'w' && deletion_selected == 0)//Cases of nothing happening
 	    {
@@ -71,7 +76,6 @@ public class TESTERINO
 	
 	else if (key_pressed_delete == '\n')
 	{
-	    character_gear [deletion_selected] = mobs_armour;
 	}
 
     } // main method

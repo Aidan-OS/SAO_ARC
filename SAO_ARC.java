@@ -3,6 +3,7 @@
 *  The SAO Arc Project  *
 *     June 16th 2015    *
 ************************/
+
 /*
 Welcome to the code of the SAO Arc project.
 This is a game developed in Java based on the
@@ -52,7 +53,7 @@ public class SAO_ARC
     static boolean proper_login = false;
     static boolean godfree_fight = false;
     static boolean finished_game = false;
-    static int [] character_gear = {2, 19, 0, 0, 0, 0, 0, 0, 0, 0};
+    static int[] character_gear = {2, 19, 0, 0, 0, 0, 0, 0, 0, 0};
 
     public static void main (String[] args) throws IOException
     {
@@ -68,7 +69,7 @@ public class SAO_ARC
 	Font large_letters = new Font ("MingLiU", Font.PLAIN, 50);
 	Font largest_letters = new Font ("MingLiU", Font.BOLD, 100);
 	Font death_font = new Font ("MingLiU", Font.BOLD, 75);
-	
+
 	while (proper_login == false)
 	{
 	    new_player = start_menu ();
@@ -99,13 +100,13 @@ public class SAO_ARC
 
 		case 2:
 		    { //c.drawString ("Cheats", 95, 450);//2
-			saved = cheat_page ();///////////////////////////////////////CHEATS PAGE RETURNS A TRUE OR FALSE TO TEST IF CHANGES WERE MADE
+			saved = cheat_page (); ///////////////////////////////////////CHEATS PAGE RETURNS A TRUE OR FALSE TO TEST IF CHANGES WERE MADE
 			break;
 		    }
 
 		case 3:
 		    { //c.drawString ("Inventory", 395, 215);//3
-			//saved = inventory_check;///////////////////////////////////////SAME FOR INVERNTORY
+			saved = inventory_check (); ///////////////////////////////////////SAME FOR INVERNTORY
 			break;
 		    }
 
@@ -132,7 +133,7 @@ public class SAO_ARC
 
 	    if (exit == true)
 	    {
-		if (saved == false)
+		if (saved == false && death == false)
 		{
 		    c.setFont (small_letters);
 		    c.drawString ("Are you sure you want to quit without saving?", 35, 80);
@@ -217,7 +218,7 @@ public class SAO_ARC
 	c.setColor (Color.black);
 	Font big_letters = new Font ("MingLiU", Font.PLAIN, 50);
 	c.setFont (big_letters);
-	c.drawString ("Sword Art Online ARC", 60, 80);
+	c.drawString ("Sword Art Online ARC", 60, 60);
 
 	draw_selected_box (175, 100);
 	draw_box (175, 250);
@@ -406,8 +407,8 @@ public class SAO_ARC
 	    xp = player_save_data.readInt ();
 	    xp_to_next_level = player_save_data.readInt ();
 	    godfree_fight = player_save_data.readBoolean ();
-	    
-	    for (int i = 0; i < character_gear.length; i++)
+
+	    for (int i = 0 ; i < character_gear.length ; i++)
 	    {
 		character_gear [i] = player_save_data.readInt ();
 	    }
@@ -557,11 +558,11 @@ public class SAO_ARC
 	input_save_data.println (xp);
 	input_save_data.println (xp_to_next_level);
 	input_save_data.println (godfree_fight);
-	
-	for (int i = 0; i < character_gear.length; i++)
-	    {
-		input_save_data.println (character_gear [i]);
-	    }
+
+	for (int i = 0 ; i < character_gear.length ; i++)
+	{
+	    input_save_data.println (character_gear [i]);
+	}
 
 	input_save_data.close ();
 	input_name_list.close ();
@@ -573,8 +574,8 @@ public class SAO_ARC
     {
 	int box_at = 0;
 	char char_pressed;                                               //    00000   33333
-									 //    11111   44444
-									 //    22222   55555
+	//    11111   44444
+	//    22222   55555
 	Color light_blue = new Color (0, 191, 255);
 	c.setColor (light_blue);                  //Generates and sets Background Color
 	c.fillRect (0, 0, 640, 500);
@@ -881,7 +882,8 @@ public class SAO_ARC
 		break;
 	    }
 
-	}while (char_pressed != '\n');
+	}
+	while (char_pressed != '\n');
 	c.clear ();
 
 	return (box_at);
@@ -907,6 +909,216 @@ public class SAO_ARC
 	c.setColor (Color.gray);
 	c.fillRect ((x + 10), (y + 10), 200, 80);
 	c.setColor (Color.black);
+    }
+
+
+    public static boolean inventory_check ()
+    {
+	boolean is_it_saved = true;
+
+	Color light_blue = new Color (0, 191, 255);
+
+	Font largest_letters = new Font ("MingLiU", Font.BOLD, 30);
+	
+	Font letters_the_size_in_saving = new Font ("MingLiU", Font.BOLD, 100);
+
+	Font title_screen = new Font ("Bauhaus 93", Font.ITALIC, 40);
+
+	Font small_letters = new Font ("MingLiU", Font.PLAIN, 15);
+
+	Font inventory_letters = new Font ("MingLiU", Font.PLAIN, 20);
+	
+	Font selected_inventory = new Font ("MingLiU", Font.BOLD, 20);
+
+	char key_pressed;
+
+	do
+	{
+	    c.setFont (largest_letters);
+	    c.drawString ("Inventory", 220, 40);
+
+	    c.setFont (small_letters);
+	    c.drawString ("Press '=' to exit", 507, 15);
+	    c.drawString ("Press 'E' to delete", 507, 30);
+	    c.drawString ("Press 'R' to use", 507, 45);
+
+	    c.setFont (inventory_letters);
+
+	    int y = 100;
+
+	    for (int i = 0 ; i < 10 ; i++)
+	    {
+		c.drawString ("" + gen_weapon_name (character_gear [i]), 180, y); //Prints weapon names
+		y += 40;
+	    }
+	    
+	    c.setFont (selected_inventory);
+	    c.drawString ("Selected Weapon:", 0, 100);
+	    c.drawString ("Selected Armour:", 0, 140);
+
+	    int zeros_in_inventory = 0;
+
+	    for (int i = 0 ; i < character_gear.length ; i++) ///tells how many zeros there are so you cant go to something that doesnt exist
+	    {
+		if (character_gear [i] == 0)
+		{
+		    zeros_in_inventory++;
+		}
+	    }
+
+	    int selected = 0;
+	    int p = 80; //Text box position
+
+	    do
+	    {
+		draw_selection_box_no_fill (175, (p + (40 * selected)));
+		key_pressed = c.getChar ();
+		clear_selection_box (175, (p + (40 * selected)));
+
+		if (key_pressed == 'w' && selected == 0) //Cases of nothing happening
+		{
+		}
+
+		else if (key_pressed == 's' && selected == (9 - zeros_in_inventory))  //Cases of nothing happening && to catch the bottom
+		{
+		}
+
+		else if (key_pressed == 'w') //Move up
+		{
+		    selected--;
+		}
+
+		else if (key_pressed == 's') //Move down-
+		{
+		    selected++;
+		}
+
+	    }
+	    while (key_pressed != '=' && key_pressed != 'e' && key_pressed != 'r');
+
+	    draw_selection_box_no_fill (145, (p + (40 * selected)));
+
+	    if (key_pressed == 'e') //Deleting
+	    {
+		if (selected != 0 && selected != 1) //YOU Cant delete weapons you are useing!
+		{
+		    c.clear ();
+		    c.drawString ("Are you sure you want to delete this?", 200, 130);
+
+		    draw_selected_box_2 (230, 220);
+		    draw_box_2 (230, 350);
+
+		    c.setFont (title_screen);
+		    c.drawString ("Yes", 305, 285);
+		    c.drawString ("No", 310, 415);
+
+		    int location = 0;
+		    char item_select_location;
+
+		    do
+		    {
+			item_select_location = c.getChar ();
+
+			if (location == 0)
+			{
+			    if (item_select_location == 'w' || item_select_location == 's')
+			    {
+				draw_box_2 (230, 220);
+				draw_selected_box_2 (230, 350);
+				location = 1;
+
+			    }
+			}
+
+			else if (location == 1)
+			{
+			    if (item_select_location == 'w' || item_select_location == 's')
+			    {
+				draw_selected_box_2 (230, 220);
+				draw_box_2 (230, 350);
+				location = 0;
+			    }
+			}
+			c.drawString ("Yes", 305, 285);
+			c.drawString ("No", 310, 415);
+
+		    }
+		    while (item_select_location != '\n');
+
+		    c.clear ();
+
+		    if (item_select_location == 1) //If the say no go back
+		    {
+		    }
+
+		    else//they say yes
+		    {
+			character_gear [selected] = 0;//Remove the item
+			
+			int last_item;
+			
+			for (last_item = character_gear.length - 1; last_item > -1; last_item--)//Finds last item on the list
+			{
+			    if (character_gear [last_item] != 0)
+			    {
+				break;
+			    }
+			}
+			
+			if (selected != 9 && last_item != 1)//nothing extra needed if there is only the last deleted or if there are only 2 items left.
+			{
+			    if (character_gear [selected + 1] != 0)//the next number after isnt 0.
+			    {
+				character_gear [selected] = character_gear [last_item];//Makes the deleted item the last item on the list
+				character_gear [last_item] = 0;//makes the last item on the list blank
+			    }
+			}
+			
+			else//nothing happens if above if is true
+			{
+			    character_gear [selected] = 0;
+			}
+			
+			is_it_saved = false;
+		    }//end of player allows to delete
+		}//end of the if you can delete
+		
+		else//You cant delete selected items
+		{
+		    c.clear ();
+		    c.setFont (letters_the_size_in_saving);
+		    c.setColor (Color.red);
+		    c.drawString ("You can't", 100, 150);
+		    c.drawString ("Delete this!", 0, 250);
+		    c.setColor (Color.black);
+		    delay (3000);
+		}
+	    }
+
+
+	    else if (key_pressed == 'r') //Making weapon used
+	    {
+		int temp_weapon_store = character_gear [selected];//Stores the selected item in a seperate variable so that is can be replaced
+		
+		if (character_gear [selected] > 0 && character_gear [selected] <= 17)//IF YOU A RELACING A WEAPON
+		{
+		    character_gear [selected] = character_gear [0];// puts the used to me active item into the selected's spot (WEAPON)
+		    character_gear [0] = temp_weapon_store;//The selected item becomes the new active (WEAPON)
+		}
+		
+		else//YOU ARE REPLACING AN ARMOUR
+		{
+		    character_gear [selected] = character_gear [1];// puts the used to me active item into the selected's spot (ARMOR)
+		    character_gear [1] = temp_weapon_store;//The selected item becomes the new active (ARMOUR)
+		}
+		is_it_saved = false;//Needs to save
+	    }//Making selected weapon used
+	    
+	    c.clear ();
+
+	}while (key_pressed != '=');
+
+	return (is_it_saved);
     }
 
 
@@ -941,13 +1153,14 @@ public class SAO_ARC
 	c.clear ();
     }
 
+
     public static void look_at_stats ()
     {
-	c.clear ();    
-    
+	c.clear ();
+
 	Font stats = new Font ("MingLiU", Font.PLAIN, 18);
 	c.setFont (stats);
-	
+
 	c.drawString ("" + player_name, 200, 20);
 	c.drawString ("Level: " + level, 1, 40);
 	c.drawString ("Health: " + health, 1, 60);
@@ -956,81 +1169,83 @@ public class SAO_ARC
 	c.drawString ("Evade Rate: " + evasion + "%", 1, 120);
 	c.drawString ("XP: " + xp, 1, 140);
 	c.drawString ("XP to next level: " + (xp_to_next_level - xp), 1, 160);
-	
+
 	c.drawString ("Press any key to go back.", 150, 200);
 	c.getChar ();
 
     }
-    
+
+
     public static boolean cheat_page ()
     {
 	String code;
 	boolean save = false;
-	
-	c.clear ();    
-    
+
+	c.clear ();
+
 	Font stats = new Font ("MingLiU", Font.PLAIN, 18);
 	c.setFont (stats);
 	Font largest_letters = new Font ("MingLiU", Font.BOLD, 100);
-	
+
 	c.drawString ("Enter your cheat code", 150, 20);
 	c.setCursor (5, 37);
 	code = c.readString ();
-	
-	if (code.equals ("CheaterLevel=") )
+
+	if (code.equals ("CheaterLevel="))
 	{
 	    int level_cheater;
 	    int temp_level = level;
-	    
+
 	    do
 	    {
 		c.clear ();
 		c.drawString ("Enter the level that you want to make yourself", 100, 20);
 		c.setCursor (5, 37);
 		level_cheater = c.readInt ();
-	    }while (level_cheater > 99);
-	    
-	    for (int i = 1; i < (level_cheater - temp_level + 1); i++)
+	    }
+	    while (level_cheater > 99);
+
+	    for (int i = 1 ; i < (level_cheater - temp_level + 1) ; i++)
 	    {
-		level += 1;//ADDS LEVEL
-		xp_to_next_level += 100 + (40 * (level - 1) );//GENERATES NEW AMOUNT OF XP NEEDED
-		strength += ( (int) (Math.random() * (5) ) + 5) * level;
-		defence += ( (int) (Math.random() * (4) ) + 4) * level;
-		health += ( (int) (Math.random() * (2) ) + 8) * level;
+		level += 1; //ADDS LEVEL
+		xp_to_next_level += 100 + (40 * (level - 1)); //GENERATES NEW AMOUNT OF XP NEEDED
+		strength += ((int) (Math.random () * (5)) + 5) * level;
+		defence += ((int) (Math.random () * (4)) + 4) * level;
+		health += ((int) (Math.random () * (2)) + 8) * level;
 		evasion += 0.2;
-	    }//FOR
+	    } //FOR
 	    save = false;
-	    
+
 	    c.setFont (largest_letters);
 	    c.setColor (Color.red);
 	    c.drawString ("CHEATED", 50, 250);
 	    c.setColor (Color.black);
 	    delay (500);
-	}//IF
-	
-	else if (code.equals ("CheaterFinalBattle") )
+	} //IF
+
+	else if (code.equals ("CheaterFinalBattle"))
 	{
 	    int temp_level = level;
-	    
-	    for (int i = 1; i < 100; i++)
+
+	    for (int i = 1 ; i < 100 ; i++)
 	    {
-		level += 1;//ADDS LEVEL
-		xp_to_next_level += 100 + (40 * (level - 1) );//GENERATES NEW AMOUNT OF XP NEEDED
-		strength += ( (int) (Math.random() * (5) ) + 5) * level;
-		defence += ( (int) (Math.random() * (4) ) + 4) * level;
-		health += ( (int) (Math.random() * (2) ) + 8) * level;
+		level += 1; //ADDS LEVEL
+		xp_to_next_level += 100 + (40 * (level - 1)); //GENERATES NEW AMOUNT OF XP NEEDED
+		strength += ((int) (Math.random () * (5)) + 5) * level;
+		defence += ((int) (Math.random () * (4)) + 4) * level;
+		health += ((int) (Math.random () * (2)) + 8) * level;
 		evasion += 0.2;
-	    }//FOR 
+	    } //FOR
 	    godfree_fight = true;
 	    save = false;
-	    
+
 	    c.setFont (largest_letters);
 	    c.setColor (Color.red);
 	    c.drawString ("CHEATED", 50, 250);
 	    c.setColor (Color.black);
 	    delay (500);
 	}
-	
+
 	else
 	{
 	    c.setFont (largest_letters);
@@ -1040,10 +1255,11 @@ public class SAO_ARC
 	    delay (500);
 	    save = true;
 	}
-	
+
 	return (save);
     }
-    
+
+
     public static void save_game () throws IOException
     {
 	PrintWriter input_save_data = new PrintWriter (new FileWriter (player_name + ".txt"));
@@ -1057,11 +1273,11 @@ public class SAO_ARC
 	input_save_data.println (xp);
 	input_save_data.println (xp_to_next_level);
 	input_save_data.println (godfree_fight);
-	
-	for (int i = 0; i < character_gear.length; i++)
-	    {
-		input_save_data.println (character_gear [i]);
-	    }
+
+	for (int i = 0 ; i < character_gear.length ; i++)
+	{
+	    input_save_data.println (character_gear [i]);
+	}
 
 	input_save_data.close ();
     }
@@ -1087,22 +1303,22 @@ public class SAO_ARC
 	int mobs_weapon = 0;
 	int mobs_armour = 0;
 	boolean winner = false;
-	
+
 	Color light_blue = new Color (0, 191, 255);
-	
+
 	Font largest_letters = new Font ("MingLiU", Font.BOLD, 20);
 	c.setFont (largest_letters);
-	
+
 	Font small_letters = new Font ("MingLiU", Font.PLAIN, 15);
 	Font inventory_letters = new Font ("MingLiU", Font.PLAIN, 20);
 
 	mob_rarity = (int) (Math.random () * (99) + 1); //Generates a random mob rarity                   //17 Common, 12 uncommon, 7 rares, 4 Legendaries
-	
+
 	if (godfree_fight == true)
 	{
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////IF YOU FIGHT GODREE
+	    /////////////////////////////////////////////////////////////////////////////////////////////////////////IF YOU FIGHT GODREE
 	}
-	
+
 	else if (level >= 50)
 	{
 	    if ((mob_rarity >= 1) && (mob_rarity <= 50))   //50% Chance, generates common
@@ -1110,7 +1326,7 @@ public class SAO_ARC
 		mob_type = (int) (Math.random () * (16) + 1); //Generates 1 - 17
 		mobs_weapon = (int) (Math.random () * 7) + 1; //Generates 1 - 7
 		mobs_armour = (int) (Math.random () * 5) + 18; //Generates 18 - 22
-		
+
 	    }
 
 	    else if ((mob_rarity >= 51) && (mob_rarity <= 80))   //30% chance of uncommon
@@ -1124,14 +1340,14 @@ public class SAO_ARC
 	    {
 		mob_type = (int) (Math.random () * (6) + 30); //Generates 30 - 36
 		mobs_weapon = (int) (Math.random () * 3) + 13; //Generates 13 - 15
-		mobs_armour = (int) (Math.random () * 1) + 27; //Generates 27 - 28            
+		mobs_armour = (int) (Math.random () * 1) + 27; //Generates 27 - 28
 	    }
 
 	    else if ((mob_rarity >= 96) && (mob_rarity <= 100))  //LEGENARY GENERATED 5%
 	    {
 		mob_type = (int) (Math.random () * (3) + 37); //Generates 37 - 40
 		mobs_weapon = (int) (Math.random () * 2) + 16;
-		mobs_armour = 29;// Gives 29
+		mobs_armour = 29; // Gives 29
 	    }
 	} //if
 
@@ -1155,14 +1371,14 @@ public class SAO_ARC
 	    {
 		mob_type = (int) (Math.random () * (6) + 30); //Generates 30 - 36
 		mobs_weapon = (int) (Math.random () * 3) + 13; //Generates 13 - 15
-		mobs_armour = (int) (Math.random () * 1) + 27; //Generates 27 - 28 
+		mobs_armour = (int) (Math.random () * 1) + 27; //Generates 27 - 28
 	    }
 
 	} //ELSE IF
 
 	mob_name = set_mob_name (mob_type);
 	mob_stats = mob_stat_set (mob_type, level);
-	
+
 	mob_stats [1] += mobs_armour;
 	mob_stats [2] += mobs_weapon;
 
@@ -1172,46 +1388,46 @@ public class SAO_ARC
 	c.println ("Strength: " + mob_stats [2] + "\t\t " + strength);
 	c.println ("Evade: " + mob_stats [3] + "\t\t " + evasion);
 	c.println ("XP: " + mob_stats [4]);
-	c.println (add_weapon (character_gear [0]) );
-	c.println (add_weapon (character_gear [1]) );
+	c.println (add_weapon (character_gear [0]));
+	c.println (add_weapon (character_gear [1]));
 
 	c.getChar ();
-	
+
 	c.setTextBackgroundColor (Color.white);
 	c.clear ();
 
-	winner = fight ();// Returns if player won the fight and gets a drop
-	
+	winner = fight (); // Returns if player won the fight and gets a drop
+
 	c.setTextBackgroundColor (light_blue);
 	c.clear ();
-	
+
 	char item_select_location;
 	int location = 0;
-	
+
 	c.setColor (Color.black);
 	Font title_screen = new Font ("Bauhaus 93", Font.ITALIC, 40);
-	
-	if (winner == true)//If battle is won
+
+	if (winner == true) //If battle is won
 	{
-	    if ( ( (int) (Math.random () * 100) + 1) <= 40)// 30% chance of a drop
+	    if (((int) (Math.random () * 100) + 1) <= 40)  // 30% chance of a drop
 	    {
-		if ( ( (int) (Math.random () * 100) + 1) <= 70)// 70% chance of a weapon
+		if (((int) (Math.random () * 100) + 1) <= 70)  // 70% chance of a weapon
 		{
 		    c.drawString ("You got a drop! It is:", 200, 130);
 		    c.drawString ("" + (gen_weapon_name (mobs_weapon)), 230, 150);
 		    c.drawString ("Do you want to keep this?", 190, 170);
-		    
+
 		    draw_selected_box_2 (230, 220);
 		    draw_box_2 (230, 350);
-		    
+
 		    c.setFont (title_screen);
 		    c.drawString ("Yes", 305, 285);
 		    c.drawString ("No", 310, 415);
-		    
+
 		    do
 		    {
 			item_select_location = c.getChar ();
-			
+
 			if (location == 0)
 			{
 			    if (item_select_location == 'w' || item_select_location == 's')
@@ -1219,10 +1435,10 @@ public class SAO_ARC
 				draw_box_2 (230, 220);
 				draw_selected_box_2 (230, 350);
 				location = 1;
-				
+
 			    }
 			}
-			
+
 			else if (location == 1)
 			{
 			    if (item_select_location == 'w' || item_select_location == 's')
@@ -1234,110 +1450,112 @@ public class SAO_ARC
 			}
 			c.drawString ("Yes", 305, 285);
 			c.drawString ("No", 310, 415);
-			
-		    }while (item_select_location != '\n');
-		    
-		    if (location == 0)////if yes
+
+		    }
+		    while (item_select_location != '\n');
+
+		    if (location == 0) ////if yes
 		    {
 			c.clear ();
 			if (character_gear [9] == 0)
 			{
 			    int i;
-			    for (i = 0; i < character_gear.length; i++) //Finds the first open spot thats open because there is nothing in spot 9
+			    for (i = 0 ; i < character_gear.length ; i++) //Finds the first open spot thats open because there is nothing in spot 9
 			    {
 				if (character_gear [i] == 0)
 				{
 				    break;
-				}//if
-			    }//for
-			    
+				} //if
+			    } //for
+
 			    character_gear [i] = mobs_weapon;
-			
+
 			    c.drawString ("Item added to inventory!", 100, 100);
 			    delay (5000);
-			}//if not full
-			
-			else//////////////////IF INVENTORY IS FULL
+			} //if not full
+
+			else //////////////////IF INVENTORY IS FULL
 			{
 			    c.setFont (largest_letters);
 			    c.drawString ("Your inventory is full.", 195, 30);
 			    c.drawString ("Please choose a item to delete.", 150, 50);
-			    
+
 			    c.setFont (small_letters);
-			    c.drawString ("Press '=' to cancel", 510, 15);
-			    
+			    c.drawString ("Press '=' to cancel", 508, 15);
+
 			    c.setFont (inventory_letters);
-			    
+
 			    int y = 100;
-	
-			    for (int i = 0; i < 10; i++)
+
+			    for (int i = 0 ; i < 10 ; i++)
 			    {
-				c.drawString ("" + gen_weapon_name (character_gear [i]), 150, y );
+				c.drawString ("" + gen_weapon_name (character_gear [i]), 150, y);
 				y += 40;
 			    }
-	
+
 			    int deletion_selected = 0;
 			    char key_pressed_delete;
 			    int p = 80; //Text box position
-	
+
 			    do
 			    {
-				draw_selection_box_no_fill (145, (p + (40 * deletion_selected) ) );
+				draw_selection_box_no_fill (145, (p + (40 * deletion_selected)));
 				key_pressed_delete = c.getChar ();
-				clear_selection_box (145, (p + (40 * deletion_selected) ) );
-	    
-				if (key_pressed_delete == 'w' && deletion_selected == 0)//Cases of nothing happening
+				clear_selection_box (145, (p + (40 * deletion_selected)));
+
+				if (key_pressed_delete == 'w' && deletion_selected == 0) //Cases of nothing happening
 				{
 				}
-	    
-				else if (key_pressed_delete == 's' && deletion_selected == 9)//Cases of nothing happening
+
+				else if (key_pressed_delete == 's' && deletion_selected == 9) //Cases of nothing happening
 				{
 				}
-	    
+
 				else if (key_pressed_delete == 'w')
 				{
-				deletion_selected --;
+				    deletion_selected--;
 				}
-	    
+
 				else if (key_pressed_delete == 's')
 				{
-				deletion_selected ++;
+				    deletion_selected++;
 				}
-	    
-			    }while (key_pressed_delete != '\n' && key_pressed_delete != '=');
-	
-			    draw_selection_box_no_fill (145, (p + (40 * deletion_selected) ) );
-	
-			    if (key_pressed_delete == '=')//exiting
+
+			    }
+			    while (key_pressed_delete != '\n' && key_pressed_delete != '=');
+
+			    draw_selection_box_no_fill (145, (p + (40 * deletion_selected)));
+
+			    if (key_pressed_delete == '=') //exiting
 			    {
 			    }
-	
+
 			    else if (key_pressed_delete == '\n')
 			    {
 				character_gear [deletion_selected] = mobs_weapon;
 			    }
 			}
-		    }//yes
+		    } //yes
 
 		}
-		
-		else// 30% chance of an armour
+
+		else // 30% chance of an armour
 		{
 		    c.drawString ("You got a drop! It is:", 200, 130);
 		    c.drawString ("" + (gen_weapon_name (mobs_armour)), 230, 150);
 		    c.drawString ("Do you want to keep this?", 190, 170);
-		    
+
 		    draw_selected_box_2 (230, 220);
 		    draw_box_2 (230, 350);
-		    
+
 		    c.setFont (title_screen);
 		    c.drawString ("Yes", 305, 285);
 		    c.drawString ("No", 310, 415);
-		    
+
 		    do
 		    {
 			item_select_location = c.getChar ();
-			
+
 			if (location == 0)
 			{
 			    if (item_select_location == 'w' || item_select_location == 's')
@@ -1345,10 +1563,10 @@ public class SAO_ARC
 				draw_box_2 (230, 220);
 				draw_selected_box_2 (230, 350);
 				location = 1;
-				
+
 			    }
 			}
-			
+
 			else if (location == 1)
 			{
 			    if (item_select_location == 'w' || item_select_location == 's')
@@ -1360,123 +1578,127 @@ public class SAO_ARC
 			}
 			c.drawString ("Yes", 305, 285);
 			c.drawString ("No", 310, 415);
-			
-		    }while (item_select_location != '\n');
-		    
+
+		    }
+		    while (item_select_location != '\n');
+
 		    if (location == 0)
 		    {
 			c.clear ();
 			if (character_gear [9] == 0)
 			{
 			    int i;
-			    for (i = 0; i < character_gear.length; i++) //Finds the first open spot thats open because there is nothing in spot 9
+			    for (i = 0 ; i < character_gear.length ; i++) //Finds the first open spot thats open because there is nothing in spot 9
 			    {
 				if (character_gear [i] == 0)
 				{
 				    break;
-				}//if
-			    }//for
-			    
+				} //if
+			    } //for
+
 			    character_gear [i] = mobs_armour;
-			
+
 			    c.drawString ("Item added to inventory!", 100, 100);
 			    delay (5000);
-			}//if not full 
-			
-			else//////////////////IF INVENTORY IS FULL
+			} //if not full
+
+			else //////////////////IF INVENTORY IS FULL
 			{
 			    c.setFont (largest_letters);
 			    c.drawString ("Your inventory is full.", 195, 30);
 			    c.drawString ("Please choose a item to delete.", 150, 50);
-			    
+
 			    c.setFont (small_letters);
-			    c.drawString ("Press '=' to cancel", 510, 15);
-			    
+			    c.drawString ("Press '=' to cancel", 508, 15);
+
 			    c.setFont (inventory_letters);
-			    
+
 			    int y = 100;
-	
-			    for (int i = 0; i < 10; i++)
+
+			    for (int i = 0 ; i < 10 ; i++)
 			    {
-				c.drawString ("" + gen_weapon_name (character_gear [i]), 150, y );
+				c.drawString ("" + gen_weapon_name (character_gear [i]), 150, y);
 				y += 40;
 			    }
-	
+
 			    int deletion_selected = 0;
 			    char key_pressed_delete;
 			    int p = 80; //Text box position
-	
+
 			    do
 			    {
-				draw_selection_box_no_fill (145, (p + (40 * deletion_selected) ) );
+				draw_selection_box_no_fill (145, (p + (40 * deletion_selected)));
 				key_pressed_delete = c.getChar ();
-				clear_selection_box (145, (p + (40 * deletion_selected) ) );
-	    
-				if (key_pressed_delete == 'w' && deletion_selected == 0)//Cases of nothing happening
+				clear_selection_box (145, (p + (40 * deletion_selected)));
+
+				if (key_pressed_delete == 'w' && deletion_selected == 0) //Cases of nothing happening
 				{
 				}
-	    
-				else if (key_pressed_delete == 's' && deletion_selected == 9)//Cases of nothing happening
+
+				else if (key_pressed_delete == 's' && deletion_selected == 9) //Cases of nothing happening
 				{
 				}
-	    
+
 				else if (key_pressed_delete == 'w')
 				{
-				deletion_selected --;
+				    deletion_selected--;
 				}
-	    
+
 				else if (key_pressed_delete == 's')
 				{
-				deletion_selected ++;
+				    deletion_selected++;
 				}
-	    
-			    }while (key_pressed_delete != '\n' && key_pressed_delete != '=');
-	
-			    draw_selection_box_no_fill (145, (p + (40 * deletion_selected) ) );
-	
-			    if (key_pressed_delete == '=')//exiting
+
+			    }
+			    while (key_pressed_delete != '\n' && key_pressed_delete != '=');
+
+			    draw_selection_box_no_fill (145, (p + (40 * deletion_selected)));
+
+			    if (key_pressed_delete == '=') //exiting
 			    {
 			    }
-	
+
 			    else if (key_pressed_delete == '\n')
 			    {
 				character_gear [deletion_selected] = mobs_armour;
 			    }
-			}//Inventory is full
-			
-		    }//yes
-		    
-		}//armour
-		
-	    }//Get Drop IF
-	    
-	    else//There is no drop
+			} //Inventory is full
+
+		    } //yes
+
+		} //armour
+
+	    } //Get Drop IF
+
+	    else //There is no drop
 	    {
 		c.drawString ("Sorry, there was no drop", 200, 230);
 		c.drawString ("Press any key to continue", 195, 250);
 		c.getChar ();
-	    }// No Drop Else
-	}//Battle winner
-    }//method
+	    } // No Drop Else
+	} //Battle winner
+    } //method
 
-    
+
     public static void draw_selection_box_no_fill (int x, int y)
     {
 	c.setColor (Color.black);
 	c.drawRect (x, y, 410, 30);
-	c.drawRect ( (x + 1), (y + 1), 408, 28);
-	c.drawRect ( (x + 2), (y + 2), 406, 26);
+	c.drawRect ((x + 1), (y + 1), 408, 28);
+	c.drawRect ((x + 2), (y + 2), 406, 26);
     }
-    
+
+
     public static void clear_selection_box (int x, int y)
     {
 	Color light_blue = new Color (0, 191, 255);
 	c.setColor (light_blue);
 	c.drawRect (x, y, 410, 30);
-	c.drawRect ( (x + 1), (y + 1), 408, 28);
-	c.drawRect ( (x + 2), (y + 2), 406, 26);
+	c.drawRect ((x + 1), (y + 1), 408, 28);
+	c.drawRect ((x + 2), (y + 2), 406, 26);
 	c.setColor (Color.black);
     }
+
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                                                    //BATTLE//                                                                           //
@@ -1487,8 +1709,8 @@ public class SAO_ARC
 	int player_choice;
 	int mob_choice;
 	int player_fight_health = health;                                                                ////////////////////////////
-	int fight_strength = strength + (add_weapon (character_gear [0]) );                              //PERFORM MODIFICATIONS TO//
-	int fight_defence = defence + (add_weapon (character_gear [1]) );                                //      STATS HERE        //
+	int fight_strength = strength + (add_weapon (character_gear [0]));                               //PERFORM MODIFICATIONS TO//
+	int fight_defence = defence + (add_weapon (character_gear [1]));                                 //      STATS HERE        //
 	double fight_evasion = evasion;                                                                  ////////////////////////////
 	int mob_health = (int) mob_stats [0];
 	int mob_evade_roll;
@@ -1499,7 +1721,7 @@ public class SAO_ARC
 
 	do
 	{
-	
+
 	    ////////////////////////////////////////////THIS IS WHERE HEALTHBARS GO
 	    do
 	    {
@@ -1508,7 +1730,7 @@ public class SAO_ARC
 		int space_problem = 71 - (player_name.length () + 5);  //PUTS THE NAME ON THE RIGHT SPOT ON THE LINE, THEN LEAVES SPACE FOR 5 NUMBERS OF HP
 
 		c.setCursor (18, space_problem);
-		c.print (player_name + " Health: " + player_fight_health);//////////////MAKE INTO BOXED MOVEMENT, IN A METHOD
+		c.print (player_name + " Health: " + player_fight_health); //////////////MAKE INTO BOXED MOVEMENT, IN A METHOD
 
 		c.setCursor (20, 1);
 		c.println ("1: Slash   2: Stab");
@@ -1516,7 +1738,8 @@ public class SAO_ARC
 		player_choice = c.readInt ();
 
 
-	    }while (!(player_choice == 1) && (player_choice == 2) && (player_choice == 3) && (player_choice == 4) && (player_choice == 5));
+	    }
+	    while (!(player_choice == 1) && (player_choice == 2) && (player_choice == 3) && (player_choice == 4) && (player_choice == 5));
 
 	    if (player_choice == 5)
 	    {
@@ -1770,22 +1993,22 @@ public class SAO_ARC
 
 	}
 	while ((player_fight_health > 0) && (mob_health > 0) && (player_choice != 5));
-	
+
 	Color light_blue = new Color (0, 191, 255);
 	c.setTextBackgroundColor (light_blue);
 	c.clear ();
-	
+
 	Font largest_letters = new Font ("MingLiU", Font.BOLD, 20);
 	c.setFont (largest_letters);
 
 	if (player_fight_health > 0 && mob_health <= 0)
 	{
-	    c.drawString ("You swing your sword, hitting the enemy hard", 100, 100); 
+	    c.drawString ("You swing your sword, hitting the enemy hard", 100, 100);
 	    c.drawString ("enough so that it is killed!", 180, 122);
 	    killer = true;
 	}
 
-	else if (player_fight_health <= 0 && mob_health > 0)//IF YOU DIE
+	else if (player_fight_health <= 0 && mob_health > 0) //IF YOU DIE
 	{
 	    if (player_choice == 5 || player_choice == 10)
 	    {
@@ -1815,309 +2038,374 @@ public class SAO_ARC
 	    death = true;
 	}
 
-	else if (player_choice == 5)//IF YOU FLEE
+	else if (player_choice == 5) //IF YOU FLEE
 	{
 	    c.drawString ("You get away safely", 230, 100);
 	    c.drawString ("Press any key to return", 200, 122);
 	}
 
-	else//SURVIVE WITH 1 HP
+	else //SURVIVE WITH 1 HP
 	{
 	    c.drawString ("You have barley survived the fight, almost dieing on", 40, 100);
 	    c.drawString ("the final swing. Be more careful next time.", 90, 122);
 	    killer = true;
 	}
-	
-	
-	if (killer == true)//If you get the kill
-	{   
-	    if ( (level == 99) && (xp_to_next_level <= (xp + mob_stats [4]) ) ) //if your next fight is godfree
+
+
+	if (killer == true) //If you get the kill
+	{
+	    if ((level == 99) && (xp_to_next_level <= (xp + mob_stats [4])))    //if your next fight is godfree
 	    {
 		c.drawString ("The next mob you fight will be the final boss, Godfree.", 20, 144);
 		godfree_fight = true;
 	    }
-	    
+
 	    else if (godfree_fight == true) ///////////GAME IS FINISHED, GODFREE HAS BEEN DEFEATED
 	    {
 		c.drawString ("Press any key to finish", 200, 144);
 		finished_game = true;
 	    }
-	    
+
 	    else
-	    {   
+	    {
 		xp += mob_stats [4];
 		c.drawString ("You have gained " + mob_stats [4] + " XP.", 200, 144);
-		
+
 		if (xp >= xp_to_next_level)
-		{   
-		    level += 1;//ADDS LEVEL
+		{
+		    level += 1; //ADDS LEVEL
 		    xp = 0 + (xp - xp_to_next_level);
-		    xp_to_next_level += 100 + (40 * (level - 1) );//GENERATES NEW AMOUNT OF XP NEEDED
-		    strength += ( (int) (Math.random() * (5) ) + 5) * level;
-		    defence += ( (int) (Math.random() * (4) ) + 4) * level;
-		    health += ( (int) (Math.random() * (2) ) + 8) * level;
+		    xp_to_next_level += 100 + (40 * (level - 1)); //GENERATES NEW AMOUNT OF XP NEEDED
+		    strength += ((int) (Math.random () * (5)) + 5) * level;
+		    defence += ((int) (Math.random () * (4)) + 4) * level;
+		    health += ((int) (Math.random () * (2)) + 8) * level;
 		    evasion += 0.2;
 		    c.drawString ("You have leveled up to level " + level + "!", 150, 166);
 		}
 	    }
-	    
+
 	    c.drawString ("Press any key to loot the mob.", 170, 210);
 	    c.getChar ();
 	}
 	return (killer);
     }
-    
+
+
     public static String gen_weapon_name (int number)
     {
 	String name = "Excalibur";
-	
+
 	switch (number)
 	{
-	    case 1:{
-		name = "Standard Rapier";
-		break;
-	    }
-	    case 2:{
-		name = "Standard Shortsword";
-		break;
-	    }
-	    case 3:{
-		name = "Standard Claymore";
-		break;
-	    }
-	    case 4:{
-		name = "Standard Longsword";
-		break;
-	    }
-	    case 5:{
-		name = "Standard One-Handed Sword";
-		break;
-	    }
-	    case 6:{
-		name = "Basic Kunai";
-		break;
-	    }
-	    case 7:{
-		name = "Standard Samurai Sword";
-		break;
-	    }
-	    case 8:{
-		name = "Greater Rapier";
-		break;
-	    }
-	    case 9:{
-		name = "Greater One-Handed Sword";
-		break;
-	    }
-	    case 10:{
-		name = "Greater Samurai Sword";
-		break;
-	    }
-	    case 11:{
-		name = "Greater Claymore";
-		break;
-	    }
-	    case 12:{
-		name = "Greater Longsword";
-		break;
-	    }
-	    case 13:{
-		name = "Excellent Claymore of the Blood Oath";
-		break;
-	    }
-	    case 14:{
-		name = "Samurai Sword of the Moonlight Cats";
-		break;
-	    }
-	    case 15:{
-		name = "Lambent Light";
-		break;
-	    }
-	    case 16:{
-		name = "Elucidator";
-		break;
-	    }
-	    case 17:{
-		name = "Dark Repulser";
-		break;
-	    }
-	    case 18:{
-		name = "Broken Chainmail";
-		break;
-	    }
-	    case 19:{
-		name = "Villagers Clothes";
-		break;
-	    }
-	    case 20:{
-		name = "Tatterd Leather Armour";
-		break;
-	    }
-	    case 21:{
-		name = "Standard Chainmail";
-		break;
-	    }
-	    case 22:{
-		name = "Standard Leather Armour";
-		break;
-	    }
-	    case 23:{
-		name = "Reinforced Villagers Clothes";
-		break;
-	    }
-	    case 24:{
-		name = "Strengthened Leather Armour";
-		break;
-	    }
-	    case 25:{
-		name = "Strengthened Chainmail";
-		break;
-	    }
-	    case 26:{
-		name = "Standrad Plate Mail";
-		break;
-	    }
-	    case 27:{
-		name = "Taloned Plate Mail of the Moonlight Cats";
-		break;
-	    }
-	    case 28:{
-		name = "Heavy Armour of the Blood Oath";
-		break;
-	    }
-	    case 29:{
-		name = "The Blackwyrm Coat";
-		break;
-	    }
+	    case 0:
+		{
+		    name = "";
+		    break;
+		}
+	    case 1:
+		{
+		    name = "Standard Rapier";
+		    break;
+		}
+	    case 2:
+		{
+		    name = "Standard Shortsword";
+		    break;
+		}
+	    case 3:
+		{
+		    name = "Standard Claymore";
+		    break;
+		}
+	    case 4:
+		{
+		    name = "Standard Longsword";
+		    break;
+		}
+	    case 5:
+		{
+		    name = "Standard One-Handed Sword";
+		    break;
+		}
+	    case 6:
+		{
+		    name = "Basic Kunai";
+		    break;
+		}
+	    case 7:
+		{
+		    name = "Standard Samurai Sword";
+		    break;
+		}
+	    case 8:
+		{
+		    name = "Greater Rapier";
+		    break;
+		}
+	    case 9:
+		{
+		    name = "Greater One-Handed Sword";
+		    break;
+		}
+	    case 10:
+		{
+		    name = "Greater Samurai Sword";
+		    break;
+		}
+	    case 11:
+		{
+		    name = "Greater Claymore";
+		    break;
+		}
+	    case 12:
+		{
+		    name = "Greater Longsword";
+		    break;
+		}
+	    case 13:
+		{
+		    name = "Excellent Claymore of the Blood Oath";
+		    break;
+		}
+	    case 14:
+		{
+		    name = "Samurai Sword of the Moonlight Cats";
+		    break;
+		}
+	    case 15:
+		{
+		    name = "Lambent Light";
+		    break;
+		}
+	    case 16:
+		{
+		    name = "Elucidator";
+		    break;
+		}
+	    case 17:
+		{
+		    name = "Dark Repulser";
+		    break;
+		}
+	    case 18:
+		{
+		    name = "Broken Chainmail";
+		    break;
+		}
+	    case 19:
+		{
+		    name = "Villagers Clothes";
+		    break;
+		}
+	    case 20:
+		{
+		    name = "Tatterd Leather Armour";
+		    break;
+		}
+	    case 21:
+		{
+		    name = "Standard Chainmail";
+		    break;
+		}
+	    case 22:
+		{
+		    name = "Standard Leather Armour";
+		    break;
+		}
+	    case 23:
+		{
+		    name = "Reinforced Villagers Clothes";
+		    break;
+		}
+	    case 24:
+		{
+		    name = "Strengthened Leather Armour";
+		    break;
+		}
+	    case 25:
+		{
+		    name = "Strengthened Chainmail";
+		    break;
+		}
+	    case 26:
+		{
+		    name = "Standrad Plate Mail";
+		    break;
+		}
+	    case 27:
+		{
+		    name = "Taloned Plate Mail of the Moonlight Cats";
+		    break;
+		}
+	    case 28:
+		{
+		    name = "Heavy Armour of the Blood Oath";
+		    break;
+		}
+	    case 29:
+		{
+		    name = "The Blackwyrm Coat";
+		    break;
+		}
 	}
-	
+
 	return (name);
     }
-    
+
+
     public static int add_weapon (int number)
     {
 	int addition = 0;
-	
+
 	switch (number)
 	{
-	    case 1:{
-		addition = 2 * level;
-		break;
-	    }
-	    case 2:{
-		addition = 2 * level;
-		break;
-	    }
-	    case 3:{
-		addition = 2 * level;
-		break;
-	    }
-	    case 4:{
-		addition = 3 * level;
-		break;
-	    }
-	    case 5:{
-		addition = 3 * level;
-		break;
-	    }
-	    case 6:{
-		addition = 3 * level;
-		break;
-	    }
-	    case 7:{
-		addition = 4 * level;
-		break;
-	    }
-	    case 8:{
-		addition = 3 * level;
-		break;
-	    }
-	    case 9:{
-		addition = 3 * level;
-		break;
-	    }
-	    case 10:{
-		addition = 4 * level;
-		break;
-	    }
-	    case 11:{
-		addition = 4 * level;
-		break;
-	    }
-	    case 12:{
-		addition = 5 * level;
-		break;
-	    }
-	    case 13:{
-		addition = 6 * level;
-		break;
-	    }
-	    case 14:{
-		addition = 7 * level;
-		break;
-	    }
-	    case 15:{
-		addition = 8 * level;
-		break;
-	    }
-	    case 16:{
-		addition = 10 * level;
-		break;
-	    }
-	    case 17:{
-		addition = 11 * level;
-		break;
-	    }
-	    case 18:{
-		addition = 1 * level;
-		break;
-	    }
-	    case 19:{
-		addition = 1 * level;
-		break;
-	    }
-	    case 20:{
-		addition = 1 * level;
-		break;
-	    }
-	    case 21:{
-		addition = 2 * level;
-		break;
-	    }
-	    case 22:{
-		addition = 2 * level;
-		break;
-	    }
-	    case 23:{
-		addition = 2 * level;
-		break;
-	    }
-	    case 24:{
-		addition = 3 * level;
-		break;
-	    }
-	    case 25:{
-		addition = 3 * level;
-		break;
-	    }
-	    case 26:{
-		addition = 3 * level;
-		break;
-	    }
-	    case 27:{
-		addition = 4 * level;
-		break;
-	    }
-	    case 28:{
-		addition = 5 * level;
-		break;
-	    }
-	    case 29:{
-		addition = 7 * level;
-		break;
-	    }
+	    case 1:
+		{
+		    addition = 2 * level;
+		    break;
+		}
+	    case 2:
+		{
+		    addition = 2 * level;
+		    break;
+		}
+	    case 3:
+		{
+		    addition = 2 * level;
+		    break;
+		}
+	    case 4:
+		{
+		    addition = 3 * level;
+		    break;
+		}
+	    case 5:
+		{
+		    addition = 3 * level;
+		    break;
+		}
+	    case 6:
+		{
+		    addition = 3 * level;
+		    break;
+		}
+	    case 7:
+		{
+		    addition = 4 * level;
+		    break;
+		}
+	    case 8:
+		{
+		    addition = 3 * level;
+		    break;
+		}
+	    case 9:
+		{
+		    addition = 3 * level;
+		    break;
+		}
+	    case 10:
+		{
+		    addition = 4 * level;
+		    break;
+		}
+	    case 11:
+		{
+		    addition = 4 * level;
+		    break;
+		}
+	    case 12:
+		{
+		    addition = 5 * level;
+		    break;
+		}
+	    case 13:
+		{
+		    addition = 6 * level;
+		    break;
+		}
+	    case 14:
+		{
+		    addition = 7 * level;
+		    break;
+		}
+	    case 15:
+		{
+		    addition = 8 * level;
+		    break;
+		}
+	    case 16:
+		{
+		    addition = 10 * level;
+		    break;
+		}
+	    case 17:
+		{
+		    addition = 11 * level;
+		    break;
+		}
+	    case 18:
+		{
+		    addition = 1 * level;
+		    break;
+		}
+	    case 19:
+		{
+		    addition = 1 * level;
+		    break;
+		}
+	    case 20:
+		{
+		    addition = 1 * level;
+		    break;
+		}
+	    case 21:
+		{
+		    addition = 2 * level;
+		    break;
+		}
+	    case 22:
+		{
+		    addition = 2 * level;
+		    break;
+		}
+	    case 23:
+		{
+		    addition = 2 * level;
+		    break;
+		}
+	    case 24:
+		{
+		    addition = 3 * level;
+		    break;
+		}
+	    case 25:
+		{
+		    addition = 3 * level;
+		    break;
+		}
+	    case 26:
+		{
+		    addition = 3 * level;
+		    break;
+		}
+	    case 27:
+		{
+		    addition = 4 * level;
+		    break;
+		}
+	    case 28:
+		{
+		    addition = 5 * level;
+		    break;
+		}
+	    case 29:
+		{
+		    addition = 7 * level;
+		    break;
+		}
 	}
-	
+
 	return (addition);
     }
 
