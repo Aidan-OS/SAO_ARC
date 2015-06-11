@@ -1092,6 +1092,9 @@ public class SAO_ARC
 	
 	Font largest_letters = new Font ("MingLiU", Font.BOLD, 20);
 	c.setFont (largest_letters);
+	
+	Font small_letters = new Font ("MingLiU", Font.PLAIN, 15);
+	Font inventory_letters = new Font ("MingLiU", Font.PLAIN, 20);
 
 	mob_rarity = (int) (Math.random () * (99) + 1); //Generates a random mob rarity                   //17 Common, 12 uncommon, 7 rares, 4 Legendaries
 	
@@ -1190,7 +1193,7 @@ public class SAO_ARC
 	
 	if (winner == true)//If battle is won
 	{
-	    if ( ( (int) (Math.random () * 100) + 1) <= 30)// 30% chance of a drop
+	    if ( ( (int) (Math.random () * 100) + 1) <= 40)// 30% chance of a drop
 	    {
 		if ( ( (int) (Math.random () * 100) + 1) <= 70)// 70% chance of a weapon
 		{
@@ -1256,7 +1259,63 @@ public class SAO_ARC
 			
 			else//////////////////IF INVENTORY IS FULL
 			{
-			
+			    c.setFont (largest_letters);
+			    c.drawString ("Your inventory is full.", 195, 30);
+			    c.drawString ("Please choose a item to delete.", 150, 50);
+			    
+			    c.setFont (small_letters);
+			    c.drawString ("Press '=' to cancel", 510, 15);
+			    
+			    c.setFont (inventory_letters);
+			    
+			    int y = 100;
+	
+			    for (int i = 0; i < 10; i++)
+			    {
+				c.drawString ("" + gen_weapon_name (character_gear [i]), 150, y );
+				y += 40;
+			    }
+	
+			    int deletion_selected = 0;
+			    char key_pressed_delete;
+			    int p = 80; //Text box position
+	
+			    do
+			    {
+				draw_selection_box_no_fill (145, (p + (40 * deletion_selected) ) );
+				key_pressed_delete = c.getChar ();
+				clear_selection_box (145, (p + (40 * deletion_selected) ) );
+	    
+				if (key_pressed_delete == 'w' && deletion_selected == 0)//Cases of nothing happening
+				{
+				}
+	    
+				else if (key_pressed_delete == 's' && deletion_selected == 9)//Cases of nothing happening
+				{
+				}
+	    
+				else if (key_pressed_delete == 'w')
+				{
+				deletion_selected --;
+				}
+	    
+				else if (key_pressed_delete == 's')
+				{
+				deletion_selected ++;
+				}
+	    
+			    }while (key_pressed_delete != '\n' && key_pressed_delete != '=');
+	
+			    draw_selection_box_no_fill (145, (p + (40 * deletion_selected) ) );
+	
+			    if (key_pressed_delete == '=')//exiting
+			    {
+			    }
+	
+			    else if (key_pressed_delete == '\n')
+			    {
+				character_gear [deletion_selected] = mobs_weapon;
+			    }
 			}
 		    }//yes
 
@@ -1326,13 +1385,68 @@ public class SAO_ARC
 			
 			else//////////////////IF INVENTORY IS FULL
 			{
+			    c.setFont (largest_letters);
+			    c.drawString ("Your inventory is full.", 195, 30);
+			    c.drawString ("Please choose a item to delete.", 150, 50);
+			    
+			    c.setFont (small_letters);
+			    c.drawString ("Press '=' to cancel", 510, 15);
+			    
+			    c.setFont (inventory_letters);
+			    
+			    int y = 100;
+	
+			    for (int i = 0; i < 10; i++)
+			    {
+				c.drawString ("" + gen_weapon_name (character_gear [i]), 150, y );
+				y += 40;
+			    }
+	
+			    int deletion_selected = 0;
+			    char key_pressed_delete;
+			    int p = 80; //Text box position
+	
+			    do
+			    {
+				draw_selection_box_no_fill (145, (p + (40 * deletion_selected) ) );
+				key_pressed_delete = c.getChar ();
+				clear_selection_box (145, (p + (40 * deletion_selected) ) );
+	    
+				if (key_pressed_delete == 'w' && deletion_selected == 0)//Cases of nothing happening
+				{
+				}
+	    
+				else if (key_pressed_delete == 's' && deletion_selected == 9)//Cases of nothing happening
+				{
+				}
+	    
+				else if (key_pressed_delete == 'w')
+				{
+				deletion_selected --;
+				}
+	    
+				else if (key_pressed_delete == 's')
+				{
+				deletion_selected ++;
+				}
+	    
+			    }while (key_pressed_delete != '\n' && key_pressed_delete != '=');
+	
+			    draw_selection_box_no_fill (145, (p + (40 * deletion_selected) ) );
+	
+			    if (key_pressed_delete == '=')//exiting
+			    {
+			    }
+	
+			    else if (key_pressed_delete == '\n')
+			    {
+				character_gear [deletion_selected] = mobs_armour;
+			    }
+			}//Inventory is full
 			
-			}
 		    }//yes
 		    
 		}//armour
-		
-		
 		
 	    }//Get Drop IF
 	    
@@ -1345,6 +1459,24 @@ public class SAO_ARC
 	}//Battle winner
     }//method
 
+    
+    public static void draw_selection_box_no_fill (int x, int y)
+    {
+	c.setColor (Color.black);
+	c.drawRect (x, y, 410, 30);
+	c.drawRect ( (x + 1), (y + 1), 408, 28);
+	c.drawRect ( (x + 2), (y + 2), 406, 26);
+    }
+    
+    public static void clear_selection_box (int x, int y)
+    {
+	Color light_blue = new Color (0, 191, 255);
+	c.setColor (light_blue);
+	c.drawRect (x, y, 410, 30);
+	c.drawRect ( (x + 1), (y + 1), 408, 28);
+	c.drawRect ( (x + 2), (y + 2), 406, 26);
+	c.setColor (Color.black);
+    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                                                    //BATTLE//                                                                           //
