@@ -1599,7 +1599,7 @@ public class SAO_ARC
 			    character_gear [i] = mobs_armour;
 
 			    c.drawString ("Item added to inventory!", 100, 100);
-			    delay (5000);
+			    delay (3000);
 			} //if not full
 
 			else //////////////////IF INVENTORY IS FULL
@@ -1717,24 +1717,51 @@ public class SAO_ARC
 	int player_evade_roll;
 	int flee_work;
 	boolean killer = false;
+	
+	////////////////////////////////////////////////
+	double mob_health_healthbar = mob_stats [0];  //
+	int mob_health_percent;                       //USED FOR
+	double player_fight_healthbar = health;       //HEALTH BARS
+	int player_health_percent;                    //
+	////////////////////////////////////////////////
+	
+	Font standard_text = new Font ("MingLiU", Font.PLAIN, 20);//FONTS USED
+	Font hp_letters = new Font ("MingLiU", Font.BOLD, 15);
 
 
 	do
 	{
+	    ////////////MOBS HEALTHBAR////////////
+	    c.setFont (standard_text);
+	    c.drawString ("" + mob_name, 1, 22);
+	
+	    c.setFont (hp_letters);
+	    c.drawString (mob_health + "HP", 30, 44);
+	
+	    mob_health_percent = (int) (( mob_health / mob_health_healthbar) * 100);
 
-	    ////////////////////////////////////////////THIS IS WHERE HEALTHBARS GO
+	    c.fillRect (120, 34, mob_health_percent, 10);
+	    c.drawRect (120, 34, 100, 10);
+	    
+	    //////////PLAYERS HEALTHBAR///////////
+	    c.setFont (standard_text);
+	    c.drawString ("" + player_name, 400, 330);
+	
+	    c.setFont (hp_letters);
+	    c.drawString (player_fight_health + "HP", 429, 352);
+	
+	    player_health_percent = (int) (( player_fight_health / player_fight_healthbar) * 100);
+	
+	    c.fillRect (519, 342, player_health_percent, 10);
+	    c.drawRect (519, 342, 100, 10);
+
 	    do
 	    {
-		c.print (mob_name + " Health: " + mob_health);
-
-		int space_problem = 71 - (player_name.length () + 5);  //PUTS THE NAME ON THE RIGHT SPOT ON THE LINE, THEN LEAVES SPACE FOR 5 NUMBERS OF HP
-
-		c.setCursor (18, space_problem);
-		c.print (player_name + " Health: " + player_fight_health); //////////////MAKE INTO BOXED MOVEMENT, IN A METHOD
 
 		c.setCursor (20, 1);
 		c.println ("1: Slash   2: Stab");
-		c.print ("3: Parry   4: Block   5: Flee\t");
+		c.print (
+		"3: Parry   4: Block   5: Flee\t");
 		player_choice = c.readInt ();
 
 
