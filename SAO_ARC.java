@@ -8,7 +8,7 @@
 Welcome to the code of the SAO Arc project.
 This is a game developed in Java based on the
 popular anime and manga, Sword Art Online (SAO).
-It is a text based RPG with over 50 different                                                               MAKE A HEALTH BAR IN FIGHT THAT DEPLEATES BASED ON %
+It is a text based RPG with over 50 different
 standard mobs and 4 extremley rare mobs. Character
 stats are saved and when you die, you restart.
 
@@ -100,13 +100,29 @@ public class SAO_ARC
 
 		case 2:
 		    { //c.drawString ("Cheats", 95, 450);//2
-			saved = cheat_page (); ///////////////////////////////////////CHEATS PAGE RETURNS A TRUE OR FALSE TO TEST IF CHANGES WERE MADE
+			if (saved == false)
+			{
+			    saved = cheat_page (); ///////////////////////////////////////CHEATS PAGE RETURNS A TRUE OR FALSE TO TEST IF CHANGES WERE MADE
+			}
+			
+			else
+			{
+			    cheat_page ();
+			}
 			break;
 		    }
 
 		case 3:
 		    { //c.drawString ("Inventory", 395, 215);//3
-			saved = inventory_check (); ///////////////////////////////////////SAME FOR INVERNTORY
+			if (saved == false)
+			{
+			    saved = inventory_check (); //////////////////////////////////////SAME AS INVENTORY
+			}
+			
+			else
+			{
+			    inventory_check ();
+			}
 			break;
 		    }
 
@@ -1755,18 +1771,7 @@ public class SAO_ARC
 	    c.fillRect (519, 342, player_health_percent, 10);
 	    c.drawRect (519, 342, 100, 10);
 
-	    do
-	    {
-
-		c.setCursor (20, 1);
-		c.println ("1: Slash   2: Stab");
-		c.print (
-		"3: Parry   4: Block   5: Flee\t");
-		player_choice = c.readInt ();
-
-
-	    }
-	    while (!(player_choice == 1) && (player_choice == 2) && (player_choice == 3) && (player_choice == 4) && (player_choice == 5));
+	    player_choice = battle_selection ();// Get the players attack
 
 	    if (player_choice == 5)
 	    {
@@ -2116,7 +2121,174 @@ public class SAO_ARC
 	}
 	return (killer);
     }
+    
+    public static int battle_selection ()
+    {
+	char key_pressed;
+	int box_at = 1;
+	
+	Font selection_text = new Font ("MingLiU", Font.PLAIN, 18);
+	c.setFont (selection_text);
+	
+	c.drawString ("Slash    Stab", 20, 390);
+	c.drawString ("Parry    Block    Flee", 20, 415);
+	
+	c.setCursor (22, 1);
+	
+	draw_battle_boxes (14, 372);//Slash
+	
+	do
+	{
+	    key_pressed = c.getChar ();
+	    switch (box_at)
+	    {
+		case 1:{
+			switch (key_pressed)
+			{
+			    case 'w':{
+			    //Nothing happens
+			    break;
+			    }
+			    case 's':{
+			    draw_battle_boxes (14, 399);//Parry
+			    clear_battle_boxes (14, 372);//Slash
+			    box_at = 3;
+			    break;
+			    }
+			    case 'a':{
+			    //nothing happens
+			    break;
+			    }
+			    case 'd':{
+			    draw_battle_boxes (90, 372);//Stab
+			    clear_battle_boxes (14, 372);//Slash
+			    box_at = 2;
+			    break;
+			    }
+			}//interior switch
+			break;
+		}//exterior case
+		case 2:{
+			switch (key_pressed)
+			{
+			    case 'w':{
+			    //Nothing happens
+			    break;
+			    }
+			    case 's':{
+			    draw_battle_boxes (93, 399);//Block
+			    clear_battle_boxes (90, 372);//Stab
+			    box_at = 4;
+			    break;
+			    }
+			    case 'a':{
+			    draw_battle_boxes (14, 372);//Slash
+			    clear_battle_boxes (90, 372);//Stab
+			    box_at = 1;
+			    break;
+			    }
+			    case 'd':{
+			    //Nothing happens
+			    break;
+			    }
+			}//interior switch
+			break;
+		}//exterior case
+		case 3:{
+			switch (key_pressed)
+			{
+			    case 'w':{
+			    draw_battle_boxes (14, 372);//Slash
+			    clear_battle_boxes (14, 399);//Parry
+			    box_at = 1;
+			    break;
+			    }
+			    case 's':{
+			    //Nothing happens
+			    break;
+			    }
+			    case 'a':{
+			    //Nothing happens
+			    break;
+			    }
+			    case 'd':{
+			    draw_battle_boxes (93, 399);//Block
+			    clear_battle_boxes (14, 399);//Parry
+			    box_at = 4;
+			    break;
+			    }
+			}//interior switch
+			break;
+		}//exterior case
+		case 4:{
+			switch (key_pressed)
+			{
+			    case 'w':{
+			    draw_battle_boxes (90, 372);//Stab
+			    clear_battle_boxes (93, 399);//Block
+			    box_at = 2;
+			    break;
+			    }
+			    case 's':{
+			    //Nothing happens
+			    break;
+			    }
+			    case 'a':{
+			    draw_battle_boxes (14, 399);//Parry
+			    clear_battle_boxes (93, 399);//Block
+			    box_at = 3;
+			    break;
+			    }
+			    case 'd':{
+			    draw_battle_boxes (170, 399);//Flee
+			    clear_battle_boxes (93, 399);//Block
+			    box_at = 5;
+			    break;
+			    }
+			}//interior switch
+			break;
+		}//exterior case
+		case 5:{
+			switch (key_pressed)
+			{
+			    case 'w':{
+			    //Nothing happens
+			    break;
+			    }
+			    case 's':{
+			    //Nothing happens
+			    break;
+			    }
+			    case 'a':{
+			    draw_battle_boxes (93, 399);//Block
+			    clear_battle_boxes (170, 399);//Flee
+			    box_at = 4;
+			    break;
+			    }
+			    case 'd':{
+			    //Nothing happens
+			    break;
+			    }
+			}//interior switch
+			break;
+		}//exterior case
+	    }
+	}while (key_pressed != '\n');
+	return (box_at);
+    }
 
+    public static void draw_battle_boxes (int x, int y)
+    {
+	c.setColor (Color.black);
+	c.drawRect (x, y, 60, 25);
+    }
+    
+    public static void clear_battle_boxes (int x, int y)
+    {
+	c.setColor (Color.white);
+	c.drawRect (x, y, 60, 25);
+	c.setColor (Color.black);
+    }
 
     public static String gen_weapon_name (int number)
     {
