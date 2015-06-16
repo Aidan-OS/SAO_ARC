@@ -27,6 +27,34 @@ Parry: Counters slash, deals reduced damage to enemy if proper counter
 Block: Counters stab, deals reduced damage to enemy if proper counter
 Flee: Run away, has a 50% chance of faliure, you take half damage whenever you try to flee
 
+If the opponent's health reaches zero before yours, you win the fight.
+If yours hits 0 first however, you die, and cannot log back in.
+
+After a battle, you have a 30% chance to pick up one of the weapons a mob has dropped.
+You can choose if you want to keep or discard this item.
+
+Harder mobs drop better items, and you want to collect the strongest items possible.
+You can hold 10 at items at a time, and you can look at them, delete them, or make them your active in the inventory menu on the main screen.
+
+You can also view the rules again by selecting the "Rules" box on the main screen.
+
+You can also save your game from the main menu screen. If you try to exit without saving, and the game data has changed., the game will tell you that you should save,
+and you can either just exit or go back to save.
+
+Another option on the menu screen is to look at your statistics, to see how you are doing. It will help you gauge if something is too strong for you.
+
+The final option on the title screen is cheats. I do recommend against cheating, because it loses the fun if you do. If you insist however the cheat codes are:
+CheaterFinalBattle  -- Levels you to level 99 and sets you into the fight with godfree
+CheaterLevel=  -- Puts you at the level you want to be at.
+
+Your Goal is to defeat as many enemies as possible so that you can become strong enough to face the man who has trapped you in the game, Godfree.
+
+IF you kill Godfree you win the game. You will be notified if your next fight is with Godfree.
+
+As mentioned earlier, all of your data can be saved, and you can log back in using a username and password you create when you create a new game.
+
+Good luck with your adventure, and have a fun time!
+							~Aidan Smith
 */
 
 import java.awt.*;
@@ -267,6 +295,13 @@ public class SAO_ARC
 	c.setFont (title_screen);
 	c.drawString ("New Game", 200, 162);
 	c.drawString ("Load Game", 200, 315);
+	
+	Font controls = new Font ("MingLiU", Font.PLAIN, 15);
+	c.setFont (controls);
+	
+	c.drawString ("Use 'w', 's', and enter to choose.", 180, 90);
+	
+	
 
 	do
 	{
