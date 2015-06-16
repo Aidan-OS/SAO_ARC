@@ -61,6 +61,7 @@ import java.awt.*;
 import hsa.Console;
 import java.io.*;
 import hsa.*;
+import java.text.*;
 
 public class SAO_ARC
 {
@@ -92,77 +93,77 @@ public class SAO_ARC
 	int new_player = 0;
 	int exit_selected = 0;
 	char key_pressed;
-	Font small_letters = new Font ("MingLiU", Font.PLAIN, 25);
+	Font small_letters = new Font ("MingLiU", Font.PLAIN, 25);//FONTS FOR WHEN PROGRAM ENDS
 	Font title_screen = new Font ("Bauhaus 93", Font.ITALIC, 40);
 	Font large_letters = new Font ("MingLiU", Font.PLAIN, 50);
 	Font largest_letters = new Font ("MingLiU", Font.BOLD, 100);
 	Font death_font = new Font ("MingLiU", Font.BOLD, 75);
 	Font end_letters = new Font ("MingLiU", Font.PLAIN, 20);
 
-	while (proper_login == false)
+	while (proper_login == false)//If the character they are trying to play as is dead, it brings them back to them main menu
 	{
 	    new_player = start_menu ();
 	}
 
-	if (new_player == 0)
+	if (new_player == 0)//If the player is new to the game, and displays the rules
 	{
 	    rules ();
 	}
 
-	while (exit == false)
+	while (exit == false)//While they havent hit '='
 	{
-	    box_at = secondary_menu ();
+	    box_at = secondary_menu (); //Generate the main menu, depending on where they were when enter was pressed, play the correct method
 	    switch (box_at)
 	    {
 		case 0:
-		    { //c.drawString ("Battle", 100, 215);//0
+		    { //Battle
 			saved = false;
 			init_fight ();
 			break;
 		    }
 
 		case 1:
-		    { //c.drawString ("Stats", 115, 335);//1
+		    { //Stats
 			look_at_stats ();
 			break;
 		    }
 
 		case 2:
-		    { //c.drawString ("Cheats", 95, 450);//2
+		    { //Cheats
 			if (saved == false)
 			{
-			    saved = cheat_page (); ///////////////////////////////////////CHEATS PAGE RETURNS A TRUE OR FALSE TO TEST IF CHANGES WERE MADE
+			    cheat_page ();
 			}
 			
 			else
 			{
-			    cheat_page ();
+			    saved = cheat_page (); ///////////////////////////////////////CHEATS PAGE RETURNS A TRUE OR FALSE TO TEST IF CHANGES WERE MADE
 			}
 			break;
 		    }
 
 		case 3:
-		    { //c.drawString ("Inventory", 395, 215);//3
+		    { //Inventory
 			if (saved == false)
 			{
-			    saved = inventory_check (); //////////////////////////////////////SAME AS INVENTORY
+			    inventory_check ();
 			}
 			
 			else
 			{
-			    inventory_check ();
+			    saved = inventory_check (); //////////////////////////////////////SAME AS INVENTORY
 			}
 			break;
 		    }
 
 		case 4:
-		    { //c.drawString ("Rules", 430, 335);//4
+		    { //Rules
 			rules ();
 			break;
 		    }
 
 		case 5:
-		    { //c.drawString ("Save", 440, 450);//5
+		    { //Save
 			save_game ();
 			saved = true;
 			c.setFont (largest_letters);
@@ -176,16 +177,16 @@ public class SAO_ARC
 	    c.clear ();
 
 
-	    if (exit == true)
+	    if (exit == true)//If they try to leave
 	    {
-		if (saved == false && death == false)
+		if (saved == false && death == false)//If they have not saved and arent dead
 		{
 		    c.setFont (small_letters);
 		    c.drawString ("Are you sure you want to quit without saving?", 35, 80);
 		    draw_selected_box (175, 100);
 		    draw_box (175, 250);
 
-		    c.setFont (title_screen);
+		    c.setFont (title_screen);//Asks them if they want to go back and save
 		    c.drawString ("Yes", 265, 162);
 		    c.drawString ("No", 275, 315);
 
@@ -193,14 +194,14 @@ public class SAO_ARC
 		    {
 			key_pressed = c.getChar ();
 
-			if (key_pressed == 'w')
+			if (key_pressed == 'w' || key_pressed == 'W')
 			{
 			    draw_box (175, 250);
 			    draw_selected_box (175, 100);
 			    exit_selected = 0;
 			}
 
-			else if (key_pressed == 's')
+			else if (key_pressed == 's' || key_pressed == 'S')
 			{
 			    draw_box (175, 100);
 			    draw_selected_box (175, 250);
@@ -225,17 +226,17 @@ public class SAO_ARC
 		}
 	    }
 
-	    if (death == true)
+	    if (death == true)//If they have died, leave the 2nd menu
 	    {
 		break;
 	    }
-	    else if (finished_game == true)
+	    else if (finished_game == true)//If they have finished the game, leave the second menu
 	    {
 		break;
 	    }
 	}
 
-	if (finished_game == true)
+	if (finished_game == true)//Prints the winning sequence if the game is over
 	{
 	    c.clear ();
 	    c.setColor (Color.black);
@@ -254,7 +255,7 @@ public class SAO_ARC
 	    c.drawString ("THANKS FOR PLAYING!", 100, 250);
 	}
 	
-	else if (death == false)
+	else if (death == false)//If they have not died, it says thanks for playing
 	{
 	    c.clear ();
 	    c.setColor (Color.black);
@@ -262,7 +263,7 @@ public class SAO_ARC
 	    c.drawString ("THANKS FOR PLAYING!", 100, 250);
 	}
 
-	else
+	else//If they died it says "YOU HAVE DIED"
 	{
 	    c.clear ();
 	    c.setColor (Color.red);
@@ -273,14 +274,14 @@ public class SAO_ARC
     } // main method
 
 
-    public static int start_menu () throws IOException
+    public static int start_menu () throws IOException//First menu that selects either to load or create  a new game
     {
 
 	char key_pressed;
-	int title_screen_selected = 0;
+	int title_screen_selected = 0;//Variable used to tell what the player selected
 
 	Color light_blue = new Color (0, 191, 255);
-	c.setColor (light_blue);
+	c.setColor (light_blue);//makes background blue
 	c.fillRect (0, 0, 640, 500);
 
 	c.setColor (Color.black);
@@ -294,27 +295,29 @@ public class SAO_ARC
 	Font title_screen = new Font ("Bauhaus 93", Font.ITALIC, 40);
 	c.setFont (title_screen);
 	c.drawString ("New Game", 200, 162);
-	c.drawString ("Load Game", 200, 315);
+	c.drawString ("Load Game", 200, 315);//Prints words in the boxes
 	
 	Font controls = new Font ("MingLiU", Font.PLAIN, 15);
 	c.setFont (controls);
 	
-	c.drawString ("Use 'w', 's', and enter to choose.", 180, 90);
+	c.drawString ("Use 'w', 's', and enter to choose.", 180, 90);//Instructions
+	
+	c.setFont (title_screen);
 	
 	
 
-	do
+	do//Used for movement up and down
 	{
 	    key_pressed = c.getChar ();
 
-	    if (key_pressed == 'w')
+	    if (key_pressed == 'w' || key_pressed == 'W')
 	    {
 		draw_box (175, 250);
 		draw_selected_box (175, 100);
 		title_screen_selected = 0;
 	    }
 
-	    else if (key_pressed == 's')
+	    else if (key_pressed == 's' || key_pressed == 'S')
 	    {
 		draw_box (175, 100);
 		draw_selected_box (175, 250);
@@ -328,20 +331,20 @@ public class SAO_ARC
 
 	c.clear ();
 
-	if (title_screen_selected == 0)
+	if (title_screen_selected == 0)//If they selected new game, calls create_new_user method
 	{
 	    create_new_user ();
 	}
 
-	else if (title_screen_selected == 1)
+	else if (title_screen_selected == 1)//If they selected load game, calls load_user method
 	{
 	    load_user ();
 	}
-	return (title_screen_selected);
+	return (title_screen_selected);// Returns what they selected so we know if need to diplay rules for first timers
     }
 
 
-    public static void draw_box (int x, int y)
+    public static void draw_box (int x, int y)//Draws the standard box behind the text
     {
 	c.setColor (Color.black);
 	c.drawRect ((x - 1), (y - 1), 251, 101);
@@ -351,7 +354,7 @@ public class SAO_ARC
     }
 
 
-    public static void draw_selected_box (int x, int y)
+    public static void draw_selected_box (int x, int y)//Draws a selected box for behind the text
     {
 	c.setColor (Color.black);
 	c.drawRect ((x - 1), (y - 1), 251, 101);
@@ -363,11 +366,11 @@ public class SAO_ARC
     }
 
 
-    public static void load_user () throws IOException
+    public static void load_user () throws IOException//Loads a previous user
     {
-	String name_on_list;
-	String input_password;
-	boolean illegal_pass;
+	String name_on_list;//Used to test if the name they entered is the same as one of the ones on the list
+	String input_password;//The password entered by the player
+	boolean illegal_pass;//Is true when an illegal chracter is input
 
 	Color light_blue = new Color (0, 191, 255);
 	c.setColor (light_blue);
@@ -378,7 +381,7 @@ public class SAO_ARC
 	Font title_screen = new Font ("Bauhaus 93", Font.ITALIC, 30);
 	c.setFont (title_screen);
 
-	while (1 == 1)
+	while (1 == 1)///Infinite loop that will only broken out of if a used name is entered
 	{
 	    BufferedReader read_name_list = new BufferedReader (new FileReader ("name_list.txt")); //Opens the file in a way that can read Null
 	    name_on_list = read_name_list.readLine ();
@@ -397,7 +400,7 @@ public class SAO_ARC
 		name_on_list = read_name_list.readLine (); //Gets new word on list
 	    }
 
-	    if (name_on_list == null)
+	    if (name_on_list == null)//If it goes through all the names on the list
 	    {
 		c.clear ();
 		c.setCursor (7, 26);
@@ -406,7 +409,7 @@ public class SAO_ARC
 		c.setTextColor (Color.black);
 	    }
 
-	    else
+	    else//Sets up for the password input and closes the file of saved usernames
 	    {
 		c.setCursor (7, 26);
 		c.println ();
@@ -415,14 +418,14 @@ public class SAO_ARC
 	    }
 	} //INFINTE WHILE
 
-	TextInputFile player_save_data = new TextInputFile (player_name + ".txt");
-	password = player_save_data.readString ();
+	TextInputFile player_save_data = new TextInputFile (player_name + ".txt");//Loads the players file
+	password = player_save_data.readString ();//Gets the password
 
-	if (!(password.equals ("|")))
+	if (!(password.equals ("|")))// IF the password is not saved as |. | is the password when a person has died, and it is not possible to enter | as passowrd
 	{
-	    while (1 == 1)
+	    while (1 == 1)//Infinite loop
 	    {
-		c.drawString ("Enter your password", 150, 300);
+		c.drawString ("Enter your password", 150, 300);//Prompts password entering
 
 		do //TEST FOR ILLEGAL CHARACTERS
 		{
@@ -432,20 +435,13 @@ public class SAO_ARC
 
 		    for (int i = 0 ; i < input_password.length () ; i++) //Used to make sure no illegal characters are entered
 		    {
-			if ((int) input_password.charAt (i) == 57 || (int) input_password.charAt (i) == 134 || input_password.charAt (i) == ':' || input_password.charAt (i) == '*' || input_password.charAt (i) == '?' || (int) input_password.charAt (i) == 34 || input_password.charAt (i) == '<' || input_password.charAt (i) == '>' || input_password.charAt (i) == '|' || input_password.charAt (i) == ' ')
+			if ((int) input_password.charAt (i) == 47 || (int) input_password.charAt (i) == 134 || input_password.charAt (i) == ':' || input_password.charAt (i) == '*' || input_password.charAt (i) == '?' || (int) input_password.charAt (i) == 34 || input_password.charAt (i) == '<' || input_password.charAt (i) == '>' || (int)input_password.charAt (i) == 124 || input_password.charAt (i) == ' ')// Checks for any illegal character
 			{
 			    illegal_pass = true;
 			}
-
-			else
-			{
-			    illegal_pass = false;
-			}
-			c.setCursor (1, 1);
-			c.print (i);
 		    }
 
-		    if (illegal_pass == true)
+		    if (illegal_pass == true)// If the password is illegal
 		    {
 			c.setCursor (16, 20);
 			c.setTextColor (Color.red);
@@ -456,9 +452,9 @@ public class SAO_ARC
 		    }
 
 		}
-		while (illegal_pass == true);
+		while (illegal_pass == true);//Continue to make them enter passwords that contain valid characters
 
-		if (!(input_password.equals (password)))
+		if (!(input_password.equals (password)))//If the password is not equal to what they enetered
 		{
 		    c.setCursor (16, 21);
 		    c.setTextColor (Color.red);
@@ -467,14 +463,14 @@ public class SAO_ARC
 		    c.println ();
 		}
 
-		else
+		else//Breaks only when eveything is correct
 		{
 		    break;
 		}
 
 	    } //END INFINITE WHILE 2
 
-	    strength = player_save_data.readInt ();
+	    strength = player_save_data.readInt ();///////LOADS ALL OF THE DATA
 	    defence = player_save_data.readInt ();
 	    health = player_save_data.readInt ();
 	    evasion = player_save_data.readDouble ();
@@ -483,29 +479,29 @@ public class SAO_ARC
 	    xp_to_next_level = player_save_data.readInt ();
 	    godfree_fight = player_save_data.readBoolean ();
 
-	    for (int i = 0 ; i < character_gear.length ; i++)
+	    for (int i = 0 ; i < character_gear.length ; i++)//LOADS ALL THE CHRACTER GEAR
 	    {
 		character_gear [i] = player_save_data.readInt ();
 	    }
 
-	    player_save_data.close ();
-	    proper_login = true;
+	    player_save_data.close ();//CLOSES INPUT
+	    proper_login = true;//TELLS IT WAS A PROPER LOGIN.
 	}
 
-	else if ((password.equals ("|")))
+	else if ((password.equals ("|")))// IF THE PASSWORD IS |, WOULDNT LET INTO THE BIG IF, IF IT WAS. PRINTS THAT THE PLAYER IS DEAD
 	{
 	    c.clear ();
 	    c.setFont (title_screen);
 	    c.setColor (Color.red);
 	    c.drawString ("THIS PLAYER IS DEAD", 200, 200);
 	    delay (1000);
-	    proper_login = false;
+	    proper_login = false;// TELLS IT WAS A BAD LOGIN
 	}
 
     }
 
 
-    public static void create_new_user () throws IOException
+    public static void create_new_user () throws IOException//METHOD TO CREATE NEW USER
     {
 	boolean name_taken = false;
 	String name_on_list;
@@ -545,7 +541,7 @@ public class SAO_ARC
 
 	    for (int i = 0 ; i < player_name.length () ; i++)
 	    {
-		if ((int) player_name.charAt (i) == 57 || (int) player_name.charAt (i) == 134 || player_name.charAt (i) == ':' || player_name.charAt (i) == '*' || player_name.charAt (i) == '?' || (int) player_name.charAt (i) == 34 || player_name.charAt (i) == '<' || player_name.charAt (i) == '>' || player_name.charAt (i) == '|')
+		if ((int) player_name.charAt (i) == 47 || (int) player_name.charAt (i) == 134 || player_name.charAt (i) == ':' || player_name.charAt (i) == '*' || player_name.charAt (i) == '?' || (int) player_name.charAt (i) == 34 || player_name.charAt (i) == '<' || player_name.charAt (i) == '>' || player_name.charAt (i) == '|')
 		{
 		    illegal_name = true;
 		}
@@ -560,7 +556,7 @@ public class SAO_ARC
 		c.setTextColor (Color.black);
 	    }
 
-	    else if (illegal_name == true)
+	    else if (illegal_name == true)//IF THE NAME HAS ILLEGAL CHARACTERS
 	    {
 		c.clear ();
 		c.setCursor (7, 20);
@@ -570,20 +566,21 @@ public class SAO_ARC
 		illegal_name = false;
 	    }
 
-	    else
+	    else//IFE EVERYHTING IS OK TO CREATE A FILE
 	    {
-		input_name_list.println (player_name);
-		read_name_list.close ();
+		input_name_list.println (player_name);//INPUTS THE NEW NAME INTO THE NAMES LIST FILE
+		read_name_list.close ();//CLOSES NAMES LIST
 		break;
 	    }
-	    read_name_list.close ();
+	    read_name_list.close ();//IF THE WHILE HASNT BROKEN OUT, SINCE IT WILL TRY TO RE OPEN, CLOSE IT
 	}
 
 	c.setCursor (7, 1);
 	c.println ();
-
+	
+	PrintWriter input_save_data = new PrintWriter (new FileWriter (player_name + ".txt"));//CREATES AN NEW FILE FOR THE PLAYER
 	c.drawString ("Please enter your password", 120, 300);
-	PrintWriter input_save_data = new PrintWriter (new FileWriter (player_name + ".txt"));
+	
 
 	do
 	{
@@ -593,17 +590,10 @@ public class SAO_ARC
 
 	    for (int i = 0 ; i < password.length () ; i++) //Used to make sure no illegal characters are entered
 	    {
-		if ((int) password.charAt (i) == 57 || (int) password.charAt (i) == 134 || password.charAt (i) == ':' || password.charAt (i) == '*' || password.charAt (i) == '?' || (int) password.charAt (i) == 34 || password.charAt (i) == '<' || password.charAt (i) == '>' || password.charAt (i) == '|' || password.charAt (i) == ' ')
+		if ((int) password.charAt (i) == 47 || (int) password.charAt (i) == 134 || password.charAt (i) == ':' || password.charAt (i) == '*' || password.charAt (i) == '?' || (int) password.charAt (i) == 34 || password.charAt (i) == '<' || password.charAt (i) == '>' || password.charAt (i) == '|' || password.charAt (i) == ' ')
 		{
 		    illegal_pass = true;
 		}
-
-		else
-		{
-		    illegal_pass = false;
-		}
-		c.setCursor (1, 1);
-		c.print (i);
 	    }
 
 	    if (illegal_pass == true)
@@ -685,7 +675,7 @@ public class SAO_ARC
 	{
 	    char_pressed = c.getChar ();
 
-	    if (char_pressed == 'w')
+	    if (char_pressed == 'w' || char_pressed == 'W')
 	    {
 		switch (box_at)
 		{
@@ -751,7 +741,7 @@ public class SAO_ARC
 		}
 	    }
 
-	    else if (char_pressed == 's')
+	    else if (char_pressed == 's' || char_pressed == 'S')
 	    {
 		switch (box_at)
 		{
@@ -818,7 +808,7 @@ public class SAO_ARC
 
 	    }
 
-	    else if (char_pressed == 'a')
+	    else if (char_pressed == 'a' || char_pressed == 'A')
 	    {
 		switch (box_at)
 		{
@@ -884,7 +874,7 @@ public class SAO_ARC
 		}
 	    }
 
-	    else if (char_pressed == 'd')
+	    else if (char_pressed == 'd' || char_pressed == 'D')
 	    {
 		switch (box_at)
 		{
@@ -950,7 +940,7 @@ public class SAO_ARC
 		}
 	    }
 
-	    else if (char_pressed == '=')
+	    else if (char_pressed == '=' || char_pressed == '+')
 	    {
 		exit = true;
 		box_at = 42;
@@ -1050,30 +1040,30 @@ public class SAO_ARC
 		key_pressed = c.getChar ();
 		clear_selection_box (175, (p + (40 * selected)));
 
-		if (key_pressed == 'w' && selected == 0) //Cases of nothing happening
+		if ( (key_pressed == 'w' || key_pressed == 'W') && selected == 0) //Cases of nothing happening
 		{
 		}
 
-		else if (key_pressed == 's' && selected == (9 - zeros_in_inventory))  //Cases of nothing happening && to catch the bottom
+		else if ( (key_pressed == 's' || key_pressed == 'S') && selected == (9 - zeros_in_inventory))  //Cases of nothing happening && to catch the bottom
 		{
 		}
 
-		else if (key_pressed == 'w') //Move up
+		else if (key_pressed == 'w' || key_pressed == 'W') //Move up
 		{
 		    selected--;
 		}
 
-		else if (key_pressed == 's') //Move down-
+		else if (key_pressed == 's' || key_pressed == 'S') //Move down-
 		{
 		    selected++;
 		}
 
 	    }
-	    while (key_pressed != '=' && key_pressed != 'e' && key_pressed != 'r');
+	    while (key_pressed != '=' && key_pressed != 'e' && key_pressed != 'r' && key_pressed != '+' && key_pressed != 'E' && key_pressed != 'R');
 
 	    draw_selection_box_no_fill (145, (p + (40 * selected)));
 
-	    if (key_pressed == 'e') //Deleting
+	    if (key_pressed == 'e' || key_pressed == 'E') //Deleting
 	    {
 		if (selected != 0 && selected != 1) //YOU Cant delete weapons you are useing!
 		{
@@ -1096,7 +1086,7 @@ public class SAO_ARC
 
 			if (location == 0)
 			{
-			    if (item_select_location == 'w' || item_select_location == 's')
+			    if (item_select_location == 'w' || item_select_location == 's' || item_select_location == 'W' || item_select_location == 'S')
 			    {
 				draw_box_2 (230, 220);
 				draw_selected_box_2 (230, 350);
@@ -1107,7 +1097,7 @@ public class SAO_ARC
 
 			else if (location == 1)
 			{
-			    if (item_select_location == 'w' || item_select_location == 's')
+			    if (item_select_location == 'w' || item_select_location == 's' || item_select_location == 'W' || item_select_location == 'S')
 			    {
 				draw_selected_box_2 (230, 220);
 				draw_box_2 (230, 350);
@@ -1122,7 +1112,7 @@ public class SAO_ARC
 
 		    c.clear ();
 
-		    if (item_select_location == 1) //If the say no go back
+		    if (location == 1) //If the say no go back
 		    {
 		    }
 
@@ -1171,7 +1161,7 @@ public class SAO_ARC
 	    }
 
 
-	    else if (key_pressed == 'r') //Making weapon used
+	    else if (key_pressed == 'r' || key_pressed == 'R') //Making weapon used
 	    {
 		int temp_weapon_store = character_gear [selected];//Stores the selected item in a seperate variable so that is can be replaced
 		
@@ -1191,13 +1181,13 @@ public class SAO_ARC
 	    
 	    c.clear ();
 
-	}while (key_pressed != '=');
+	}while (key_pressed != '=' || key_pressed == '+');
 
 	return (is_it_saved);
     }
 
 
-    public static void rules ()
+    public static void rules ()/////////RULES
     {
 	Color light_blue = new Color (0, 191, 255);
 	c.setColor (light_blue);                  //Generates and sets Background Color
@@ -1229,19 +1219,21 @@ public class SAO_ARC
     }
 
 
-    public static void look_at_stats ()
+    public static void look_at_stats ()//LOOKING AT STATS
     {
 	c.clear ();
 
 	Font stats = new Font ("MingLiU", Font.PLAIN, 18);
 	c.setFont (stats);
 
+	NumberFormat d = new DecimalFormat ("0.00");
+	
 	c.drawString ("" + player_name, 200, 20);
 	c.drawString ("Level: " + level, 1, 40);
 	c.drawString ("Health: " + health, 1, 60);
 	c.drawString ("Defence: " + defence, 1, 80);
 	c.drawString ("Strength: " + strength, 1, 100);
-	c.drawString ("Evade Rate: " + evasion + "%", 1, 120);
+	c.drawString ("Evade Rate: " + (d.format (evasion) ) + "%", 1, 120);
 	c.drawString ("XP: " + xp, 1, 140);
 	c.drawString ("XP to next level: " + (xp_to_next_level - xp), 1, 160);
 
@@ -1251,7 +1243,7 @@ public class SAO_ARC
     }
 
 
-    public static boolean cheat_page ()
+    public static boolean cheat_page ()///USED FOR CHEATING, CODES ARE: CheaterLevel= and CheaterFinalBattle
     {
 	String code;
 	boolean save = false;
@@ -1274,13 +1266,13 @@ public class SAO_ARC
 	    do
 	    {
 		c.clear ();
-		c.drawString ("Enter the level that you want to make yourself", 100, 20);
+		c.drawString ("Enter the level that you want to make yourself, between 1, and 99", 0, 20);
 		c.setCursor (5, 37);
 		level_cheater = c.readInt ();
 	    }
-	    while (level_cheater > 99);
+	    while (!(level_cheater > 0 && level_cheater < 99));
 
-	    for (int i = 1 ; i < (level_cheater - temp_level + 1) ; i++)
+	    for (int i = 1 ; i < (level_cheater - temp_level + 1) ; i++)//Makes you 
 	    {
 		level += 1; //ADDS LEVEL
 		xp_to_next_level += 100 + (40 * (level - 1)); //GENERATES NEW AMOUNT OF XP NEEDED
@@ -1298,7 +1290,7 @@ public class SAO_ARC
 	    delay (500);
 	} //IF
 
-	else if (code.equals ("CheaterFinalBattle"))
+	else if (code.equals ("CheaterFinalBattle"))//Sets to final level
 	{
 	    int temp_level = level;
 
@@ -1335,7 +1327,7 @@ public class SAO_ARC
     }
 
 
-    public static void save_game () throws IOException
+    public static void save_game () throws IOException////////SAVES THE GAME
     {
 	PrintWriter input_save_data = new PrintWriter (new FileWriter (player_name + ".txt"));
 
@@ -1371,8 +1363,8 @@ public class SAO_ARC
     }
 
 
-    public static void init_fight () throws IOException
-    {
+    public static void init_fight () throws IOException//STARTS THE FIGHT BY GENERATING THE MOBS STATS AND WEAPON, THEN AFTER THE FIGHTS DETEMINES IF YOU GET A DROP
+    {                                                  //AND ASKS IF YOU WANT TO KEEP A DROP IF YOU GET ONE
 	int mob_rarity;
 	int mob_type = 42;
 	int mobs_weapon = 0;
@@ -1461,6 +1453,8 @@ public class SAO_ARC
 
 	c.setTextBackgroundColor (Color.white);
 	c.clear ();
+	
+	Font selected_inventory = new Font ("MingLiU", Font.BOLD, 20);
 
 	winner = fight (); // Returns if player won the fight and gets a drop
 
@@ -1475,7 +1469,7 @@ public class SAO_ARC
 
 	if (winner == true) //If battle is won
 	{
-	    if (((int) (Math.random () * 100) + 1) <= 40)  // 30% chance of a drop
+	    if (((int) (Math.random () * 100) + 1) <= 100)  // 40% chance of a drop
 	    {
 		if (((int) (Math.random () * 100) + 1) <= 70)  // 70% chance of a weapon
 		{
@@ -1496,7 +1490,7 @@ public class SAO_ARC
 
 			if (location == 0)
 			{
-			    if (item_select_location == 'w' || item_select_location == 's')
+			    if (item_select_location == 'w' || item_select_location == 's' || item_select_location == 'W' || item_select_location == 'S')
 			    {
 				draw_box_2 (230, 220);
 				draw_selected_box_2 (230, 350);
@@ -1507,7 +1501,7 @@ public class SAO_ARC
 
 			else if (location == 1)
 			{
-			    if (item_select_location == 'w' || item_select_location == 's')
+			    if (item_select_location == 'w' || item_select_location == 's' || item_select_location == 'W' || item_select_location == 'S')
 			    {
 				draw_selected_box_2 (230, 220);
 				draw_box_2 (230, 350);
@@ -1548,6 +1542,10 @@ public class SAO_ARC
 
 			    c.setFont (small_letters);
 			    c.drawString ("Press '=' to cancel", 508, 15);
+			    
+			    c.setFont (selected_inventory);
+			    c.drawString ("Selected Weapon:", 0, 100);
+			    c.drawString ("Selected Armour:", 0, 140);
 
 			    c.setFont (inventory_letters);
 
@@ -1555,7 +1553,7 @@ public class SAO_ARC
 
 			    for (int i = 0 ; i < 10 ; i++)
 			    {
-				c.drawString ("" + gen_weapon_name (character_gear [i]), 150, y);
+				c.drawString ("" + gen_weapon_name (character_gear [i]), 170, y);
 				y += 40;
 			    }
 
@@ -1569,30 +1567,30 @@ public class SAO_ARC
 				key_pressed_delete = c.getChar ();
 				clear_selection_box (145, (p + (40 * deletion_selected)));
 
-				if (key_pressed_delete == 'w' && deletion_selected == 0) //Cases of nothing happening
+				if ((key_pressed_delete == 'w' || key_pressed_delete == 'W') && deletion_selected == 0 ) //Cases of nothing happening
 				{
 				}
 
-				else if (key_pressed_delete == 's' && deletion_selected == 9) //Cases of nothing happening
+				else if ( (key_pressed_delete == 's' || key_pressed_delete == 'S') && deletion_selected == 9) //Cases of nothing happening
 				{
 				}
 
-				else if (key_pressed_delete == 'w')
+				else if (key_pressed_delete == 'w' || key_pressed_delete == 'W')
 				{
 				    deletion_selected--;
 				}
 
-				else if (key_pressed_delete == 's')
+				else if (key_pressed_delete == 's' || key_pressed_delete == 'S')
 				{
 				    deletion_selected++;
 				}
 
 			    }
-			    while (key_pressed_delete != '\n' && key_pressed_delete != '=');
+			    while (key_pressed_delete != '\n' && (key_pressed_delete != '=' || key_pressed_delete != '+' && (deletion_selected == 1 || deletion_selected == 0) ) );
 
 			    draw_selection_box_no_fill (145, (p + (40 * deletion_selected)));
 
-			    if (key_pressed_delete == '=') //exiting
+			    if (key_pressed_delete == '=' || key_pressed_delete != '+') //exiting
 			    {
 			    }
 
@@ -1624,7 +1622,7 @@ public class SAO_ARC
 
 			if (location == 0)
 			{
-			    if (item_select_location == 'w' || item_select_location == 's')
+			    if (item_select_location == 'w' || item_select_location == 's' || item_select_location == 'W' || item_select_location == 'S')
 			    {
 				draw_box_2 (230, 220);
 				draw_selected_box_2 (230, 350);
@@ -1635,7 +1633,7 @@ public class SAO_ARC
 
 			else if (location == 1)
 			{
-			    if (item_select_location == 'w' || item_select_location == 's')
+			    if (item_select_location == 'w' || item_select_location == 's' || item_select_location == 'W' || item_select_location == 'S')
 			    {
 				draw_selected_box_2 (230, 220);
 				draw_box_2 (230, 350);
@@ -1676,6 +1674,10 @@ public class SAO_ARC
 
 			    c.setFont (small_letters);
 			    c.drawString ("Press '=' to cancel", 508, 15);
+			    
+			    c.setFont (selected_inventory);
+			    c.drawString ("Selected Weapon:", 0, 100);
+			    c.drawString ("Selected Armour:", 0, 140);
 
 			    c.setFont (inventory_letters);
 
@@ -1683,7 +1685,7 @@ public class SAO_ARC
 
 			    for (int i = 0 ; i < 10 ; i++)
 			    {
-				c.drawString ("" + gen_weapon_name (character_gear [i]), 150, y);
+				c.drawString ("" + gen_weapon_name (character_gear [i]), 170, y);
 				y += 40;
 			    }
 
@@ -1697,26 +1699,25 @@ public class SAO_ARC
 				key_pressed_delete = c.getChar ();
 				clear_selection_box (145, (p + (40 * deletion_selected)));
 
-				if (key_pressed_delete == 'w' && deletion_selected == 0) //Cases of nothing happening
+				if ( (key_pressed_delete == 'w' || key_pressed_delete == 'W') && deletion_selected == 0) //Cases of nothing happening
 				{
 				}
 
-				else if (key_pressed_delete == 's' && deletion_selected == 9) //Cases of nothing happening
+				else if ( (key_pressed_delete == 's' || key_pressed_delete == 'S') && deletion_selected == 9) //Cases of nothing happening
 				{
 				}
 
-				else if (key_pressed_delete == 'w')
+				else if (key_pressed_delete == 'w' || key_pressed_delete == 'W')
 				{
 				    deletion_selected--;
 				}
 
-				else if (key_pressed_delete == 's')
+				else if (key_pressed_delete == 's' || key_pressed_delete == 'S')
 				{
 				    deletion_selected++;
 				}
 
-			    }
-			    while (key_pressed_delete != '\n' && key_pressed_delete != '=');
+			    } while (key_pressed_delete != '\n' && (key_pressed_delete != '=' || key_pressed_delete == '+' && (deletion_selected == 1 || deletion_selected == 0) ) );
 
 			    draw_selection_box_no_fill (145, (p + (40 * deletion_selected)));
 
@@ -2202,21 +2203,25 @@ public class SAO_ARC
 		case 1:{
 			switch (key_pressed)
 			{
-			    case 'w':{
+			    case 'w':
+			    case 'W':{
 			    //Nothing happens
 			    break;
 			    }
-			    case 's':{
+			    case 's':
+			    case 'S':{
 			    draw_battle_boxes (14, 399);//Parry
 			    clear_battle_boxes (14, 372);//Slash
 			    box_at = 3;
 			    break;
 			    }
-			    case 'a':{
+			    case 'a':
+			    case 'A':{
 			    //nothing happens
 			    break;
 			    }
-			    case 'd':{
+			    case 'd':
+			    case 'D':{
 			    draw_battle_boxes (90, 372);//Stab
 			    clear_battle_boxes (14, 372);//Slash
 			    box_at = 2;
@@ -2228,23 +2233,27 @@ public class SAO_ARC
 		case 2:{
 			switch (key_pressed)
 			{
-			    case 'w':{
+			    case 'w':
+			    case 'W':{
 			    //Nothing happens
 			    break;
 			    }
-			    case 's':{
+			    case 's':
+			    case 'S':{
 			    draw_battle_boxes (93, 399);//Block
 			    clear_battle_boxes (90, 372);//Stab
 			    box_at = 4;
 			    break;
 			    }
-			    case 'a':{
+			    case 'a':
+			    case 'A':{
 			    draw_battle_boxes (14, 372);//Slash
 			    clear_battle_boxes (90, 372);//Stab
 			    box_at = 1;
 			    break;
 			    }
-			    case 'd':{
+			    case 'd':
+			    case 'D':{
 			    //Nothing happens
 			    break;
 			    }
@@ -2254,21 +2263,25 @@ public class SAO_ARC
 		case 3:{
 			switch (key_pressed)
 			{
-			    case 'w':{
+			    case 'w':
+			    case 'W':{
 			    draw_battle_boxes (14, 372);//Slash
 			    clear_battle_boxes (14, 399);//Parry
 			    box_at = 1;
 			    break;
 			    }
-			    case 's':{
+			    case 's':
+			    case 'S':{
 			    //Nothing happens
 			    break;
 			    }
-			    case 'a':{
+			    case 'a':
+			    case 'A':{
 			    //Nothing happens
 			    break;
 			    }
-			    case 'd':{
+			    case 'd':
+			    case 'D':{
 			    draw_battle_boxes (93, 399);//Block
 			    clear_battle_boxes (14, 399);//Parry
 			    box_at = 4;
@@ -2280,23 +2293,27 @@ public class SAO_ARC
 		case 4:{
 			switch (key_pressed)
 			{
-			    case 'w':{
+			    case 'w':
+			    case 'W':{
 			    draw_battle_boxes (90, 372);//Stab
 			    clear_battle_boxes (93, 399);//Block
 			    box_at = 2;
 			    break;
 			    }
-			    case 's':{
+			    case 's':
+			    case 'S':{
 			    //Nothing happens
 			    break;
 			    }
-			    case 'a':{
+			    case 'a':
+			    case 'A':{
 			    draw_battle_boxes (14, 399);//Parry
 			    clear_battle_boxes (93, 399);//Block
 			    box_at = 3;
 			    break;
 			    }
-			    case 'd':{
+			    case 'd':
+			    case 'D':{
 			    draw_battle_boxes (170, 399);//Flee
 			    clear_battle_boxes (93, 399);//Block
 			    box_at = 5;
@@ -2308,21 +2325,25 @@ public class SAO_ARC
 		case 5:{
 			switch (key_pressed)
 			{
-			    case 'w':{
+			    case 'w':
+			    case 'W':{
 			    //Nothing happens
 			    break;
 			    }
-			    case 's':{
+			    case 's':
+			    case 'S':{
 			    //Nothing happens
 			    break;
 			    }
-			    case 'a':{
+			    case 'a':
+			    case 'A':{
 			    draw_battle_boxes (93, 399);//Block
 			    clear_battle_boxes (170, 399);//Flee
 			    box_at = 4;
 			    break;
 			    }
-			    case 'd':{
+			    case 'd':
+			    case 'D':{
 			    //Nothing happens
 			    break;
 			    }
