@@ -1448,8 +1448,8 @@ public class SAO_ARC
 	mob_name = set_mob_name (mob_type);
 	mob_stats = mob_stat_set (mob_type, level);
 
-	mob_stats [1] += mobs_armour;
-	mob_stats [2] += mobs_weapon;
+	mob_stats [1] += (add_weapon (mobs_armour) );
+	mob_stats [2] += (add_weapon (mobs_weapon) );
 
 	c.setTextBackgroundColor (Color.white);
 	c.clear ();
